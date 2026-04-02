@@ -1,10 +1,26 @@
-import { motion, useScroll, useTransform } from 'motion/react';
+import { AnimatePresence, motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, Play, Trophy, Users, Sparkles, Star, GraduationCap } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
+
+const heroImages = [
+  "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop", // Modern campus
+  "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop", // Graduation/Success
+  "https://images.unsplash.com/photo-1519389953887-9eb54fc19808?q=80&w=2070&auto=format&fit=crop", // Technology/Future
+  "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?q=80&w=2070&auto=format&fit=crop"  // Academic library/Study
+];
 
 export default function Hero() {
   const containerRef = useRef(null);
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIdx((prev) => (prev + 1) % heroImages.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"]
@@ -118,13 +134,25 @@ export default function Hero() {
         >
           {/* Main Visual Frame */}
           <div className="relative z-10 w-full max-w-[500px] aspect-[4/5] rounded-[3.5rem] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.15)] ring-8 ring-white group cursor-default">
-            <motion.img
-              style={{ y: y1 }}
-              src="/artifacts/semcom_hero_modern_campus_1775033791340.png"
-              alt="Modern SEMCOM Campus"
-              className="w-full h-[120%] object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/90 via-brand-primary/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700" />
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.img
+                key={currentIdx}
+                initial={{ 
+                  opacity: 0, 
+                  ...(currentIdx % 4 === 0 ? { y: '-100%' } : currentIdx % 4 === 1 ? { x: '100%' } : currentIdx % 4 === 2 ? { y: '100%' } : { scale: 0.8 })
+                }}
+                animate={{ opacity: 1, y: '0%', x: '0%', scale: 1 }}
+                exit={{ 
+                  opacity: 0, 
+                  ...(currentIdx % 4 === 0 ? { y: '100%' } : currentIdx % 4 === 1 ? { x: '-100%' } : currentIdx % 4 === 2 ? { y: '-100%' } : { scale: 1.2 })
+                }}
+                transition={{ duration: 1.2, ease: "easeInOut" }}
+                src={heroImages[currentIdx]}
+                alt={`Modern SEMCOM Campus - View ${currentIdx + 1}`}
+                className="w-full h-full object-cover absolute inset-0 rounded-[3.5rem]"
+              />
+            </AnimatePresence>
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/90 via-brand-primary/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none" />
 
             <div className="absolute bottom-12 left-10 right-10 text-white">
               <motion.div
