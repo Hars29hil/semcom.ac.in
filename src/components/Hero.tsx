@@ -91,10 +91,15 @@ export default function Hero() {
           </div>
 
           <div className="flex flex-wrap items-center gap-6 pt-2">
-            <Link to="/admission" className="btn-primary flex items-center gap-3 group px-10 h-16 text-base">
+            <a 
+              href="https://www.ecvm.net/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn-primary flex items-center gap-3 group px-10 h-16 text-base"
+            >
               Apply For 2026-27
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
-            </Link>
+            </a>
 
             <button className="flex items-center gap-5 group py-2">
               <div className="w-14 h-14 rounded-2xl bg-white shadow-xl shadow-brand-primary/5 flex items-center justify-center border border-brand-border group-hover:border-brand-primary/20 transition-all">
@@ -137,15 +142,9 @@ export default function Hero() {
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.img
                 key={currentIdx}
-                initial={{ 
-                  opacity: 0, 
-                  ...(currentIdx % 4 === 0 ? { y: '-100%' } : currentIdx % 4 === 1 ? { x: '100%' } : currentIdx % 4 === 2 ? { y: '100%' } : { scale: 0.8 })
-                }}
-                animate={{ opacity: 1, y: '0%', x: '0%', scale: 1 }}
-                exit={{ 
-                  opacity: 0, 
-                  ...(currentIdx % 4 === 0 ? { y: '100%' } : currentIdx % 4 === 1 ? { x: '-100%' } : currentIdx % 4 === 2 ? { y: '-100%' } : { scale: 1.2 })
-                }}
+                initial={{ opacity: 0, y: '-100%' }}
+                animate={{ opacity: 1, y: '0%' }}
+                exit={{ opacity: 0, y: '100%' }}
                 transition={{ duration: 1.2, ease: "easeInOut" }}
                 src={heroImages[currentIdx]}
                 alt={`Modern SEMCOM Campus - View ${currentIdx + 1}`}

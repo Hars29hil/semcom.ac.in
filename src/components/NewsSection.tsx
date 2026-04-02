@@ -161,10 +161,15 @@ export default function NewsSection() {
         animate={{ x: 0 }}
         className="fixed right-0 top-1/2 -translate-y-1/2 z-[100]"
       >
-        <button className="bg-red-500 text-white font-black uppercase tracking-[0.2em] text-sm py-8 px-4 rounded-l-3xl shadow-[0_10px_30px_rgba(239,68,68,0.3)] hover:bg-red-600 transition-all [writing-mode:vertical-lr] flex items-center gap-4 group">
+        <a 
+          href="https://www.ecvm.net/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="bg-red-500 text-white font-black uppercase tracking-[0.2em] text-sm py-8 px-4 rounded-l-3xl shadow-[0_10px_30px_rgba(239,68,68,0.3)] hover:bg-red-600 transition-all [writing-mode:vertical-lr] flex items-center gap-4 group"
+        >
           APPLY NOW
           <ChevronRight className="rotate-90 group-hover:translate-y-2 transition-transform" />
-        </button>
+        </a>
       </motion.div>
     </section>
   );
