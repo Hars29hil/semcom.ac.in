@@ -12,7 +12,7 @@ const navLinks = [
     submenu: [
       { name: 'About SEMCOM', href: '/about/semcom' },
       { name: 'Dream, Vision, And Mission', href: '/about/vision' },
-      { name: 'About Charutar Vidya Mandal', href: '/about/cvm' },
+      { name: 'About Charutar Vidya Mandal', href: 'https://www.ecvm.net/', isExternal: true },
       { name: 'About Vallabh Vidyanagar', href: '/about/vvn' },
       { name: 'Chairman\'s Message', href: '/about/chairman' },
       { name: 'Principal\'s Message', href: '/about/principal' },
