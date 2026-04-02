@@ -92,27 +92,27 @@ export default function Courses() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="group bg-white rounded-[4rem] overflow-hidden border border-brand-border hover:shadow-[0_50px_100px_rgba(30,58,138,0.12)] transition-all duration-700 flex flex-col md:flex-row min-h-[440px]"
+              className="group bg-white rounded-[2.5rem] overflow-hidden border border-brand-border hover:shadow-[0_40px_80px_rgba(30,58,138,0.1)] transition-all duration-700 flex flex-col md:flex-row min-h-[340px]"
             >
               {/* Image Section */}
-              <div className="relative w-full md:w-[42%] overflow-hidden bg-slate-900 group-hover:w-[45%] transition-all duration-700 ease-in-out">
+              <div className="relative w-full md:w-[40%] overflow-hidden bg-slate-900 group-hover:w-[42%] transition-all duration-700 ease-in-out">
                 <motion.img
                   src={course.image}
                   alt={course.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s] ease-out opacity-80 group-hover:opacity-100"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/40 to-transparent" />
-                <div className="absolute top-8 left-8">
-                  <div className="px-5 py-2 rounded-2xl bg-white/10 backdrop-blur-xl text-[10px] font-black uppercase tracking-[0.2em] text-white border border-white/20 shadow-2xl">
+                <div className="absolute top-5 left-5">
+                  <div className="px-4 py-1.5 rounded-xl bg-white/10 backdrop-blur-xl text-[9px] font-black uppercase tracking-[0.2em] text-white border border-white/20 shadow-xl">
                     {course.category}
                   </div>
                 </div>
               </div>
 
               {/* Content Section */}
-              <div className="p-12 md:w-[58%] flex flex-col justify-between group-hover:w-[55%] transition-all duration-700 ease-in-out">
+              <div className="p-8 md:w-[60%] flex flex-col justify-between group-hover:w-[58%] transition-all duration-700 ease-in-out">
                 <div>
-                  <div className="flex items-center gap-4 mb-8">
+                  <div className="flex items-center gap-3 mb-6">
                     <div className="flex items-center gap-2 px-4 py-2 bg-brand-bg rounded-xl text-brand-primary text-[10px] font-black uppercase tracking-widest border border-brand-border">
                       <Clock size={16} className="text-brand-secondary" />
                       {course.duration}
@@ -123,27 +123,27 @@ export default function Courses() {
                     </div>
                   </div>
 
-                  <h3 className="text-3xl font-heading font-black text-brand-text mb-6 group-hover:text-brand-primary transition-colors leading-tight italic tracking-tighter">
+                  <h3 className="text-2xl font-heading font-black text-brand-text mb-4 group-hover:text-brand-primary transition-colors leading-tight italic tracking-tighter">
                     {course.title}
                   </h3>
                   
-                  <p className="text-brand-subtext font-medium text-lg leading-relaxed mb-10 opacity-80 group-hover:opacity-100 transition-opacity line-clamp-3">
+                  <p className="text-brand-subtext font-medium text-sm leading-relaxed mb-6 opacity-80 group-hover:opacity-100 transition-opacity line-clamp-3">
                     {course.description}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between pt-10 border-t border-brand-border/40">
-                   <Link to={course.link} className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-brand-primary group/link">
+                <div className="flex items-center justify-between pt-6 border-t border-brand-border/40">
+                   <Link to={course.link} className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-brand-primary group/link">
                       <div className="flex flex-col">
                         <span>Course</span>
                         <span className="text-brand-secondary">Briefing</span>
                       </div>
-                      <div className="w-10 h-10 rounded-full border border-brand-primary/10 flex items-center justify-center group-hover/link:bg-brand-primary group-hover/link:text-white transition-all">
-                        <ArrowRight size={18} className="group-hover/link:translate-x-1 transition-transform" />
+                      <div className="w-8 h-8 rounded-full border border-brand-primary/10 flex items-center justify-center group-hover/link:bg-brand-primary group-hover/link:text-white transition-all">
+                        <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
                       </div>
                    </Link>
-                   <div className="w-14 h-14 rounded-2xl bg-brand-bg flex items-center justify-center text-brand-primary border border-brand-border shadow-sm group-hover:rotate-12 transition-transform">
-                      <BookOpen size={24} />
+                   <div className="w-10 h-10 rounded-xl bg-brand-bg flex items-center justify-center text-brand-primary border border-brand-border shadow-sm group-hover:rotate-12 transition-transform">
+                      <BookOpen size={18} />
                    </div>
                 </div>
               </div>
