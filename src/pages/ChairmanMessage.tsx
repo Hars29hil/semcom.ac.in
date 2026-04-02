@@ -39,9 +39,9 @@ export default function ChairmanMessage() {
               >
                 <div className="absolute inset-0 bg-white/40 group-hover:bg-transparent transition-colors duration-500 z-10" />
                 <img 
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=1000" 
+                  src="/images/chairman.png" 
                   alt="Er. Bhikhubhai B. Patel" 
-                  className="w-full aspect-[4/5] object-cover rounded-[2.2rem] grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700"
+                  className="w-full aspect-[4/5] object-cover object-top rounded-[2.2rem] grayscale-[0.2] group-hover:grayscale-0 transition-all duration-700"
                 />
                 <div className="absolute bottom-6 left-6 right-6 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                   <div className="bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl shadow-lg border border-teal-500/20">

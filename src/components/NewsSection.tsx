@@ -1,27 +1,62 @@
 import { motion } from 'motion/react';
-import { Calendar, ArrowRight, Image as ImageIcon, Bell, FileText, ChevronRight } from 'lucide-react';
+import { Calendar, ArrowRight, Image as ImageIcon, Bell, FileText, ChevronRight, Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-const pressNotes = [
-  { day: '14', month: 'MAR', title: '304 teams participated in Hackathon 4.0 in Vidhanagar' },
-  { day: '14', month: 'MAR', title: 'Hackathon held in CVM University' },
-  { day: '14', month: 'MAR', title: 'A project to store hydrogen at low cost using plastic and cold temperatures' },
-  { day: '23', month: 'JAN', title: 'CVM University Cadets Selected for Republic Day Camp (RDC) 2' },
-];
-
-const upcomingEvents = [
-  { day: '04', month: 'APR', title: 'Interdisciplinary Research Symposium' },
-  { day: '25', month: 'APR', title: 'ADIT Alumni Meet-2026 at Baroda' },
-  { day: '25', month: 'JUN', title: 'International conference at ADIT - ICSSSD-2026' },
-];
-
-const announcements = [
-  { title: 'List of Holidays - 2026', date: '02 Feb 2026', id: 1 },
-  { title: 'Academic Calender', date: '02 Feb 2026', id: 2 },
-  { title: 'Academic Calendar 2025-26', date: '12 Dec 2025', id: 3 },
-  { title: 'Circular: Mandatory Internship Submission for Final Year Students', date: '02 Feb 2026', id: 4 },
-];
+// API Configuration as per architecture summary
+const API_BASE_URL = "http://localhost:5000/api";
+const ADMIN_TOKEN = "mysecret123";
 
 export default function NewsSection() {
+  const [pressNotes, setPressNotes] = useState<any[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
+  const [announcements, setAnnouncements] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const headers = { "Authorization": ADMIN_TOKEN };
+
+        // Fetch Press Notes
+        const pressRes = await fetch(`${API_BASE_URL}/news/press-notes`, { headers });
+        const pressData = await pressRes.json();
+        console.log('Press Data received:', pressData);
+        if (pressData.success) {
+          console.log('Setting press notes:', pressData.data);
+          setPressNotes(pressData.data.slice(0, 4));
+        }
+
+        // Fetch Upcoming Events
+        const eventRes = await fetch(`${API_BASE_URL}/events`, { headers });
+        const eventData = await eventRes.json();
+        if (eventData.success) {
+          // Format event data to match UI needs (day, month)
+          const formattedEvents = eventData.data.slice(0, 3).map((e: any) => {
+            const d = new Date(e.date);
+            return {
+              day: d.getDate().toString().padStart(2, '0'),
+              month: d.toLocaleString('en-US', { month: 'short' }).toUpperCase(),
+              title: e.name || e.title
+            };
+          });
+          setUpcomingEvents(formattedEvents);
+        }
+
+        // Fetch Announcements
+        const announceRes = await fetch(`${API_BASE_URL}/news/announcements`, { headers });
+        const announceData = await announceRes.json();
+        if (announceData.success) setAnnouncements(announceData.data.slice(0, 4));
+
+      } catch (error) {
+        console.error("Failed to fetch news data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <section id="news" className="py-24 bg-brand-bg relative overflow-hidden px-6 lg:px-24">
       <div className="max-w-[1440px] mx-auto">
@@ -35,29 +70,41 @@ export default function NewsSection() {
             </div>
             
             <div className="space-y-6">
-              {pressNotes.map((note, idx) => (
-                <motion.div 
-                  key={idx}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="flex gap-6 group cursor-pointer"
-                >
-                  <div className="flex-shrink-0 w-16 h-20 bg-brand-primary rounded-2xl flex flex-col items-center justify-center text-white shadow-xl group-hover:scale-105 transition-transform">
-                    <span className="text-2xl font-black leading-none">{note.day}</span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest mt-1 opacity-80">{note.month}</span>
-                  </div>
-                  <div className="space-y-2 py-1">
-                    <h3 className="text-base font-black text-brand-text leading-tight group-hover:text-brand-primary transition-colors line-clamp-3">
-                      {note.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-[10px] font-bold text-brand-subtext uppercase tracking-widest opacity-60">
-                      <ImageIcon size={12} className="text-brand-secondary" />
-                      Click to view image
+              {pressNotes.length > 0 ? (
+                pressNotes.map((note, idx) => (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 1, x: 0 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="flex gap-6 group cursor-pointer"
+                    onClick={() => {
+                      console.log('Image clicked:', note.image_url);
+                      if (note.image_url) window.open(note.image_url, '_blank');
+                    }}
+                  >
+                    <div className="flex-shrink-0 w-16 h-20 bg-[#1E3A8A] rounded-2xl flex flex-col items-center justify-center text-white shadow-xl group-hover:scale-105 transition-transform">
+                      <span className="text-2xl font-black leading-none">{note.day}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest mt-1 opacity-80">{note.month}</span>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                    <div className="flex-grow min-w-0">
+                      <h3 className="text-base font-black text-[#0F172A] leading-tight group-hover:text-[#1E3A8A] transition-colors line-clamp-2">
+                        {note.title}
+                      </h3>
+                      {note.image_url && (
+                        <div className="mt-2 w-full h-24 rounded-xl overflow-hidden bg-gray-100 border border-brand-border/50 group-hover:shadow-md transition-shadow">
+                           <img src={note.image_url} alt={note.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        </div>
+                      )}
+                      <div className="flex items-center gap-2 mt-3 text-[10px] font-bold text-[#475569] uppercase tracking-widest opacity-60">
+                        <ImageIcon size={12} className="text-[#0D9488]" />
+                        Click to view full image
+                      </div>
+                    </div>
+                  </motion.div>
+                ))
+              ) : (
+                <p className="text-brand-subtext/60 italic font-bold">Waiting for media updates...</p>
+              )}
             </div>
 
             <motion.button 
@@ -76,26 +123,30 @@ export default function NewsSection() {
               <div className="h-1.5 w-16 bg-brand-secondary rounded-full shadow-[0_0_15px_rgba(20,184,166,0.3)]" />
             </div>
 
-            <div className="bg-white/50 backdrop-blur-md p-8 rounded-[3rem] border border-white/40 shadow-2xl shadow-brand-primary/5 space-y-8">
-              {upcomingEvents.map((event, idx) => (
-                <motion.div 
-                  key={idx}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="flex gap-6 group cursor-pointer"
-                >
-                  <div className="flex-shrink-0 w-16 h-16 bg-brand-primary/10 rounded-2xl flex flex-col items-center justify-center text-brand-primary border border-brand-primary/10 shadow-sm group-hover:bg-brand-primary group-hover:text-white transition-all">
-                    <span className="text-xl font-black leading-none">{event.day}</span>
-                    <span className="text-[9px] font-bold uppercase tracking-widest mt-1">{event.month}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <h3 className="text-base font-black text-brand-text leading-tight group-hover:text-brand-secondary transition-colors">
-                      {event.title}
-                    </h3>
-                  </div>
-                </motion.div>
-              ))}
+            <div className="bg-white/50 backdrop-blur-md p-8 rounded-[3rem] border border-white/40 shadow-2xl shadow-brand-primary/5 space-y-8 min-h-[300px]">
+              {loading ? (
+                <div className="flex justify-center p-12"><Loader2 className="animate-spin text-brand-secondary" /></div>
+              ) : (
+                upcomingEvents.map((event, idx) => (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex gap-6 group cursor-pointer"
+                  >
+                    <div className="flex-shrink-0 w-16 h-16 bg-brand-primary/10 rounded-2xl flex flex-col items-center justify-center text-brand-primary border border-brand-primary/10 shadow-sm group-hover:bg-brand-primary group-hover:text-white transition-all">
+                      <span className="text-xl font-black leading-none">{event.day}</span>
+                      <span className="text-[9px] font-bold uppercase tracking-widest mt-1">{event.month}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <h3 className="text-base font-black text-brand-text leading-tight group-hover:text-brand-secondary transition-colors">
+                        {event.title}
+                      </h3>
+                    </div>
+                  </motion.div>
+                ))
+              )}
             </div>
 
             <motion.button 
@@ -114,33 +165,34 @@ export default function NewsSection() {
             </div>
 
             <div className="space-y-4 relative">
-               {/* Vertical Accent Line */}
-               {/* <div className="absolute left-[-1.5rem] top-0 bottom-0 w-1.5 bg-brand-secondary/40 rounded-full" /> */}
-               
                <div className="space-y-4">
-                  {announcements.map((item, idx) => (
-                    <motion.div 
-                      key={idx}
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.1 }}
-                      className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm group cursor-pointer hover:border-brand-secondary transition-all hover:shadow-xl hover:-translate-y-1"
-                    >
-                      <div className="flex gap-4">
-                        <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-brand-primary group-hover:bg-brand-secondary group-hover:text-white transition-all">
-                           {idx % 2 === 0 ? <Bell size={20} /> : <FileText size={20} />}
+                  {loading ? (
+                    <div className="flex justify-center p-12"><Loader2 className="animate-spin text-brand-primary/40" /></div>
+                  ) : (
+                    announcements.map((item, idx) => (
+                      <motion.div 
+                        key={idx}
+                        initial={{ opacity: 0, x: 20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm group cursor-pointer hover:border-brand-secondary transition-all hover:shadow-xl hover:-translate-y-1"
+                      >
+                        <div className="flex gap-4">
+                          <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-brand-primary group-hover:bg-brand-secondary group-hover:text-white transition-all">
+                             {item.type === 'file' ? <FileText size={20} /> : <Bell size={20} />}
+                          </div>
+                          <div className="space-y-1 flex-grow">
+                            <h3 className="text-[15px] font-black text-brand-text line-clamp-2 leading-snug group-hover:text-brand-primary">
+                              {item.title}
+                            </h3>
+                            <p className="text-[10px] font-bold text-brand-subtext uppercase tracking-widest opacity-60">
+                              {item.date}
+                            </p>
+                          </div>
                         </div>
-                        <div className="space-y-1 flex-grow">
-                          <h3 className="text-[15px] font-black text-brand-text line-clamp-2 leading-snug group-hover:text-brand-primary">
-                            {item.title}
-                          </h3>
-                          <p className="text-[10px] font-bold text-brand-subtext uppercase tracking-widest opacity-60">
-                            {item.date}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    ))
+                  )}
                </div>
             </div>
 

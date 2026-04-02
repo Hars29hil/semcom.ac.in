@@ -1,301 +1,57 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { Mail, GraduationCap, Award, BookOpen, Briefcase, MapPin } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Mail, GraduationCap, Award, BookOpen, Briefcase, MapPin, Loader2, X, History, User2, Users } from 'lucide-react';
 
-const facultyMembers = [
-  // Teaching Faculty
-  {
-    name: 'Dr. Preethi Luhana',
-    qualification: 'M.Com., Ph.D.',
-    designation: 'Principal (In-Charge)',
-    area: 'Commerce and Accountancy',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Reena Dave',
-    qualification: 'M.Com., M.Phil., LLB, Ph.D.',
-    designation: 'Assistant Professor',
-    area: 'Commerce and Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1580894732230-28e193399e8c?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Ms. Ami Trivedi',
-    qualification: 'MCA, Ph.D. (Pursuing)',
-    designation: 'Assistant Professor',
-    area: 'Computer Science',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Ms. Palak Patel',
-    qualification: 'MCA, Ph.D. (Pursuing)',
-    designation: 'Assistant Professor',
-    area: 'Computer Science',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Joe Marry George',
-    qualification: 'M.Com., B.Ed., M.Phil., Ph.D.',
-    designation: 'Assistant Professor',
-    area: 'Commerce and Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Sunil Chaudhary',
-    qualification: 'M.Com., M.Phil., PGDCA, NET, Ph.D.',
-    designation: 'Assistant Professor',
-    area: 'Commerce and Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Ajayraj Vyas',
-    qualification: 'M.Com., Ph.D.',
-    designation: 'Assistant Professor',
-    area: 'Commerce and Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Chetan Patel',
-    qualification: 'M.Sc.(Maths), M.Phil., Ph.D., GATE',
-    designation: 'Assistant Professor',
-    area: 'Mathematics',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Renil Thomas',
-    qualification: 'M.Com., B.Ed., M.Phil., Ph.D.',
-    designation: 'Assistant Professor',
-    area: 'Commerce and Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Khyati J Patel',
-    qualification: 'M.Com., M.Phil., Ph.D.(Commerce)',
-    designation: 'Assistant Professor',
-    area: 'Accountancy and Finance',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1598550874175-4d0fe427c731?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Dipal Patel',
-    qualification: 'MBA, M.Phil., Ph.D.',
-    designation: 'Assistant Professor',
-    area: 'Commerce and Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Mr. Abhishek Dave',
-    qualification: 'MCA',
-    designation: 'Assistant Professor',
-    area: 'Computer Science',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Mr. Maulin Omprakash Punjabi',
-    qualification: 'MCA, Ph.D. (Pursuing)',
-    designation: 'Assistant Professor',
-    area: 'Computer Science',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Mr. Premal Soni',
-    qualification: 'B.Com, M.C.A',
-    designation: 'Assistant Professor',
-    area: 'Computer Science',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Mr. Dhruv Patel',
-    qualification: 'B.Sc (C.S), M.Sc (I.T)',
-    designation: 'Assistant Professor',
-    area: 'Computer Science',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Dhara Mehta',
-    qualification: 'M.com(Gold Medallist), PhD',
-    designation: 'Assistant Professor',
-    area: 'Accountancy and Finance',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Rajesh Sangvi',
-    qualification: 'Ph.D, M.Sc(Mathematics)',
-    designation: 'Assistant Professor',
-    area: 'Mathematics',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1504257432379-73551ba0e822?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Faizan Saeeda',
-    qualification: 'M. Com, M. Phil, Ph.D, GSET',
-    designation: 'Assistant Professor',
-    area: 'Accountancy and Finance',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Mr. Kumarjay Shakya',
-    qualification: 'M. Com, Ph.D(Pursuing)',
-    designation: 'Assistant Professor',
-    area: 'International Accounting and Finance',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Ms. Shreya Patel',
-    qualification: 'MBA, MSc.IB with Data Analytics(London)',
-    designation: 'Assistant Professor',
-    area: 'Commerce and Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Hinabahen Nikunjkumar Patel',
-    qualification: 'Ph.D., M.A(ELT), M.Phil, B.Ed.',
-    designation: 'Assistant Professor',
-    area: 'English Language',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Urvi Singh',
-    qualification: 'M.Com, PhD',
-    designation: 'Assistant Professor',
-    area: 'Finance',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Sandip Chandra',
-    qualification: 'B.Com, M.Com, MBA & Ph.D.',
-    designation: 'Associate Professor',
-    area: 'HRM and General Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Ms. Archna Garasiya',
-    qualification: 'MBA Phd (Pursuing) UGC NET.',
-    designation: 'Assistant Professor',
-    area: 'Management - Marketing',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Pooja Choudhary',
-    qualification: 'NET, Ph.D, Mphil, Post-Doc, MBA',
-    designation: 'Associate Professor',
-    area: 'Commerce and Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Shivani Pandey',
-    qualification: 'Ph.D. in English literature',
-    designation: 'Assistant Professor',
-    area: 'English',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1598550874175-4d0fe427c731?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Ms. Sarvi Dineshkumar Patel',
-    qualification: 'B TECH, MBA, UGC(NET)',
-    designation: 'Assistant Professor',
-    area: 'Commerce Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Mr. Jay Chandrakant Panchal',
-    qualification: 'BCA, MSCIT',
-    designation: 'Assistant Professor',
-    area: 'Computer Science',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Ms. Stuti Bhaveshkumar Prajapati',
-    qualification: 'MCA Gold Medalist',
-    designation: 'Guest Faculty',
-    area: 'Computer Science',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Dhara Jha',
-    qualification: 'Ph.D, UGC-NET, IIM-CFMT, MBA Finance',
-    designation: 'Assistant Professor',
-    area: 'Finance',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Mr. Gyandeep Hazarika',
-    qualification: 'PhD in Management (Pursuing)',
-    designation: 'Assistant Professor',
-    area: 'Rural Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Dipali Gajjar',
-    qualification: 'B.B.A, M.B.A, M.Com, PhD',
-    designation: 'Assistant Professor',
-    area: 'Commerce and Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Mr. Vijay Gamit',
-    qualification: 'MBA, PhD (Pursuing)',
-    designation: 'Assistant Professor',
-    area: 'Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=400',
-  },
-  {
-    name: 'Dr. Puneet Tak',
-    qualification: 'BBA, MBA, M.Com, PhD',
-    designation: 'Assistant Professor',
-    area: 'HRM and General Management',
-    type: 'Teaching',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400',
-  },
-
-  // Technical Staff
-  { name: 'Ms. Reshma Pathak', designation: 'TECHNICAL STAFF', type: 'Technical', image: 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?auto=format&fit=crop&q=80&w=400' },
-  { name: 'Ms. Ami Patel', designation: 'TECHNICAL STAFF', type: 'Technical', image: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?auto=format&fit=crop&q=80&w=400' },
-  { name: 'Mr. Nilesh Patel', designation: 'TECHNICAL STAFF', type: 'Technical', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400' },
-  { name: 'Mr. Krunal Shah', designation: 'SPORTS IN-CHARGE', type: 'Technical', image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400' },
-
-  // Administrative Staff
-  { name: 'Mr. Arvind Mistry', designation: 'ADMINISTRATIVE STAFF', type: 'Admin', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400' },
-  { name: 'Dr. Hemangini Patel', designation: 'ADMINISTRATIVE STAFF', type: 'Admin', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400' },
-
-  // Supportive Staff
-  { name: 'Mr. Manhar Prajapati', designation: 'SUPPORTIVE STAFF', type: 'Support', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400' },
-  { name: 'Mr. Raju Rathva', designation: 'SUPPORTIVE STAFF', type: 'Support', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400' },
-  { name: 'Mr. Hitesh Patel', designation: 'SUPPORTIVE STAFF', type: 'Support', image: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=400' },
-  { name: 'Mr. Rajnikant Machhi', designation: 'SUPPORTIVE STAFF', type: 'Support', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=400' },
-  { name: 'Mr. Rikesh Rabari', designation: 'SUPPORTIVE STAFF', type: 'Support', image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=400' },
-];
+interface Achievement {
+  id: number;
+  achievement_type: string;
+  title: string;
+  details: string;
+  achievement_year: string;
+}
 
 export default function Faculty() {
+   const [facultyMembers, setFacultyMembers] = useState<any[]>([]);
+   const [loading, setLoading] = useState(true);
+   const [selectedFaculty, setSelectedFaculty] = useState<any | null>(null);
+   const [experience, setExperience] = useState<any[]>([]);
+   const [achievements, setAchievements] = useState<Achievement[]>([]);
+   const [loadingExp, setLoadingExp] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/faculty')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setFacultyMembers(data.data.map((f: any) => ({
+             ...f,
+             image: f.image_url || `https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400`,
+             type: f.staff_type
+          })));
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const handleOpenDetails = async (member: any) => {
+    setSelectedFaculty(member);
+    setLoadingExp(true);
+    try {
+      const expRes = await fetch(`/api/faculty/${member.email}/experience`);
+      const expData = await expRes.json();
+      setExperience(expData || []);
+
+      const achRes = await fetch(`/api/faculty/${member.email}/achievements`);
+      const achData = await achRes.json();
+      setAchievements(achData || []);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoadingExp(false);
+    }
+  };
+
   const staffTypes = [
     { id: 'Teaching', label: 'Teaching Faculty', icon: <BookOpen className="w-5 h-5" /> },
     { id: 'Technical', label: 'Technical Staff', icon: <Briefcase className="w-5 h-5" /> },
@@ -326,7 +82,12 @@ export default function Faculty() {
         </div>
       </div>
 
-      {staffTypes.map((type) => (
+      {loading ? (
+        <div className="flex-grow flex flex-col items-center justify-center py-20 space-y-4">
+           <Loader2 className="w-12 h-12 text-teal-600 animate-spin" />
+           <p className="text-gray-400 font-black uppercase tracking-widest text-xs">Loading Faculty Database...</p>
+        </div>
+      ) : staffTypes.map((type) => (
         <section key={type.id} className="py-16 px-6 max-w-7xl mx-auto w-full">
           <div className="flex items-center gap-4 mb-12 border-b border-gray-100 pb-6">
             <div className="p-3 bg-teal-600 rounded-2xl text-white shadow-lg shadow-teal-600/20">
@@ -342,12 +103,13 @@ export default function Faculty() {
               .filter((m) => m.type === type.id)
               .map((member, index) => (
                 <motion.div
-                  key={member.name}
+                  key={member.id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: (index % 3) * 0.1 }}
-                  className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500"
+                  onClick={() => handleOpenDetails(member)}
+                  className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer"
                 >
                   <div className="relative h-[250px] overflow-hidden">
                     <img
@@ -389,12 +151,6 @@ export default function Faculty() {
                         )}
                       </div>
                     )}
-
-                    <div className="pt-4 flex justify-center gap-4 border-t border-gray-50">
-                       <button className="text-gray-400 hover:text-teal-600 transition-colors">
-                          <Mail size={18} />
-                       </button>
-                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -402,55 +158,116 @@ export default function Faculty() {
         </section>
       ))}
 
-      {/* Bottom Footer */}
-      <section className="bg-[#1c2e5a] py-16 px-6 text-center text-white mt-12">
-         <p className="text-teal-400 font-bold uppercase tracking-[0.3em] text-xs mb-4">SEMCOM Institutional Pride</p>
-         <h2 className="text-2xl font-serif font-bold">Guided by Visionaries, Driven by Excellence.</h2>
-      </section>
+      {/* Faculty Details Modal */}
+      <AnimatePresence>
+        {selectedFaculty && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-12 overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-[#0a1a3b]/95 backdrop-blur-3xl" onClick={() => setSelectedFaculty(null)} />
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 50 }}
+              className="relative w-full max-w-5xl h-full max-h-[90vh] bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row"
+            >
+              {/* Left Side: Photo & Info */}
+              <div className="w-full md:w-[35%] bg-accent/30 p-10 flex flex-col items-center border-r border-gray-100">
+                <div className="relative group/photo mb-8">
+                  <div className="absolute inset-0 bg-teal-500/20 rounded-[2.5rem] blur-2xl" />
+                  <img 
+                    src={selectedFaculty.image} 
+                    alt={selectedFaculty.name} 
+                    className="relative w-48 h-60 object-cover rounded-[2.5rem] shadow-2xl border-8 border-white"
+                  />
+                  <div className="absolute -bottom-4 -right-4 w-12 h-12 rounded-2xl bg-teal-600 text-white flex items-center justify-center">
+                    <History size={24} />
+                  </div>
+                </div>
+                
+                <div className="text-center space-y-2">
+                  <h2 className="text-2xl font-serif font-black text-[#1c2e5a] uppercase italic">{selectedFaculty.name}</h2>
+                  <p className="text-teal-600 font-black text-[10px] uppercase tracking-widest">{selectedFaculty.designation}</p>
+                </div>
+
+                <div className="w-full mt-10 space-y-5">
+                   <div className="p-4 bg-white/50 rounded-2xl border border-gray-100">
+                      <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Qualification</p>
+                      <p className="text-xs font-bold text-[#1c2e5a]">{selectedFaculty.qualification}</p>
+                   </div>
+                   <div className="p-4 bg-white/50 rounded-2xl border border-gray-100">
+                      <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Focus Area</p>
+                      <p className="text-xs font-bold text-[#1c2e5a]">{selectedFaculty.area}</p>
+                   </div>
+                </div>
+
+                <div className="mt-auto pt-6">
+                  <a href={`mailto:${selectedFaculty.email}`} className="flex items-center gap-3 text-[#1c2e5a] font-black text-[10px] uppercase tracking-widest group">
+                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg group-hover:bg-teal-600 group-hover:text-white transition-all">
+                      <Mail size={16} />
+                    </div>
+                    Reach Faculty
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Side: Trajectory & Achievements */}
+              <div className="w-full md:w-[65%] p-10 md:p-16 flex flex-col relative">
+                <button onClick={() => setSelectedFaculty(null)} className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center bg-gray-50 rounded-2xl hover:bg-gray-100"><X/></button>
+
+                <div className="flex-grow overflow-y-auto pr-4 space-y-12">
+                   {loadingExp ? (
+                     <div className="h-full flex flex-col items-center justify-center gap-4">
+                        <Loader2 className="animate-spin text-teal-600"/>
+                        <p className="text-[10px] font-black uppercase text-gray-400">Loading Portfolio...</p>
+                     </div>
+                   ) : (
+                     <>
+                        <div className="space-y-8">
+                           <h3 className="text-3xl font-serif font-black text-[#1c2e5a] italic tracking-tight">Professional <span className="text-teal-600">Trajectory</span>.</h3>
+                           {experience.length === 0 ? (
+                             <p className="text-sm text-gray-400 italic">No trajectory data recorded.</p>
+                           ) : (
+                             <div className="relative pl-8 space-y-8 border-l-2 border-teal-600/10">
+                                {experience.map((exp, i) => (
+                                  <div key={i} className="relative">
+                                     <div className="absolute -left-[41px] top-1 w-5 h-5 rounded-full bg-white border-4 border-teal-600 shadow-lg"/>
+                                     <div className="text-[9px] font-black text-teal-600 uppercase mb-1">{exp.years}</div>
+                                     <h4 className="text-lg font-black text-[#1c2e5a]">{exp.role}</h4>
+                                     <p className="text-xs uppercase font-black text-gray-400 mb-2">{exp.company}</p>
+                                     <p className="text-sm text-gray-600 leading-relaxed font-medium">{exp.description}</p>
+                                  </div>
+                                ))}
+                             </div>
+                           )}
+                        </div>
+
+                        {achievements.length > 0 && (
+                          <div className="space-y-8 pt-8 border-t border-gray-50">
+                             <h4 className="text-xl font-serif font-black text-[#1c2e5a] italic tracking-tight"><span className="text-indigo-600">Academic</span> Portfolio.</h4>
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {achievements.map((ach) => (
+                                   <div key={ach.id} className="p-5 bg-accent/20 rounded-3xl border border-white hover:border-indigo-100 transition-all">
+                                      <div className="text-[8px] font-black text-indigo-500 uppercase tracking-[0.2em] mb-1">{ach.achievement_type}</div>
+                                      <h5 className="font-bold text-[#1c2e5a] leading-tight mb-2">{ach.title}</h5>
+                                      <div className="text-[10px] text-gray-400">{ach.details} • {ach.achievement_year}</div>
+                                   </div>
+                                ))}
+                             </div>
+                          </div>
+                        )}
+                     </>
+                   )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
-  );
-}
-
-function Users({ size, className }: { size: number, className?: string }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  );
-}
-
-// Sub-components/Icons for better visuals
-function Linkedin({ size, className = "" }: { size: number, className?: string }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-      <rect width="4" height="12" x="2" y="9" />
-      <circle cx="4" cy="4" r="2" />
-    </svg>
   );
 }

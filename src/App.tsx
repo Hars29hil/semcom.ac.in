@@ -43,6 +43,7 @@ import CompanyDetail from './pages/CompanyDetail';
 import ContactPlacement from './pages/ContactPlacement';
 import Alumni from './pages/Alumni';
 import AlumniRegistration from './pages/AlumniRegistration';
+import Gallery from './pages/Gallery';
 import MediaKit from './pages/MediaKit';
 import EducationVerification from './pages/EducationVerification';
 
@@ -118,8 +119,7 @@ export default function App() {
             <Route path="/alumni/list" element={<PageWrapper><Alumni /></PageWrapper>} />
             <Route path="/alumni/register" element={<PageWrapper><AlumniRegistration /></PageWrapper>} />
             
-            <Route path="/gallery" element={<PageWrapper><Home /></PageWrapper>} />
-            <Route path="/gallery/media-kit" element={<PageWrapper><MediaKit /></PageWrapper>} />
+            <Route path="/gallery" element={<PageWrapper><Gallery /></PageWrapper>} />
             <Route path="/rankings" element={<PageWrapper><Rankings /></PageWrapper>} />
             <Route path="/education-verification" element={<PageWrapper><EducationVerification /></PageWrapper>} />
             <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />

@@ -59,49 +59,59 @@ export default function Testimonials() {
           </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={testimonial.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="card-premium group relative"
-            >
-              <div className="absolute top-10 right-10 text-brand-primary/5 group-hover:text-brand-secondary transition-colors">
-                <Quote size={56} className="rotate-180" />
-              </div>
-              
-              <div className="flex gap-1 mb-8">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={14} className="fill-brand-accent text-brand-accent" />
-                ))}
-              </div>
+        <div className="relative group/marquee cursor-default">
+           <motion.div 
+             animate={{ x: ["0%", "-52.5%"] }}
+             transition={{ 
+               duration: 35, 
+               repeat: Infinity, 
+               ease: "linear" 
+             }}
+             className="flex gap-8 group-hover/marquee:[animation-play-state:paused]"
+           >
+             {[...testimonials, ...testimonials, ...testimonials].map((testimonial, index) => (
+               <div
+                 key={`${testimonial.name}-${index}`}
+                 className="min-w-[420px] max-w-[420px] card-premium group relative hover:border-brand-primary/20 transition-all duration-500 scale-95 hover:scale-100"
+               >
+                 <div className="absolute top-10 right-10 text-brand-primary/5 group-hover:text-brand-secondary transition-colors">
+                   <Quote size={56} className="rotate-180" />
+                 </div>
+                 
+                 <div className="flex gap-1 mb-8">
+                   {[...Array(5)].map((_, i) => (
+                     <Star key={i} size={14} className="fill-brand-accent text-brand-accent" />
+                   ))}
+                 </div>
 
-              <p className="text-xl text-brand-text font-medium mb-12 leading-relaxed italic">
-                "{testimonial.text}"
-              </p>
+                 <p className="text-xl text-brand-text font-medium mb-12 leading-relaxed italic line-clamp-3">
+                   "{testimonial.text}"
+                 </p>
 
-              <div className="flex items-center gap-5 pt-8 border-t border-gray-50">
-                <div className="relative group-hover:scale-110 transition-transform duration-500">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-16 h-16 rounded-2xl object-cover grayscale group-hover:grayscale-0 transition-all shadow-lg"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-brand-secondary rounded-lg flex items-center justify-center text-white border-2 border-white">
-                    <Sparkles size={12} />
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <h4 className="text-lg font-heading font-black text-brand-primary italic">{testimonial.name}</h4>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-brand-subtext">{testimonial.role}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                 <div className="flex items-center gap-5 pt-8 border-t border-gray-50">
+                   <div className="relative group-hover:scale-110 transition-transform duration-500">
+                     <img
+                       src={testimonial.image}
+                       alt={testimonial.name}
+                       className="w-16 h-16 rounded-2xl object-cover grayscale group-hover:grayscale-0 transition-all shadow-lg border-2 border-white"
+                       referrerPolicy="no-referrer"
+                     />
+                     <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-brand-secondary rounded-lg flex items-center justify-center text-white border-2 border-white">
+                       <Sparkles size={12} />
+                     </div>
+                   </div>
+                   <div className="space-y-1">
+                     <h4 className="text-lg font-heading font-black text-brand-primary italic">{testimonial.name}</h4>
+                     <p className="text-[10px] font-black uppercase tracking-widest text-brand-subtext">{testimonial.role}</p>
+                   </div>
+                 </div>
+               </div>
+             ))}
+           </motion.div>
+           
+           {/* Fade Edges */}
+           <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-brand-bg to-transparent z-20 pointer-events-none" />
+           <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-brand-bg to-transparent z-20 pointer-events-none" />
         </div>
       </div>
     </section>

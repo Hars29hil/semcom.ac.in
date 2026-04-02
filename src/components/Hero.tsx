@@ -1,7 +1,7 @@
-import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowRight, Play, Trophy, Users, Sparkles, Star, GraduationCap } from 'lucide-react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import { ArrowRight, Play, Trophy, Users, Sparkles, Star, GraduationCap, Image as ImageIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 export default function Hero() {
   const containerRef = useRef(null);
@@ -13,6 +13,29 @@ export default function Hero() {
   const y1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -150]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  const [photos, setPhotos] = useState<string[]>([
+    '/artifacts/semcom_hero_modern_campus_1775033791340.png',
+    'https://images.unsplash.com/photo-1540575861501-7bc06a177dc2?q=80&w=2070',
+    'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070',
+    'https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070'
+  ]);
+  const [currentPhoto, setCurrentPhoto] = useState(0);
+
+  useEffect(() => {
+    fetch('/api/gallery/highlights')
+      .then(res => res.json())
+      .then(data => {
+        if (data.length > 0) setPhotos(data.map((p: any) => p.url));
+      });
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentPhoto((prev) => (prev + 1) % photos.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [photos]);
 
   return (
     <section
@@ -116,15 +139,21 @@ export default function Hero() {
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
           className="relative lg:h-[750px] flex items-center justify-center p-4"
         >
-          {/* Main Visual Frame */}
           <div className="relative z-10 w-full max-w-[500px] aspect-[4/5] rounded-[3.5rem] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.15)] ring-8 ring-white group cursor-default">
-            <motion.img
-              style={{ y: y1 }}
-              src="/artifacts/semcom_hero_modern_campus_1775033791340.png"
-              alt="Modern SEMCOM Campus"
-              className="w-full h-[120%] object-cover group-hover:scale-105 transition-transform duration-[2s] ease-out"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/90 via-brand-primary/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700" />
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentPhoto}
+                initial={{ opacity: 0, scale: 1.1 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 1.5, ease: 'easeOut' }}
+                src={photos[currentPhoto]}
+                alt="Modern SEMCOM Campus"
+                className="w-full h-full object-cover"
+              />
+            </AnimatePresence>
+            
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/95 via-brand-primary/20 to-transparent opacity-80 transition-opacity duration-700" />
 
             <div className="absolute bottom-12 left-10 right-10 text-white">
               <motion.div
@@ -135,10 +164,17 @@ export default function Hero() {
               >
                 <div className="flex items-center gap-2">
                   <div className="h-[2px] w-8 bg-brand-secondary" />
-                  <span className="text-[11px] font-black uppercase tracking-[0.3em] text-brand-secondary">Center of Excellence</span>
+                  <span className="text-[11px] font-black uppercase tracking-[0.3em] text-brand-secondary animate-pulse">Recent Gallery Highlights</span>
                 </div>
-                <h3 className="text-3xl font-heading font-black leading-[1.1] tracking-tight">World-Class Infrastructure <br />For Modern Education</h3>
+                <h3 className="text-3xl font-heading font-black leading-[1.1] tracking-tight italic">Campus Events & <br />Research Activities</h3>
               </motion.div>
+            </div>
+
+            {/* Carousel Indicators */}
+            <div className="absolute top-12 right-10 flex gap-1.5">
+               {photos.map((_, i) => (
+                 <div key={i} className={`h-1 rounded-full transition-all duration-500 ${i === currentPhoto ? 'w-6 bg-brand-secondary' : 'w-2 bg-white/40'}`} />
+               ))}
             </div>
           </div>
 

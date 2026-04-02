@@ -1,2 +1,11 @@
 use this data for the BBA(ITM)(Hons.) which is in the Academic sectionuse 
 use this data for the PHD which is in the Admission section
+
+
+🔐 Admin Access
+Email: admin@semcom.in
+Password: Semcom@3690
+
+💼 Counsellor Access
+Email: dhruv.patel@cvmu.edu.in
+Password: Dhruv@semcom

@@ -90,11 +90,6 @@ const navLinks = [
   {
     name: 'Gallery',
     href: '/gallery',
-    submenu: [
-      { name: 'Activities Photo', href: '/gallery/photos' },
-      { name: 'Media Kit', href: '/gallery/media-kit' },
-      { name: 'Press Note', href: '/gallery/press-note' },
-    ],
   },
   {
     name: 'Reach Us',
