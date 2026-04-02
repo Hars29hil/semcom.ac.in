@@ -1,50 +1,17 @@
 import { motion } from 'motion/react';
 import { 
   FileText, 
-  Download, 
-  ChevronRight, 
-  FileCheck, 
-  ClipboardCheck, 
-  ScrollText, 
-  GraduationCap,
-  ShieldAlert,
+  Download,
+  ChevronRight,
   Search
 } from 'lucide-react';
 import { useState } from 'react';
 
 const forms = [
-  {
-    title: "Bonafide Certificate",
-    category: "Certificate",
-    description: "Official document confirming your current enrollment status at SEMCOM.",
-    icon: FileCheck,
-    size: "124 KB",
-    type: "PDF"
-  },
-  {
-    title: "Recommendation Letter",
-    category: "Academic",
-    description: "Request form for academic or professional recommendations from faculty.",
-    icon: GraduationCap,
-    size: "156 KB",
-    type: "PDF"
-  },
-  {
-    title: "Transfer Certificate (TC)",
-    category: "Administrative",
-    description: "Application for issuance of TC upon completion of program or withdrawal.",
-    icon: ClipboardCheck,
-    size: "112 KB",
-    type: "PDF"
-  },
-  {
-    title: "Transcript Request",
-    category: "Academic",
-    description: "Official request for detailed academic records and semester-wise marks.",
-    icon: ScrollText,
-    size: "198 KB",
-    type: "PDF"
-  }
+  { title: "Bonafide", ext: "PDF", size: "124 KB" },
+  { title: "Recommendation Letter", ext: "DOCX", size: "45 KB" },
+  { title: "Transfer Certificate", ext: "PDF", size: "112 KB" },
+  { title: "Transcript", ext: "PDF", size: "198 KB" }
 ];
 
 export default function DownloadForms() {
@@ -55,120 +22,112 @@ export default function DownloadForms() {
   );
 
   return (
-    <div className="pt-20 bg-gray-50 min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-primary py-24 px-6 overflow-hidden relative">
-        <div className="absolute inset-0 z-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-secondary rounded-full translate-x-1/3 translate-y-1/3 blur-3xl" />
+    <div className="bg-brand-bg min-h-screen">
+      {/* Dark Hero Banner similar to the image provided */}
+      <section className="relative pt-32 pb-20 px-6 overflow-hidden flex items-center justify-center min-h-[300px]">
+        {/* Background Image (Using abstract dark or architectural look) */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop" 
+            alt="Campus" 
+            className="w-full h-full object-cover brightness-[0.25]"
+          />
         </div>
 
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
+        <div className="max-w-[1440px] mx-auto relative z-10 w-full flex flex-col items-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-3xl mx-auto"
+            className="text-4xl md:text-5xl font-heading font-black text-white uppercase tracking-widest text-center"
           >
-            <span className="text-secondary font-black uppercase tracking-[0.5em] text-xs mb-6 block">Document Portal</span>
-            <h1 className="text-5xl md:text-7xl font-serif font-black text-white italic leading-tight mb-8">
-              Downloadable <span className="text-secondary underline decoration-4 underline-offset-8">Forms</span>
-            </h1>
-            
-            {/* Search Bar */}
-            <div className="relative max-w-xl mx-auto mt-12">
-              <input 
-                type="text" 
-                placeholder="Search for a form..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-white/10 border border-white/20 rounded-2xl py-5 px-8 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-secondary transition-all backdrop-blur-md"
-              />
-              <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-white/40" />
-            </div>
+            Downloadable Forms
+          </motion.h1>
+          
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="w-full max-w-lg mt-10 relative"
+          >
+            <input 
+              type="text" 
+              placeholder="Search forms..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl py-4 px-6 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-brand-secondary transition-all"
+            />
+            <Search className="absolute right-5 top-1/2 -translate-y-1/2 text-white/60" size={20} />
           </motion.div>
         </div>
       </section>
 
-      {/* Forms Grid */}
-      <section className="py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8">
-            {filteredForms.map((form, idx) => (
-              <motion.div
-                key={form.title}
-                initial={{ opacity: 0, x: idx % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-[3rem] p-10 shadow-sm hover:shadow-xl transition-all group flex gap-8 items-start relative overflow-hidden"
-              >
-                {/* Visual Category Label */}
-                <div className="absolute top-8 right-8 px-4 py-1.5 bg-gray-50 rounded-full border border-gray-100 font-black uppercase tracking-widest text-[8px] text-gray-400 group-hover:text-primary transition-colors">
-                  {form.category}
-                </div>
-
-                <div className="bg-primary/5 p-6 rounded-3xl text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shrink-0">
-                  <form.icon size={32} />
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-serif font-black text-primary italic">
-                    {form.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm leading-relaxed max-w-sm">
-                    {form.description}
-                  </p>
-                  
-                  <div className="flex items-center gap-6 pt-4">
-                    <button className="flex items-center gap-3 bg-secondary text-primary px-6 py-3 rounded-xl font-black uppercase tracking-widest text-[10px] hover:scale-105 transition-transform shadow-lg shadow-secondary/20">
-                      <Download size={14} /> Download {form.type}
-                    </button>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-gray-300">
-                      Filesize: {form.size}
+      {/* Main Content Area */}
+      <section className="py-20 px-6">
+        <div className="max-w-[1000px] mx-auto">
+          {filteredForms.length > 0 ? (
+            <div className="bg-white rounded-[2rem] border border-brand-border p-8 md:p-12 shadow-[0_20px_60px_rgba(30,58,138,0.05)]">
+              <h2 className="text-xl font-black text-brand-primary uppercase tracking-[0.2em] mb-8 pb-4 border-b border-brand-border flex items-center gap-3">
+                <FileText className="text-brand-secondary" />
+                Available Forms
+              </h2>
+              
+              <ul className="space-y-6">
+                {filteredForms.map((form, idx) => (
+                  <motion.li
+                    key={form.title}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="group"
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl hover:bg-brand-primary/5 transition-colors border border-transparent hover:border-brand-primary/10">
+                      <div className="flex items-center gap-4">
+                        <div className="w-2 h-2 rounded-full bg-brand-secondary group-hover:scale-150 transition-transform" />
+                        <span className="text-lg font-bold text-brand-text group-hover:text-brand-primary transition-colors">
+                          {form.title}
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-6 ml-6 md:ml-0">
+                        <span className="text-[10px] font-bold text-brand-subtext uppercase tracking-widest bg-gray-100 px-3 py-1 rounded-full">
+                          {form.size} • {form.ext}
+                        </span>
+                        <button className="flex items-center gap-2 text-brand-primary font-black uppercase text-[11px] tracking-widest hover:text-brand-secondary transition-colors">
+                          Download <Download size={14} />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {filteredForms.length === 0 && (
-            <div className="text-center py-20 bg-gray-100 rounded-[4rem] border-2 border-dashed border-gray-200">
-              <FileText size={64} className="mx-auto text-gray-300 mb-6" />
-              <p className="text-gray-400 font-black uppercase tracking-widest text-sm">No forms matching your search found.</p>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-white rounded-[2rem] border border-brand-border">
+              <FileText size={64} className="mx-auto text-brand-subtext/30 mb-6" />
+              <p className="text-brand-subtext font-black uppercase tracking-widest text-sm">No forms matching "{searchTerm}"</p>
             </div>
           )}
-        </div>
-      </section>
 
-      {/* Guidelines Section */}
-      <section className="pb-32 px-6">
-        <div className="max-w-5xl mx-auto bg-white rounded-[4rem] p-12 md:p-20 shadow-2xl border border-gray-100 flex flex-col md:flex-row gap-16 items-center">
-          <div className="bg-red-50 p-12 rounded-full text-red-600 shrink-0">
-            <ShieldAlert size={80} strokeWidth={1} />
-          </div>
-          <div className="space-y-6">
-            <h2 className="text-3xl md:text-5xl font-serif font-black text-primary leading-tight italic">
-              Submission <span className="text-secondary">Guidelines</span>
-            </h2>
-            <ul className="space-y-4 text-gray-500 font-medium">
-              <li className="flex items-center gap-3">
-                <ChevronRight className="text-secondary" />
+          {/* Submission Guidelines */}
+          <div className="mt-12 bg-brand-primary/5 rounded-[2rem] p-10 border border-brand-primary/10">
+            <h3 className="text-lg font-black text-brand-primary uppercase tracking-widest mb-6">Submission Guidelines</h3>
+            <ul className="space-y-3 text-brand-subtext font-medium text-sm">
+              <li className="flex items-start gap-3">
+                <ChevronRight size={16} className="text-brand-secondary shrink-0 mt-0.5" />
                 Forms must be filled clearly in English block letters.
               </li>
-              <li className="flex items-center gap-3">
-                <ChevronRight className="text-secondary" />
+              <li className="flex items-start gap-3">
+                <ChevronRight size={16} className="text-brand-secondary shrink-0 mt-0.5" />
                 Submit physical copies at the administrative office (Counter 1).
               </li>
-              <li className="flex items-center gap-3">
-                <ChevronRight className="text-secondary" />
+              <li className="flex items-start gap-3">
+                <ChevronRight size={16} className="text-brand-secondary shrink-0 mt-0.5" />
                 Please allow 3-5 working days for processing certificates.
-              </li>
-              <li className="flex items-center gap-3">
-                <ChevronRight className="text-secondary" />
-                Ensure all previous dues are cleared before applying.
               </li>
             </ul>
           </div>
+
         </div>
       </section>
     </div>
