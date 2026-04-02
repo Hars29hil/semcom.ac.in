@@ -43,7 +43,7 @@ const navLinks = [
       { name: 'FAQs', href: '/admission/faqs' },
       { name: 'Admission Brochure For Foreign Students', href: '/admission/brochure' },
       { name: 'UG/PG Admission Inquiry Form', href: 'https://docs.google.com/forms/d/e/1FAIpQLScEV8t9uZNzw_AE_8YZL7XlDkhDJsv31q3T0pmKGZz_44JRzQ/viewform', isExternal: true },
-      { name: 'UG/PG Admission Form', href: '/admission/form' },
+      { name: 'UG/PG Admission Form', href: 'https://docs.google.com/forms/d/e/1FAIpQLSfW7DaPvtSV331d4nwj02322wIHC6HX4DAamrxpBaqRZ5Zh7Q/viewform', isExternal: true },
       { name: 'PhD Admission', href: 'https://phdadmission.cvmu.ac.in/', isExternal: true },
     ],
   },
