@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ShieldCheck, Users, ClipboardList, ExternalLink, Phone, UserRound, Globe2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const committeeMembers = [
   { sr: 1, designation: 'Chairperson', name: 'Dr. Vijay Makwana', details: 'Professor, Electrical Department, GCET', mobile: '9825783644' },
@@ -17,148 +18,146 @@ const committeeMembers = [
 
 export default function SEDGCell() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#fafbfc]">
-      {/* Hero Banner */}
-      <div className="relative h-[400px] flex items-center justify-center overflow-hidden bg-[#1c2e5a]">
-        <div className="absolute inset-0 bg-[#1c2e5a]/85 z-10" />
-        <img 
-          src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=2070" 
-          alt="Inclusivity" 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="relative z-20 text-center px-6 max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-3 px-6 py-2 bg-teal-500/20 backdrop-blur-md rounded-full border border-teal-500/30 text-teal-400 font-bold text-[10px] uppercase tracking-[0.4em] mb-8"
-          >
-            <ShieldCheck size={16} />
-            Equal Opportunity • Inclusive Campus
-          </motion.div>
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-7xl font-serif font-black text-white uppercase tracking-tight"
-          >
-            SEDGs <span className="text-teal-400">Cell</span>
-          </motion.h1>
-          <p className="text-indigo-200/60 font-medium tracking-[0.2em] mt-6 text-sm uppercase">Socio-Economically Disadvantaged Groups Cell</p>
-          <div className="w-32 h-1 bg-teal-500 mx-auto mt-10 rounded-full" />
+    <div className="bg-background min-h-screen">
+      {/* Hero Banner — Clean Dark Primary Theme matching Hero */}
+      <div className="relative bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white py-16 sm:py-24 overflow-hidden">
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
+        
+        <div className="section-container relative z-10">
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-accent mb-4 tracking-widest uppercase">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-white/60">SEDG Cell</span>
+          </div>
+
+          <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4">
+            SEDGs <span className="text-accent">Cell</span>
+          </h1>
+          <p className="text-white/70 max-w-2xl text-sm sm:text-base leading-relaxed">
+            Socio-Economically Disadvantaged Groups Cell — Dedicated to establishing an inclusive, equal opportunity academic ecosystem.
+          </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-24 space-y-32 w-full">
-        {/* About & Mission */}
-        <section className="grid lg:grid-cols-2 gap-20">
+      {/* About & Translation section */}
+      <div className="section-container py-12 sm:py-16">
+        <div className="grid lg:grid-cols-2 gap-10">
+          
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -15 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-10"
+            className="space-y-6"
           >
-            <div className="space-y-4">
-               <div className="flex items-center gap-3 text-teal-600 font-black uppercase tracking-[0.2em] text-[10px]">
-                  <Globe2 size={16} />
-                  <span>Establishment Focus</span>
-               </div>
-               <h2 className="text-4xl font-serif font-black text-[#1c2e5a] uppercase leading-tight">SEDG Cell Launch <br/><span className="text-gray-400">Mission</span></h2>
+            <div className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider">
+              <Globe2 size={14} />
+              <span>Establishment Focus</span>
             </div>
-            
-            <div className="space-y-6 text-gray-600 leading-relaxed font-medium">
-              <p>The Charutar Vidya Mandal University (CVMU) has constituted SEDGs (Socio-Economically Disadvantaged Groups) Cell to ensure that students belonging to various diverse backgrounds of community, religion, region, gender or ability are not deprived of their basic opportunities.</p>
-              <p>This cell aims to organize seminars, workshops, guest lectures, activities, and awareness programmes to promote inclusive policies and practices for all and to look into the grievances to ensure equality and equal opportunities to the disadvantaged group on campus.</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">
+              SEDG Cell Mission
+            </h2>
+            <div className="space-y-4 text-xs sm:text-sm text-muted leading-relaxed font-medium">
+              <p>The Charutar Vidya Mandal University (CVMU) has constituted the SEDGs (Socio-Economically Disadvantaged Groups) Cell to ensure that students belonging to various diverse backgrounds of community, religion, region, gender, or ability are not deprived of basic opportunities.</p>
+              <p>This cell aims to organize seminars, workshops, guest lectures, activities, and awareness programs to promote inclusive policies and practices for all and to resolve grievances to ensure equality and equal opportunities to disadvantaged groups on campus.</p>
             </div>
 
-            <div className="bg-white p-8 rounded-3xl border border-teal-100 shadow-xl shadow-teal-900/5 space-y-6 border-l-8 border-l-teal-500">
-               <h3 className="text-lg font-serif font-black text-[#1c2e5a] uppercase tracking-tight">Grievance Redressal</h3>
-               <p className="text-sm text-gray-500 font-bold uppercase tracking-widest leading-loose">Submit complaints related to discrimination via the official Google Form link below.</p>
-               <a 
-                 href="https://forms.gle/L6zqzXcM6pAFSQcp6" 
-                 target="_blank" 
-                 rel="noopener noreferrer"
-                 className="inline-flex items-center gap-3 px-8 py-4 bg-[#1c2e5a] text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-teal-600 transition-all shadow-lg hover:-translate-y-1"
-               >
-                 Complaint Form
-                 <ExternalLink size={14} />
-               </a>
+            {/* Grievance Link Card */}
+            <div className="card !p-6 border-l-4 border-l-secondary bg-surface shadow-sm space-y-4">
+              <h3 className="font-bold text-sm text-primary">Grievance Redressal</h3>
+              <p className="text-xs text-muted leading-relaxed font-semibold">
+                Submit complaints related to academic discrimination via the official grievance portal below.
+              </p>
+              <div className="pt-2">
+                <a 
+                  href="https://forms.gle/L6zqzXcM6pAFSQcp6" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="btn-primary inline-flex items-center gap-2 !py-2.5 !px-5 !text-[10px]"
+                >
+                  <span>Complaint Form</span>
+                  <ExternalLink size={13} />
+                </a>
+              </div>
             </div>
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 15 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-white p-12 rounded-[3.5rem] shadow-2xl border border-gray-100 space-y-8"
+            className="card !p-8 border border-border shadow-soft space-y-6 bg-surface"
           >
-            <div className="space-y-2">
-               <h3 className="text-2xl font-serif font-black text-[#1c2e5a] uppercase tracking-tighter">SEDGs સેલ, CVMU</h3>
-               <p className="text-[10px] font-black text-teal-600 uppercase tracking-widest">Gujarati Translation</p>
+            <div>
+              <h3 className="font-bold text-base text-primary">SEDGs સેલ, CVMU</h3>
+              <p className="text-[9px] font-bold text-secondary uppercase tracking-wider mt-1">Gujarati Translation</p>
             </div>
-            <div className="space-y-6 text-gray-600 leading-relaxed font-medium text-sm">
-               <p>ચારુતર વિદ્યા મંડળ યુનિવર્સિટી (CVMU) એ SEDGs (સામાજિક-આર્થિક રીતે વંચિત જૂથો) સેલની રચના કરી છે તે સુનિશ્ચિત કરવા માટે કે સમુદાય, ધર્મ, પ્રદેશ, લિંગ અથવા ક્ષમતાના વિવિધ પૃષ્ઠભૂમિ સાથે જોડાયેલા વિદ્યાર્થીઓ તેમની મૂળભૂત તકોથી વંચિત ન રહે.</p>
-               <p>આ સેલનો હેતુ બધા માટે સમાવેશી નીતિઓ અને પ્રથાઓને પ્રોત્સાહન આપવા અને નીતિઓના યોગ્ય અમલીકરણ દ્વારા કેમ્પસમાં વંચિત જૂથને સમાનતા અને સમાન તકો સુનિશ્ચિત કરવા ફરિયાદો પર ધ્યાન આપવા માટે સેમિનાર, વર્કશોપનું આયોજન કરવાનો છે.</p>
-               <div className="p-4 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-                  <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wide">Note: The scope of the SEDGs Cell and the complaint form is confined to the SEDGs students at the Charutar Vidya Mandal University only.</p>
-               </div>
+            <div className="space-y-4 text-xs sm:text-sm text-muted leading-relaxed font-medium">
+              <p>ચારુતર વિદ્યા મંડળ યુનિવર્સિટી (CVMU) એ SEDGs (સામાજિક-આર્થિક રીતે વંચિત જૂથો) સેલની રચના કરી છે તે સુનિશ્ચિત કરવા માટે કે સમુદાય, ધર્મ, પ્રદેશ, લિંગ અથવા ક્ષમતાના વિવિધ પૃષ્ઠભૂમિ સાથે જોડાયેલા વિદ્યાર્થીઓ તેમની મૂળભૂત તકોથી વંચિત ન રહે.</p>
+              <p>આ સેલનો હેતુ બધા માટે સમાવેશી નીતિઓ અને પ્રથાઓને પ્રોત્સાહન આપવા અને નીતિઓના યોગ્ય અમલીકરણ દ્વારા કેમ્પસમાં વંચિત જૂથને સમાનતા અને સમાન તકો સુનિશ્ચિત કરવા ફરિયાદો પર ધ્યાન આપવા માટે સેમિનાર, વર્કશોપનું આયોજન કરવાનો છે.</p>
+              <div className="p-3.5 bg-background rounded-xl border border-dashed border-border mt-4">
+                <p className="text-[10px] font-semibold text-muted leading-relaxed">
+                  Note: The scope of the SEDGs Cell and the complaint form is confined to the SEDGs students at the Charutar Vidya Mandal University only.
+                </p>
+              </div>
             </div>
           </motion.div>
-        </section>
 
-        {/* Committee Section */}
-        <section className="space-y-16">
-          <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-gray-100 pb-10">
-            <div className="space-y-4">
-               <div className="flex items-center gap-3 text-teal-600 font-black uppercase tracking-[0.2em] text-[10px]">
-                  <Users size={20} />
-                  <span>Leadership & Oversight</span>
-               </div>
-               <h2 className="text-4xl font-serif font-black text-[#1c2e5a] uppercase tracking-tight">Committee Members</h2>
+        </div>
+      </div>
+
+      {/* Committee Section */}
+      <div className="bg-surface py-12 sm:py-16 border-t border-border">
+        <div className="section-container">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 pb-6 border-b border-border mb-8">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider">
+                <Users size={16} />
+                <span>Leadership & Oversight</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold text-primary">Committee Members</h2>
             </div>
-            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">CVMU SEDGs Cell Panel</p>
+            <p className="text-[10px] font-bold text-muted uppercase tracking-wider">CVMU SEDGs Cell Panel</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {committeeMembers.map((member, i) => (
               <motion.div
                 key={member.sr}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:border-teal-500/20 transition-all group"
+                transition={{ delay: i * 0.02, duration: 0.3 }}
+                className="card border border-border shadow-sm bg-background flex flex-col justify-between hover:border-secondary transition-colors"
               >
-                 <div className="flex justify-between items-start mb-6">
-                    <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-[#1c2e5a] group-hover:bg-[#1c2e5a] group-hover:text-white transition-all">
-                       <UserRound size={24} />
+                <div>
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="w-10 h-10 bg-surface rounded-xl flex items-center justify-center text-secondary border border-border">
+                      <UserRound size={20} />
                     </div>
-                    <span className="text-[10px] font-black text-gray-300 group-hover:text-teal-500 transition-colors">#{member.sr}</span>
-                 </div>
-                 <div className="space-y-1 mb-6">
-                    <h3 className="text-lg font-serif font-black text-[#1c2e5a] uppercase leading-tight">{member.name}</h3>
-                    <p className="text-[9px] font-black text-teal-600 uppercase tracking-[0.2em]">{member.designation}</p>
-                 </div>
-                 <div className="pt-6 border-t border-gray-50 space-y-4">
-                    <div className="flex gap-3">
-                       <ClipboardList size={14} className="text-gray-300 shrink-0" />
-                       <p className="text-[11px] font-medium text-gray-500 italic leading-snug">{member.details}</p>
-                    </div>
-                    <div className="flex items-center gap-3">
-                       <Phone size={14} className="text-teal-500 shrink-0" />
-                       <p className="text-[11px] font-black text-[#1c2e5a] tracking-widest">{member.mobile}</p>
-                    </div>
-                 </div>
+                    <span className="text-[9px] font-bold text-muted">#{member.sr}</span>
+                  </div>
+                  
+                  <div className="space-y-1 mb-4">
+                    <h3 className="font-bold text-sm text-primary leading-tight">{member.name}</h3>
+                    <p className="text-[9px] font-bold text-secondary uppercase tracking-wider">{member.designation}</p>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-border space-y-3">
+                  <div className="flex gap-2">
+                    <ClipboardList size={13} className="text-muted shrink-0 mt-0.5" />
+                    <p className="text-[10px] font-semibold text-muted leading-snug">{member.details}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Phone size={13} className="text-secondary shrink-0" />
+                    <p className="text-[10px] font-bold text-primary tracking-wider">{member.mobile}</p>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
-        </section>
-      </div>
-
-      {/* Footer Branding */}
-      <div className="bg-[#1c2e5a] py-12 px-6 text-center">
-         <div className="max-w-2xl mx-auto space-y-6">
-            <h3 className="text-2xl font-serif font-black text-white uppercase tracking-tight">Dedicated to Inclusivity</h3>
-            <p className="text-indigo-200/60 text-[10px] font-black uppercase tracking-[0.3em]">SEDGs Cell • CVM University • Excellence through Diversity</p>
-         </div>
+        </div>
       </div>
     </div>
   );

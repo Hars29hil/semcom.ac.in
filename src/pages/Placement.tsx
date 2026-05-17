@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { Briefcase, TrendingUp, Award, Users, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const placementStats = [
   { label: 'Highest Package', value: '₹12 LPA' },
@@ -9,169 +10,169 @@ const placementStats = [
 ];
 
 const recruiters = [
-  'https://picsum.photos/seed/tcs/200/100',
-  'https://picsum.photos/seed/infosys/200/100',
-  'https://picsum.photos/seed/wipro/200/100',
-  'https://picsum.photos/seed/hdfc/200/100',
-  'https://picsum.photos/seed/icici/200/100',
-  'https://picsum.photos/seed/reliance/200/100',
+  'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=150',
+  'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=150',
+  'https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&q=80&w=150',
+  'https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&q=80&w=150',
+  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=150',
+  'https://images.unsplash.com/photo-1454165833767-0274b27f28a0?auto=format&fit=crop&q=80&w=150',
 ];
 
 export default function Placement() {
   return (
-    <div className="pt-32 pb-20">
-      {/* Header */}
-      <section className="px-6 md:px-12 lg:px-24 mb-20">
-        <div className="max-w-4xl">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xs font-sans font-bold uppercase tracking-widest text-secondary mb-4"
-          >
-            Career Opportunities
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-6xl md:text-8xl font-serif font-bold text-primary leading-[0.9] tracking-tighter mb-8"
-          >
-            Your Path to a <br />
-            <span className="italic text-secondary">Successful</span> Career.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xl text-gray-600 leading-relaxed"
-          >
-            The SEMCOM Placement Cell works tirelessly to bridge the gap between academia and industry, 
-            ensuring our students are well-prepared for the professional world.
-          </motion.p>
-        </div>
-      </section>
+    <div className="bg-background min-h-screen">
+      {/* Hero Banner — Clean Dark Primary Theme matching Hero */}
+      <div className="relative bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white py-16 sm:py-24 overflow-hidden">
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
+        
+        <div className="section-container relative z-10">
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-accent mb-4 tracking-widest uppercase">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-white/60">Career & Placement</span>
+          </div>
 
-      {/* Stats Section with Vibrant Colors */}
-      <section className="bg-gradient-to-br from-primary via-accent to-vibrant-purple py-24 px-6 md:px-12 lg:px-24 text-white">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-12">
+          <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4">
+            Career & <span className="text-accent">Placements</span>
+          </h1>
+          <p className="text-white/70 max-w-2xl text-sm sm:text-base leading-relaxed">
+            The SEMCOM Placement Cell works tirelessly to bridge the gap between academia and industry, ensuring our students are prepared for the professional corporate world.
+          </p>
+        </div>
+      </div>
+
+      {/* Stats Section with Brand Theme */}
+      <div className="bg-surface py-12 border-b border-border">
+        <div className="section-container grid grid-cols-2 md:grid-cols-4 gap-6">
           {placementStats.map((stat, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.98 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="text-center p-8 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20"
+              transition={{ delay: i * 0.05, duration: 0.3 }}
+              className="card text-center !p-6"
             >
-              <div className="text-5xl font-serif font-bold mb-2">{stat.value}</div>
-              <p className="text-xs font-sans font-bold uppercase tracking-widest text-white/70">{stat.label}</p>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1">{stat.value}</div>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-muted">{stat.label}</p>
             </motion.div>
           ))}
         </div>
-      </section>
+      </div>
 
       {/* Recruitment Process */}
-      <section className="section-padding">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+      <div className="section-container py-12 sm:py-16">
+        <div className="grid lg:grid-cols-2 gap-10 items-center justify-between">
+          
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -15 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
+            className="space-y-6"
           >
-            <h2 className="text-5xl font-serif font-bold text-primary mb-8 leading-tight">Our <span className="italic text-secondary">Recruitment</span> Process.</h2>
-            <div className="space-y-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">Our Recruitment Process</h2>
+            <div className="space-y-6">
               {[
-                { title: 'Skill Development', desc: 'Pre-placement training sessions including soft skills and aptitude training.' },
-                { title: 'Mock Interviews', desc: 'Regular mock interviews conducted by industry experts.' },
-                { title: 'Campus Interviews', desc: 'Direct recruitment drives from top companies on campus.' },
-                { title: 'Final Placement', desc: 'Successful transition from student to professional.' },
+                { title: 'Skill Development', desc: 'Pre-placement training sessions including soft skills, communication, and aptitude training.' },
+                { title: 'Mock Interviews', desc: 'Regular mock interviews conducted by experienced industry experts and alumni.' },
+                { title: 'Campus Drives', desc: 'Direct recruitment drives from top companies organized on campus.' },
+                { title: 'Final Placement', desc: 'Successful transition of students from academic learners to corporate leaders.' },
               ].map((item, i) => (
-                <div key={i} className="flex gap-6 group">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shrink-0">
-                    <span className="text-xl font-bold">{i + 1}</span>
+                <div key={i} className="flex gap-4 group">
+                  <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary font-bold text-sm shrink-0">
+                    <span>{i + 1}</span>
                   </div>
                   <div>
-                    <h4 className="text-xl font-serif font-bold text-primary mb-2">{item.title}</h4>
-                    <p className="text-gray-500">{item.desc}</p>
+                    <h4 className="font-bold text-sm text-primary mb-1">{item.title}</h4>
+                    <p className="text-xs text-muted leading-relaxed font-medium">{item.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
           </motion.div>
 
+          {/* Media Block Card */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 15 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative"
+            className="relative w-full"
           >
-            <div className="aspect-square rounded-[3rem] overflow-hidden shadow-2xl">
+            <div className="card !p-0 overflow-hidden relative border border-border shadow-soft aspect-square max-w-md mx-auto group">
               <img
-                src="https://picsum.photos/seed/placement/800/800"
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800"
                 alt="Placement Cell"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700"
                 referrerPolicy="no-referrer"
               />
             </div>
-            <div className="absolute -top-10 -right-10 glass p-10 rounded-[3rem] shadow-2xl max-w-xs border-2 border-primary/10">
-              <div className="w-16 h-16 bg-vibrant-teal/10 rounded-2xl flex items-center justify-center text-vibrant-teal mb-6">
-                <Award size={32} />
+            
+            <div className="absolute -bottom-6 -left-6 card !p-6 max-w-[200px] border border-border shadow-soft hidden sm:block">
+              <div className="w-9 h-9 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary mb-4 shadow-sm">
+                <Award size={18} />
               </div>
-              <h3 className="text-2xl font-serif font-bold text-primary mb-2">Top Placement Cell</h3>
-              <p className="text-xs font-sans font-bold uppercase tracking-widest text-gray-400">Recognized for Excellence in Gujarat</p>
+              <h3 className="text-xs font-bold text-primary mb-1">Elite Cell</h3>
+              <p className="text-[9px] font-semibold text-muted leading-relaxed">Recognized for Excellence in Placements across Gujarat</p>
             </div>
           </motion.div>
-        </div>
-      </section>
 
-      {/* Recruiters Marquee */}
-      <section className="bg-gray-50 py-24 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 mb-16 text-center">
-          <h2 className="text-4xl font-serif font-bold text-primary">Our Top <span className="italic text-secondary">Recruiters</span></h2>
         </div>
-        <div className="marquee-track flex gap-12 whitespace-nowrap">
-          {[...recruiters, ...recruiters].map((logo, i) => (
-            <div key={i} className="px-12 py-8 bg-white rounded-2xl border border-gray-100 shadow-sm flex items-center justify-center min-w-[200px]">
-              <img src={logo} alt="Recruiter" className="h-12 object-contain grayscale hover:grayscale-0 transition-all" referrerPolicy="no-referrer" />
-            </div>
-          ))}
-        </div>
-      </section>
+      </div>
 
-      {/* Alumni Success Stories */}
-      <section className="section-padding">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl font-serif font-bold text-primary mb-16 text-center">Alumni <span className="italic text-secondary">Success</span> Stories.</h2>
-          <div className="grid md:grid-cols-2 gap-12">
-            {[
-              { name: 'Sameer Shah', company: 'Google', role: 'Product Manager', text: 'SEMCOM gave me the foundation I needed to succeed at a global level.' },
-              { name: 'Neha Patel', company: 'TCS', role: 'Software Engineer', text: 'The technical skills and industry exposure at SEMCOM were invaluable.' },
-            ].map((alumni, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="bg-white p-12 rounded-[3rem] border border-gray-100 shadow-xl shadow-primary/5 relative group"
-              >
-                <div className="absolute top-12 right-12 text-primary/10 group-hover:text-primary/20 transition-colors">
-                  <TrendingUp size={64} />
-                </div>
-                <div className="flex items-center gap-6 mb-8">
-                  <div className="w-20 h-20 rounded-2xl bg-primary/5 flex items-center justify-center text-primary text-3xl font-serif font-bold">
-                    {alumni.name[0]}
-                  </div>
-                  <div>
-                    <h4 className="text-2xl font-serif font-bold text-primary">{alumni.name}</h4>
-                    <p className="text-sm font-sans font-bold uppercase tracking-widest text-secondary">{alumni.role} @ {alumni.company}</p>
-                  </div>
-                </div>
-                <p className="text-lg text-gray-600 leading-relaxed italic">"{alumni.text}"</p>
-              </motion.div>
+      {/* Recruiters Grid */}
+      <div className="bg-surface py-12 sm:py-16 border-y border-border">
+        <div className="section-container">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <h2 className="text-xl sm:text-2xl font-bold text-primary mb-3">Our Corporate Partners</h2>
+            <p className="text-muted text-xs font-medium">Top recruiters hiring our graduates at regular intervals.</p>
+          </div>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+            {recruiters.map((logo, i) => (
+              <div key={i} className="card !p-4 bg-background border border-border shadow-sm flex items-center justify-center aspect-[16/10] hover:-translate-y-0.5 transition-all">
+                <img src={logo} alt="Recruiter" className="h-10 w-full object-cover rounded-lg filter grayscale hover:grayscale-0 transition-all" referrerPolicy="no-referrer" />
+              </div>
             ))}
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* Alumni Success Stories */}
+      <div className="section-container py-12 sm:py-16">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <h2 className="text-xl sm:text-2xl font-bold text-primary mb-3">Alumni Success Stories</h2>
+          <p className="text-muted text-xs font-medium">Hear from our alumni working in globally leading organizations.</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {[
+            { name: 'Sameer Shah', company: 'Google', role: 'Product Manager', text: 'SEMCOM gave me the rock-solid foundation, guidance, and analytical mindset I needed to succeed at a global level.' },
+            { name: 'Neha Patel', company: 'TCS', role: 'Software Engineer', text: 'The technical skills, intensive workshops, and industry exposure at SEMCOM were absolutely invaluable in launching my career.' },
+          ].map((alumni, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="card flex flex-col justify-between"
+            >
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-secondary/15 flex items-center justify-center text-secondary text-base font-bold shrink-0">
+                    {alumni.name[0]}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-primary">{alumni.name}</h4>
+                    <p className="text-[9px] font-bold text-secondary uppercase tracking-wider">{alumni.role} @ {alumni.company}</p>
+                  </div>
+                </div>
+                <p className="text-xs text-muted leading-relaxed font-medium italic">"{alumni.text}"</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

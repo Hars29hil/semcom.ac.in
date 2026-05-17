@@ -15,12 +15,8 @@ router.get('/', async (req, res, next) => {
         u.qualification,
         u.area,
         u.staff_type,
-        MAX(p.name) as dept
+        'General' as dept
       FROM users u
-      LEFT JOIN teaching_staffs ts ON u.id = ts.staff_id
-      LEFT JOIN subjects s ON ts.subject_id = s.subject_id
-      LEFT JOIN student_classes sc ON s.class_id = sc.id
-      LEFT JOIN programs p ON sc.stream = p.program_id
       WHERE u.role IN ('admin', 'counselor') OR u.staff_type IS NOT NULL
       GROUP BY u.id
     `;
@@ -66,10 +62,13 @@ router.put('/profile/:email', async (req, res, next) => {
   const { email } = req.params;
   const { name, qualification, area, bio, image_url } = req.body;
   try {
-    await db.execute(
-      'UPDATE users SET name = ?, qualification = ?, area = ?, bio = ?, image_url = ? WHERE email = ?',
-      [name, qualification, area, bio, image_url, email]
+    const [result] = await db.execute(
+      'UPDATE users SET name = ?, qualification = ?, area = ?, bio = ?, image_url = ? WHERE email = ? OR email = ? OR email = ?',
+      [name, qualification, area, bio, image_url, email, `mr..${email}`, email.replace('mr..', '')]
     );
+    if (result.affectedRows === 0) {
+        return res.status(404).json({ success: false, message: 'Faculty member not found' });
+    }
     res.json({ success: true, message: 'Profile synchronized' });
   } catch (error) {
     next(error);

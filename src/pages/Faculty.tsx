@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mail, GraduationCap, Award, BookOpen, Briefcase, MapPin, Loader2, X, History, User2, Users } from 'lucide-react';
+import { Mail, GraduationCap, Award, BookOpen, Briefcase, MapPin, Loader2, X, History, Users, Search, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Achievement {
   id: number;
@@ -11,12 +12,14 @@ interface Achievement {
 }
 
 export default function Faculty() {
-   const [facultyMembers, setFacultyMembers] = useState<any[]>([]);
-   const [loading, setLoading] = useState(true);
-   const [selectedFaculty, setSelectedFaculty] = useState<any | null>(null);
-   const [experience, setExperience] = useState<any[]>([]);
-   const [achievements, setAchievements] = useState<Achievement[]>([]);
-   const [loadingExp, setLoadingExp] = useState(false);
+  const [facultyMembers, setFacultyMembers] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedFaculty, setSelectedFaculty] = useState<any | null>(null);
+  const [experience, setExperience] = useState<any[]>([]);
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
+  const [loadingExp, setLoadingExp] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     fetch('/api/faculty')
@@ -24,9 +27,9 @@ export default function Faculty() {
       .then(data => {
         if (data.success) {
           setFacultyMembers(data.data.map((f: any) => ({
-             ...f,
-             image: f.image_url || `https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400`,
-             type: f.staff_type
+            ...f,
+            image: f.image_url || `https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400`,
+            type: f.staff_type || 'Teaching'
           })));
         }
         setLoading(false);
@@ -53,215 +56,273 @@ export default function Faculty() {
   };
 
   const staffTypes = [
-    { id: 'Teaching', label: 'Teaching Faculty', icon: <BookOpen className="w-5 h-5" /> },
-    { id: 'Technical', label: 'Technical Staff', icon: <Briefcase className="w-5 h-5" /> },
-    { id: 'Admin', label: 'Administrative Staff', icon: <Award className="w-5 h-5" /> },
-    { id: 'Support', label: 'Supportive Staff', icon: <Users size={20} className="w-5 h-5" /> },
+    { id: 'all', label: 'All Directory', icon: <Users size={16} /> },
+    { id: 'Teaching', label: 'Teaching Faculty', icon: <BookOpen size={16} /> },
+    { id: 'Technical', label: 'Technical Staff', icon: <Briefcase size={16} /> },
+    { id: 'Admin', label: 'Administrative Staff', icon: <Award size={16} /> },
+    { id: 'Support', label: 'Supportive Staff', icon: <Users size={16} /> },
   ];
 
+  // Filtering Logic
+  const filteredMembers = facultyMembers.filter(member => {
+    const matchesCategory = activeCategory === 'all' || member.type === activeCategory;
+    const matchesSearch = member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          member.designation.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          (member.qualification && member.qualification.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
+
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Banner Section */}
-      <div className="relative h-[300px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[#1c2e5a]/80 z-10" />
-        <img 
-          src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=2070" 
-          alt="Banner" 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="relative z-20 text-center px-6">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-serif font-black text-white uppercase tracking-[0.2em]"
-          >
-            OUR TEAM
-          </motion.h1>
-          <p className="text-teal-400 font-bold tracking-widest mt-4 uppercase text-sm">Dedication • Expertise • Excellence</p>
-          <div className="w-24 h-1 bg-teal-500 mx-auto mt-6 rounded-full" />
+    <div className="bg-background min-h-screen">
+      {/* Banner Section — Clean Dark Primary Theme matching Hero */}
+      <div className="relative bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white py-16 sm:py-24 overflow-hidden">
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
+        
+        <div className="section-container relative z-10">
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-accent mb-4 tracking-widest uppercase">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-white/60">Faculty Directory</span>
+          </div>
+
+          <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4">
+            Our Faculty <span className="text-accent">Team</span>
+          </h1>
+          <p className="text-white/70 max-w-2xl text-sm sm:text-base leading-relaxed">
+            Meet the academic collective of SEMCOM. Driven by research, expertise, and a commitment to nurturing future business and technology leaders.
+          </p>
         </div>
       </div>
 
-      {loading ? (
-        <div className="flex-grow flex flex-col items-center justify-center py-20 space-y-4">
-           <Loader2 className="w-12 h-12 text-teal-600 animate-spin" />
-           <p className="text-gray-400 font-black uppercase tracking-widest text-xs">Loading Faculty Database...</p>
-        </div>
-      ) : staffTypes.map((type) => (
-        <section key={type.id} className="py-16 px-6 max-w-7xl mx-auto w-full">
-          <div className="flex items-center gap-4 mb-12 border-b border-gray-100 pb-6">
-            <div className="p-3 bg-teal-600 rounded-2xl text-white shadow-lg shadow-teal-600/20">
-              {type.icon}
-            </div>
-            <h2 className="text-3xl font-serif font-black text-[#1c2e5a] uppercase tracking-tight">
-              {type.label}
-            </h2>
+      {/* Directory Interface */}
+      <div className="section-container py-12 sm:py-16">
+        
+        {/* Search and Category Filters */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12 pb-8 border-b border-border">
+          {/* Categories */}
+          <div className="flex flex-wrap gap-2">
+            {staffTypes.map((type) => (
+              <button
+                key={type.id}
+                onClick={() => setActiveCategory(type.id)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                  activeCategory === type.id
+                    ? 'bg-secondary text-white shadow-md'
+                    : 'bg-surface text-muted border border-border hover:border-secondary/20 hover:text-primary'
+                }`}
+              >
+                {type.icon}
+                {type.label}
+              </button>
+            ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {facultyMembers
-              .filter((m) => m.type === type.id)
-              .map((member, index) => (
-                <motion.div
-                  key={member.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: (index % 3) * 0.1 }}
-                  onClick={() => handleOpenDetails(member)}
-                  className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 cursor-pointer"
-                >
-                  <div className="relative h-[250px] overflow-hidden">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
+          {/* Search bar */}
+          <div className="relative w-full lg:w-80">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={16} />
+            <input
+              type="text"
+              placeholder="Search faculty..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-surface border border-border rounded-xl text-xs text-text focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all"
+            />
+          </div>
+        </div>
+
+        {/* Directory Grid */}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <Loader2 className="w-10 h-10 text-secondary animate-spin" />
+            <p className="text-muted text-xs font-semibold uppercase tracking-wider">Loading Directory database...</p>
+          </div>
+        ) : filteredMembers.length === 0 ? (
+          <div className="text-center py-20 text-muted italic text-sm">
+            No faculty members found matching your search.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredMembers.map((member, index) => (
+              <motion.div
+                key={member.id}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: (index % 3) * 0.05, duration: 0.4 }}
+                onClick={() => handleOpenDetails(member)}
+                className="card group cursor-pointer !p-6 flex flex-col justify-between"
+              >
+                <div className="space-y-5">
+                  <div className="flex items-start justify-between gap-4">
+                    {/* Portrait Avatar */}
+                    <div className="w-14 h-14 rounded-xl overflow-hidden border border-border bg-background shrink-0 group-hover:border-secondary/30 transition-colors">
+                      <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                    </div>
+                    {/* Badge */}
+                    <div className="text-right">
+                      <span className="text-[10px] font-semibold text-secondary uppercase tracking-wider block mb-1">
+                        {member.type}
+                      </span>
+                      <span className="inline-block px-2.5 py-1 bg-background rounded-lg text-primary text-[10px] font-bold border border-border uppercase">
+                        {member.designation}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="p-8 space-y-4">
-                    <div className="text-center pb-4 border-b border-gray-100">
-                      <h3 className="text-lg font-serif font-black text-[#1c2e5a] uppercase tracking-tight truncate">
-                        {member.name}
-                      </h3>
-                      <p className="text-[#0b807b] font-black text-[10px] uppercase tracking-widest mt-1">
-                        {member.designation}
-                      </p>
-                    </div>
+                  <div>
+                    <h3 className="!text-lg font-semibold text-primary group-hover:text-secondary transition-colors">
+                      {member.name}
+                    </h3>
+                  </div>
 
-                    {member.type === 'Teaching' && (
-                      <div className="space-y-3">
-                        {member.qualification && (
-                          <div className="flex gap-3">
-                            <GraduationCap size={16} className="text-teal-600 shrink-0 mt-0.5" />
-                            <div>
-                              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Qualification</p>
-                              <p className="text-xs font-semibold text-gray-700 leading-tight">{member.qualification}</p>
-                            </div>
-                          </div>
-                        )}
-                        {member.area && (
-                          <div className="flex gap-3">
-                            <MapPin size={16} className="text-indigo-600 shrink-0 mt-0.5" />
-                            <div>
-                              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Area</p>
-                              <p className="text-xs font-semibold text-gray-700 leading-tight">{member.area}</p>
-                            </div>
-                          </div>
-                        )}
+                  <div className="space-y-2.5 pt-4 border-t border-border/60">
+                    {member.qualification && (
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-6 h-6 rounded-lg bg-background flex items-center justify-center text-muted group-hover:text-secondary transition-colors">
+                          <GraduationCap size={13} />
+                        </div>
+                        <p className="text-xs text-muted truncate font-medium">{member.qualification}</p>
+                      </div>
+                    )}
+                    {member.area && (
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-6 h-6 rounded-lg bg-background flex items-center justify-center text-muted group-hover:text-secondary transition-colors">
+                          <MapPin size={13} />
+                        </div>
+                        <p className="text-xs text-muted truncate font-medium">{member.area}</p>
                       </div>
                     )}
                   </div>
-                </motion.div>
-              ))}
-          </div>
-        </section>
-      ))}
+                </div>
 
-      {/* Faculty Details Modal */}
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-secondary mt-5 pt-4 border-t border-border/40 group-hover:text-secondary-hover transition-colors">
+                  <span>View Academic Profile</span>
+                  <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Modern Details Modal Overlay */}
       <AnimatePresence>
         {selectedFaculty && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-12 overflow-hidden"
+            className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-hidden"
           >
-            <div className="absolute inset-0 bg-[#0a1a3b]/95 backdrop-blur-3xl" onClick={() => setSelectedFaculty(null)} />
+            <div className="absolute inset-0 bg-primary/40 backdrop-blur-sm" onClick={() => setSelectedFaculty(null)} />
             
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 50 }}
+              initial={{ opacity: 0, scale: 0.96, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 50 }}
-              className="relative w-full max-w-5xl h-full max-h-[90vh] bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col md:flex-row"
+              exit={{ opacity: 0, scale: 0.96, y: 15 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full max-w-4xl h-full max-h-[85vh] bg-surface rounded-2xl shadow-soft overflow-hidden flex flex-col md:flex-row border border-border"
             >
-              {/* Left Side: Photo & Info */}
-              <div className="w-full md:w-[35%] bg-accent/30 p-10 flex flex-col items-center border-r border-gray-100">
-                <div className="relative group/photo mb-8">
-                  <div className="absolute inset-0 bg-teal-500/20 rounded-[2.5rem] blur-2xl" />
+              {/* Left Column: Profile Card */}
+              <div className="w-full md:w-[35%] bg-background p-8 flex flex-col items-center border-r border-border overflow-y-auto">
+                <div className="relative group mb-6 shrink-0">
                   <img 
                     src={selectedFaculty.image} 
                     alt={selectedFaculty.name} 
-                    className="relative w-48 h-60 object-cover rounded-[2.5rem] shadow-2xl border-8 border-white"
+                    className="w-36 h-44 object-cover rounded-xl shadow-card border-4 border-surface"
                   />
-                  <div className="absolute -bottom-4 -right-4 w-12 h-12 rounded-2xl bg-teal-600 text-white flex items-center justify-center">
-                    <History size={24} />
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-lg bg-secondary text-white flex items-center justify-center shadow">
+                    <ShieldCheck size={16} />
                   </div>
                 </div>
                 
-                <div className="text-center space-y-2">
-                  <h2 className="text-2xl font-serif font-black text-[#1c2e5a] uppercase italic">{selectedFaculty.name}</h2>
-                  <p className="text-teal-600 font-black text-[10px] uppercase tracking-widest">{selectedFaculty.designation}</p>
+                <div className="text-center space-y-1">
+                  <h2 className="text-lg font-bold text-primary">{selectedFaculty.name}</h2>
+                  <p className="text-secondary font-semibold text-[10px] uppercase tracking-wider">{selectedFaculty.designation}</p>
                 </div>
 
-                <div className="w-full mt-10 space-y-5">
-                   <div className="p-4 bg-white/50 rounded-2xl border border-gray-100">
-                      <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Qualification</p>
-                      <p className="text-xs font-bold text-[#1c2e5a]">{selectedFaculty.qualification}</p>
-                   </div>
-                   <div className="p-4 bg-white/50 rounded-2xl border border-gray-100">
-                      <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Focus Area</p>
-                      <p className="text-xs font-bold text-[#1c2e5a]">{selectedFaculty.area}</p>
-                   </div>
+                <div className="w-full mt-8 space-y-4">
+                  <div className="p-3.5 bg-surface rounded-xl border border-border">
+                    <span className="text-[9px] font-bold text-muted uppercase tracking-wider block mb-1">Qualification</span>
+                    <span className="text-xs font-semibold text-primary">{selectedFaculty.qualification}</span>
+                  </div>
+                  <div className="p-3.5 bg-surface rounded-xl border border-border">
+                    <span className="text-[9px] font-bold text-muted uppercase tracking-wider block mb-1">Focus Area</span>
+                    <span className="text-xs font-semibold text-primary">{selectedFaculty.area}</span>
+                  </div>
                 </div>
 
-                <div className="mt-auto pt-6">
-                  <a href={`mailto:${selectedFaculty.email}`} className="flex items-center gap-3 text-[#1c2e5a] font-black text-[10px] uppercase tracking-widest group">
-                    <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg group-hover:bg-teal-600 group-hover:text-white transition-all">
-                      <Mail size={16} />
-                    </div>
-                    Reach Faculty
+                <div className="mt-8 w-full">
+                  <a 
+                    href={`mailto:${selectedFaculty.email}`} 
+                    className="btn-primary w-full !py-2.5 !text-xs"
+                  >
+                    <Mail size={14} />
+                    <span>Send Email</span>
                   </a>
                 </div>
               </div>
 
-              {/* Right Side: Trajectory & Achievements */}
-              <div className="w-full md:w-[65%] p-10 md:p-16 flex flex-col relative">
-                <button onClick={() => setSelectedFaculty(null)} className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center bg-gray-50 rounded-2xl hover:bg-gray-100"><X/></button>
+              {/* Right Column: Experience and Achievements */}
+              <div className="w-full md:w-[65%] p-8 sm:p-12 flex flex-col relative overflow-hidden">
+                {/* Close button */}
+                <button 
+                  onClick={() => setSelectedFaculty(null)} 
+                  className="absolute top-6 right-6 w-9 h-9 flex items-center justify-center bg-background border border-border rounded-lg text-muted hover:text-primary transition-colors"
+                >
+                  <X size={18} />
+                </button>
 
-                <div className="flex-grow overflow-y-auto pr-4 space-y-12">
-                   {loadingExp ? (
-                     <div className="h-full flex flex-col items-center justify-center gap-4">
-                        <Loader2 className="animate-spin text-teal-600"/>
-                        <p className="text-[10px] font-black uppercase text-gray-400">Loading Portfolio...</p>
-                     </div>
-                   ) : (
-                     <>
-                        <div className="space-y-8">
-                           <h3 className="text-3xl font-serif font-black text-[#1c2e5a] italic tracking-tight">Professional <span className="text-teal-600">Trajectory</span>.</h3>
-                           {experience.length === 0 ? (
-                             <p className="text-sm text-gray-400 italic">No trajectory data recorded.</p>
-                           ) : (
-                             <div className="relative pl-8 space-y-8 border-l-2 border-teal-600/10">
-                                {experience.map((exp, i) => (
-                                  <div key={i} className="relative">
-                                     <div className="absolute -left-[41px] top-1 w-5 h-5 rounded-full bg-white border-4 border-teal-600 shadow-lg"/>
-                                     <div className="text-[9px] font-black text-teal-600 uppercase mb-1">{exp.years}</div>
-                                     <h4 className="text-lg font-black text-[#1c2e5a]">{exp.role}</h4>
-                                     <p className="text-xs uppercase font-black text-gray-400 mb-2">{exp.company}</p>
-                                     <p className="text-sm text-gray-600 leading-relaxed font-medium">{exp.description}</p>
-                                  </div>
-                                ))}
-                             </div>
-                           )}
-                        </div>
-
-                        {achievements.length > 0 && (
-                          <div className="space-y-8 pt-8 border-t border-gray-50">
-                             <h4 className="text-xl font-serif font-black text-[#1c2e5a] italic tracking-tight"><span className="text-indigo-600">Academic</span> Portfolio.</h4>
-                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {achievements.map((ach) => (
-                                   <div key={ach.id} className="p-5 bg-accent/20 rounded-3xl border border-white hover:border-indigo-100 transition-all">
-                                      <div className="text-[8px] font-black text-indigo-500 uppercase tracking-[0.2em] mb-1">{ach.achievement_type}</div>
-                                      <h5 className="font-bold text-[#1c2e5a] leading-tight mb-2">{ach.title}</h5>
-                                      <div className="text-[10px] text-gray-400">{ach.details} • {ach.achievement_year}</div>
-                                   </div>
-                                ))}
-                             </div>
+                <div className="flex-grow overflow-y-auto pr-2 space-y-10 custom-scrollbar">
+                  {loadingExp ? (
+                    <div className="h-full flex flex-col items-center justify-center gap-3 py-20">
+                      <Loader2 className="animate-spin text-secondary" size={24} />
+                      <p className="text-[10px] font-semibold uppercase text-muted tracking-wider">Loading Portfolio...</p>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Experience Timeline */}
+                      <div className="space-y-6">
+                        <h3 className="text-xl font-semibold text-primary border-b border-border/80 pb-3">
+                          Professional Experience
+                        </h3>
+                        {experience.length === 0 ? (
+                          <p className="text-xs text-muted italic">No trajectory data recorded.</p>
+                        ) : (
+                          <div className="relative pl-6 space-y-6 border-l-2 border-border/60 ml-2">
+                            {experience.map((exp, i) => (
+                              <div key={i} className="relative">
+                                <div className="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-surface border-2 border-secondary" />
+                                <div className="text-[10px] font-semibold text-secondary mb-1">{exp.years}</div>
+                                <h4 className="text-sm font-bold text-primary">{exp.role}</h4>
+                                <p className="text-[10px] uppercase font-bold text-muted mb-2">{exp.company}</p>
+                                <p className="text-xs text-muted leading-relaxed font-medium">{exp.description}</p>
+                              </div>
+                            ))}
                           </div>
                         )}
-                     </>
-                   )}
+                      </div>
+
+                      {/* Academic Achievements */}
+                      {achievements.length > 0 && (
+                        <div className="space-y-6">
+                          <h3 className="text-xl font-semibold text-primary border-b border-border/80 pb-3">
+                            Academic Portfolio & Achievements
+                          </h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {achievements.map((ach) => (
+                              <div key={ach.id} className="p-4 bg-background rounded-xl border border-border hover:border-secondary/20 transition-all">
+                                <div className="text-[8px] font-black text-secondary uppercase tracking-widest mb-1">{ach.achievement_type}</div>
+                                <h4 className="font-semibold text-primary text-xs leading-snug mb-1.5">{ach.title}</h4>
+                                <p className="text-[10px] text-muted">{ach.details} • {ach.achievement_year}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>

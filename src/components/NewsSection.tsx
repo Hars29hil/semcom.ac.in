@@ -1,9 +1,9 @@
 import { motion } from 'motion/react';
-import { Calendar, ArrowRight, Image as ImageIcon, Bell, FileText, ChevronRight, Loader2 } from 'lucide-react';
+import { Calendar, ArrowRight, Bell, FileText, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-// API Configuration as per architecture summary
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "/api";
 const ADMIN_TOKEN = "mysecret123";
 
 export default function NewsSection() {
@@ -11,6 +11,7 @@ export default function NewsSection() {
   const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,14 +24,13 @@ export default function NewsSection() {
         console.log('Press Data received:', pressData);
         if (pressData.success) {
           console.log('Setting press notes:', pressData.data);
-          setPressNotes(pressData.data.slice(0, 4));
+          setPressNotes(pressData.data.slice(0, 3));
         }
 
         // Fetch Upcoming Events
         const eventRes = await fetch(`${API_BASE_URL}/events`, { headers });
         const eventData = await eventRes.json();
         if (eventData.success) {
-          // Format event data to match UI needs (day, month)
           const formattedEvents = eventData.data.slice(0, 3).map((e: any) => {
             const d = new Date(e.date);
             return {
@@ -58,166 +58,133 @@ export default function NewsSection() {
   }, []);
 
   return (
-    <section id="news" className="py-24 bg-brand-bg relative overflow-hidden px-6 lg:px-24">
-      <div className="max-w-[1440px] mx-auto">
-        <div className="grid lg:grid-cols-3 gap-12 lg:gap-16">
-          
+    <section className="section-padding bg-background">
+      <div className="section-container">
+        {/* Section Header */}
+        <div className="mb-10 sm:mb-14">
+          <span className="section-label">Latest Updates</span>
+          <h2>News & <span className="text-secondary">Announcements</span></h2>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-8">
+
           {/* Press Notes */}
-          <div className="space-y-10">
-            <div className="space-y-4">
-              <h2 className="text-4xl font-heading font-black text-brand-primary tracking-tight">Press Notes</h2>
-              <div className="h-1.5 w-20 bg-brand-primary rounded-full shadow-[0_0_15px_rgba(30,58,138,0.3)]" />
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 pb-3 border-b border-border">
+              <div className="w-1 h-6 bg-primary rounded-full" />
+              <h3 className="!text-lg font-semibold">Press Notes</h3>
             </div>
-            
-            <div className="space-y-6">
+
+            <div className="space-y-3">
               {pressNotes.length > 0 ? (
                 pressNotes.map((note, idx) => (
-                  <motion.div 
-                    key={idx}
-                    initial={{ opacity: 1, x: 0 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="flex gap-6 group cursor-pointer"
-                    onClick={() => {
-                      console.log('Image clicked:', note.image_url);
-                      if (note.image_url) window.open(note.image_url, '_blank');
-                    }}
-                  >
-                    <div className="flex-shrink-0 w-16 h-20 bg-[#1E3A8A] rounded-2xl flex flex-col items-center justify-center text-white shadow-xl group-hover:scale-105 transition-transform">
-                      <span className="text-2xl font-black leading-none">{note.day}</span>
-                      <span className="text-[10px] font-bold uppercase tracking-widest mt-1 opacity-80">{note.month}</span>
-                    </div>
-                    <div className="flex-grow min-w-0">
-                      <h3 className="text-base font-black text-[#0F172A] leading-tight group-hover:text-[#1E3A8A] transition-colors line-clamp-2">
-                        {note.title}
-                      </h3>
-                      {note.image_url && (
-                        <div className="mt-2 w-full h-24 rounded-xl overflow-hidden bg-gray-100 border border-brand-border/50 group-hover:shadow-md transition-shadow">
-                           <img src={note.image_url} alt={note.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                      )}
-                      <div className="flex items-center gap-2 mt-3 text-[10px] font-bold text-[#475569] uppercase tracking-widest opacity-60">
-                        <ImageIcon size={12} className="text-[#0D9488]" />
-                        Click to view full image
-                      </div>
-                    </div>
-                  </motion.div>
-                ))
-              ) : (
-                <p className="text-brand-subtext/60 italic font-bold">Waiting for media updates...</p>
-              )}
-            </div>
-
-            <motion.button 
-              whileHover={{ x: 5 }}
-              className="px-8 py-4 border-2 border-brand-primary/20 rounded-2xl text-brand-primary font-black uppercase text-[10px] tracking-[0.2em] flex items-center gap-3 hover:bg-brand-primary hover:text-white transition-all shadow-sm"
-            >
-              View All Press Notes
-              <ArrowRight size={16} />
-            </motion.button>
-          </div>
-
-          {/* Upcoming Events */}
-          <div className="space-y-10">
-            <div className="space-y-4">
-              <h2 className="text-4xl font-heading font-black text-brand-primary tracking-tight">Upcoming Events</h2>
-              <div className="h-1.5 w-16 bg-brand-secondary rounded-full shadow-[0_0_15px_rgba(20,184,166,0.3)]" />
-            </div>
-
-            <div className="bg-white/50 backdrop-blur-md p-8 rounded-[3rem] border border-white/40 shadow-2xl shadow-brand-primary/5 space-y-8 min-h-[300px]">
-              {loading ? (
-                <div className="flex justify-center p-12"><Loader2 className="animate-spin text-brand-secondary" /></div>
-              ) : (
-                upcomingEvents.map((event, idx) => (
-                  <motion.div 
+                  <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="flex gap-6 group cursor-pointer"
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.08 }}
+                    className="flex gap-4 group cursor-pointer items-center p-3 rounded-xl hover:bg-surface hover:shadow-card transition-all duration-300"
+                    onClick={() => navigate(`/news/press-note/${note.id || idx}`)}
                   >
-                    <div className="flex-shrink-0 w-16 h-16 bg-brand-primary/10 rounded-2xl flex flex-col items-center justify-center text-brand-primary border border-brand-primary/10 shadow-sm group-hover:bg-brand-primary group-hover:text-white transition-all">
-                      <span className="text-xl font-black leading-none">{event.day}</span>
-                      <span className="text-[9px] font-bold uppercase tracking-widest mt-1">{event.month}</span>
+                    <div className="flex-shrink-0 w-14 h-14 bg-primary rounded-xl flex flex-col items-center justify-center text-white group-hover:bg-secondary transition-colors duration-300">
+                      <span className="text-lg font-bold leading-none">{note.day}</span>
+                      <span className="text-[9px] font-medium uppercase tracking-wider mt-0.5 opacity-70">{note.month}</span>
                     </div>
-                    <div className="flex items-center">
-                      <h3 className="text-base font-black text-brand-text leading-tight group-hover:text-brand-secondary transition-colors">
-                        {event.title}
-                      </h3>
+                    <h4 className="text-sm font-medium text-text leading-snug group-hover:text-secondary transition-colors line-clamp-2">
+                      {note.title}
+                    </h4>
+                  </motion.div>
+                ))
+              ) : (
+                <p className="text-sm text-muted py-4">Waiting for updates...</p>
+              )}
+            </div>
+
+            <button onClick={() => navigate('/news/press-notes')} className="btn-outline w-full !text-xs">
+              View All Press Notes
+              <ArrowRight size={14} />
+            </button>
+          </div>
+
+          {/* Upcoming Events */}
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 pb-3 border-b border-border">
+              <div className="w-1 h-6 bg-secondary rounded-full" />
+              <h3 className="!text-lg font-semibold">Upcoming Events</h3>
+            </div>
+
+            <div className="bg-surface p-5 rounded-xl border border-border space-y-4 min-h-[220px]">
+              {loading ? (
+                <div className="flex justify-center py-12"><Loader2 className="animate-spin text-secondary" size={24} /></div>
+              ) : (
+                upcomingEvents.map((event, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.08 }}
+                    className="flex gap-4 group cursor-pointer items-center"
+                    onClick={() => navigate(`/events/${event.id || idx}`)}
+                  >
+                    <div className="flex-shrink-0 w-14 h-14 bg-secondary/8 rounded-xl flex flex-col items-center justify-center text-secondary border border-secondary/15 group-hover:bg-secondary group-hover:text-white transition-all duration-300">
+                      <span className="text-lg font-bold leading-none">{event.day}</span>
+                      <span className="text-[9px] font-medium uppercase tracking-wider mt-0.5">{event.month}</span>
                     </div>
+                    <h4 className="text-sm font-medium text-text leading-snug group-hover:text-secondary transition-colors">
+                      {event.title}
+                    </h4>
                   </motion.div>
                 ))
               )}
             </div>
 
-            <motion.button 
-              whileHover={{ x: 5 }}
-              className="px-8 py-4 border-2 border-brand-primary/20 rounded-2xl text-brand-primary font-black uppercase text-[10px] tracking-[0.2em] flex items-center gap-3 hover:bg-brand-primary hover:text-white transition-all shadow-sm"
-            >
+            <button className="btn-outline w-full !text-xs">
               View All Events
-            </motion.button>
+              <Calendar size={14} />
+            </button>
           </div>
 
           {/* Circulars & Announcements */}
-          <div className="space-y-10">
-            <div className="space-y-4">
-              <h2 className="text-4xl font-heading font-black text-brand-primary tracking-tight">Circulars & Announcements</h2>
-              <div className="h-1.5 w-24 bg-brand-primary/40 rounded-full" />
+          <div className="space-y-6">
+            <div className="flex items-center gap-3 pb-3 border-b border-border">
+              <div className="w-1 h-6 bg-accent rounded-full" />
+              <h3 className="!text-lg font-semibold">Circulars</h3>
             </div>
 
-            <div className="space-y-4 relative">
-               <div className="space-y-4">
-                  {loading ? (
-                    <div className="flex justify-center p-12"><Loader2 className="animate-spin text-brand-primary/40" /></div>
-                  ) : (
-                    announcements.map((item, idx) => (
-                      <motion.div 
-                        key={idx}
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                        className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm group cursor-pointer hover:border-brand-secondary transition-all hover:shadow-xl hover:-translate-y-1"
-                      >
-                        <div className="flex gap-4">
-                          <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-brand-primary group-hover:bg-brand-secondary group-hover:text-white transition-all">
-                             {item.type === 'file' ? <FileText size={20} /> : <Bell size={20} />}
-                          </div>
-                          <div className="space-y-1 flex-grow">
-                            <h3 className="text-[15px] font-black text-brand-text line-clamp-2 leading-snug group-hover:text-brand-primary">
-                              {item.title}
-                            </h3>
-                            <p className="text-[10px] font-bold text-brand-subtext uppercase tracking-widest opacity-60">
-                              {item.date}
-                            </p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))
-                  )}
-               </div>
+            <div className="space-y-3">
+              {loading ? (
+                <div className="flex justify-center py-12"><Loader2 className="animate-spin text-muted" size={24} /></div>
+              ) : (
+                announcements.map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.08 }}
+                    className="flex gap-3 items-center p-3 bg-surface rounded-xl border border-border group cursor-pointer hover:border-secondary/30 hover:shadow-card hover:-translate-y-0.5 transition-all duration-300"
+                  >
+                    <div className="w-9 h-9 bg-background rounded-lg flex items-center justify-center text-muted group-hover:bg-secondary group-hover:text-white transition-colors duration-300 shrink-0">
+                      {item.type === 'file' ? <FileText size={16} /> : <Bell size={16} />}
+                    </div>
+                    <h4 className="text-[13px] font-medium text-text line-clamp-2 leading-snug group-hover:text-secondary transition-colors">
+                      {item.title}
+                    </h4>
+                  </motion.div>
+                ))
+              )}
             </div>
 
-            <motion.button 
-              whileHover={{ x: 5 }}
-              className="px-8 py-4 border-2 border-brand-primary/20 rounded-2xl text-brand-primary font-black uppercase text-[10px] tracking-[0.2em] flex items-center gap-3 hover:bg-brand-primary hover:text-white transition-all shadow-sm"
-            >
+            <button className="btn-outline w-full !text-xs">
               View All Announcements
-            </motion.button>
+              <ArrowRight size={14} />
+            </button>
           </div>
 
         </div>
       </div>
-
-      {/* Sticky Apply Now Side Button */}
-      <motion.div 
-        initial={{ x: 100 }}
-        animate={{ x: 0 }}
-        className="fixed right-0 top-1/2 -translate-y-1/2 z-[100]"
-      >
-        <button className="bg-red-500 text-white font-black uppercase tracking-[0.2em] text-sm py-8 px-4 rounded-l-3xl shadow-[0_10px_30px_rgba(239,68,68,0.3)] hover:bg-red-600 transition-all [writing-mode:vertical-lr] flex items-center gap-4 group">
-          APPLY NOW
-          <ChevronRight className="rotate-90 group-hover:translate-y-2 transition-transform" />
-        </button>
-      </motion.div>
     </section>
   );
 }

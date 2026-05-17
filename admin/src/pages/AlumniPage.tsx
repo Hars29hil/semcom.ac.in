@@ -17,9 +17,19 @@ const colors = ["from-primary to-info", "from-info to-success", "from-success to
 
 export default function AlumniPage() {
   const [search, setSearch] = useState("");
-  const filtered = alumni.filter((a) =>
-    a.name.toLowerCase().includes(search.toLowerCase()) || a.company.toLowerCase().includes(search.toLowerCase())
-  );
+  const [filterBatch, setFilterBatch] = useState("All");
+  const [filterProgram, setFilterProgram] = useState("All");
+
+  const batches = ["All", ...new Set(alumni.map(a => a.batch))].sort();
+  const programs = ["All", "BBA", "BBA (ITM)", "BCom", "BCA", "MCom", "PhD"];
+
+  const filtered = alumni.filter((a) => {
+    const matchesSearch = a.name.toLowerCase().includes(search.toLowerCase()) || 
+                          a.company.toLowerCase().includes(search.toLowerCase());
+    const matchesBatch = filterBatch === "All" || a.batch === filterBatch;
+    const matchesProgram = filterProgram === "All" || a.program === filterProgram;
+    return matchesSearch && matchesBatch && matchesProgram;
+  });
 
   return (
     <div className="space-y-6">
@@ -28,12 +38,44 @@ export default function AlumniPage() {
           <h2 className="text-3xl font-extrabold gradient-text">Alumni</h2>
           <p className="text-muted-foreground text-sm mt-1">Manage alumni network and records</p>
         </div>
-        <Badge variant="secondary" className="gap-1.5 py-1.5 px-3"><UserCheck className="h-3.5 w-3.5" />5,200+ Alumni</Badge>
+        <div className="flex items-center gap-3">
+          <Button variant="outline" size="sm" onClick={() => {
+            const headers = ["Name", "Batch", "Program", "Company", "Role"];
+            const csvData = filtered.map((a) => [a.name, a.batch, a.program, a.company, a.role]);
+            const csvContent = [headers, ...csvData].map(e => e.join(",")).join("\n");
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `alumni_data_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+          }}>Download Directory</Button>
+          <Badge variant="secondary" className="gap-1.5 py-1.5 px-3"><UserCheck className="h-3.5 w-3.5" />5,200+ Alumni</Badge>
+        </div>
       </div>
 
-      <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input placeholder="Search alumni..." className="pl-9 neu-inset rounded-xl border-none" value={search} onChange={(e) => setSearch(e.target.value)} />
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="relative max-w-sm flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input placeholder="Search alumni..." className="pl-9 neu-inset rounded-xl border-none h-11" value={search} onChange={(e) => setSearch(e.target.value)} />
+        </div>
+
+        <select 
+          value={filterBatch} 
+          onChange={(e) => setFilterBatch(e.target.value)}
+          className="rounded-xl border-none bg-white shadow-sm h-11 px-6 text-xs font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+        >
+          <option value="All">All Years</option>
+          {batches.filter(b => b !== "All").map(b => <option key={b} value={b}>Batch {b}</option>)}
+        </select>
+
+        <select 
+          value={filterProgram} 
+          onChange={(e) => setFilterProgram(e.target.value)}
+          className="rounded-xl border-none bg-white shadow-sm h-11 px-6 text-xs font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+        >
+          {programs.map(p => <option key={p} value={p}>{p}</option>)}
+        </select>
       </div>
 
       <div className="skeu-surface rounded-2xl overflow-hidden">

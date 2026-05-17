@@ -76,4 +76,14 @@ router.post('/photos', async (req, res, next) => {
   }
 });
 
+// Delete photo
+router.delete('/photos/:id', async (req, res, next) => {
+  try {
+    await db.execute('DELETE FROM gallery_photos WHERE id = ?', [req.params.id]);
+    res.json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

@@ -28,13 +28,6 @@ export default function DashboardPage() {
 
   const stats = [
     { 
-      label: "Total Students", 
-      value: apiStats?.totalStudents?.toString() || "...", 
-      icon: Users, 
-      change: "+12%", 
-      color: "from-primary to-primary/70" 
-    },
-    { 
       label: "Programs", 
       value: apiStats?.totalPrograms?.toString() || "...", 
       icon: GraduationCap, 
@@ -113,21 +106,25 @@ export default function DashboardPage() {
 
         {/* Recent Activity - Glass card */}
         <Card className="lg:col-span-2">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">Recent Activity</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardTitle className="text-base font-black">Recent Activity</CardTitle>
+            <Badge variant="outline" className="text-[10px] font-bold uppercase tracking-wider">Live Updates</Badge>
           </CardHeader>
           <CardContent>
             <div className="space-y-1">
-              {recentActivities.map((activity, i) => (
+              {recentActivities.slice(0, 5).map((activity, i) => (
                 <div key={i} className="flex items-start justify-between gap-3 py-3 border-b border-border/50 last:border-0 group hover:bg-accent/30 rounded-lg px-2 -mx-2 transition-colors">
                   <div>
-                    <p className="text-sm text-foreground group-hover:text-primary transition-colors">{activity.action}</p>
+                    <p className="text-sm text-foreground group-hover:text-primary transition-colors font-medium">{activity.action}</p>
                     <p className="text-[11px] text-muted-foreground mt-0.5">{activity.time}</p>
                   </div>
-                  <Badge variant="outline" className="text-[10px] shrink-0">{activity.type}</Badge>
+                  <Badge variant="secondary" className="text-[9px] font-black uppercase tracking-tighter shrink-0 h-5">{activity.type}</Badge>
                 </div>
               ))}
             </div>
+            <button className="w-full mt-4 py-2.5 text-xs font-black text-primary uppercase tracking-[0.2em] border border-dashed border-primary/20 rounded-xl hover:bg-primary/5 transition-colors">
+              View Audit Log
+            </button>
           </CardContent>
         </Card>
       </div>

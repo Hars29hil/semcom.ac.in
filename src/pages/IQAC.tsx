@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Target, Settings, ShieldCheck, FileText, Users, Award, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const objectives = [
   'To develop a system for conscious, consistent and catalytic action to improve the academic and administrative performance of the institution.',
@@ -24,7 +25,7 @@ const benefits = [
   'Ensure heightened level of clarity and focus in institutional functioning towards quality enhancement;',
   'Ensure internalization of the quality culture;',
   'Ensure enhancement and coordination among various activities of the institution and institutionalize all good practices;',
-  'Provide a sound basis for decision-mking to improve institutional functioning;',
+  'Provide a sound basis for decision-making to improve institutional functioning;',
   'Act as a dynamic system for quality changes in HEIs;',
   'Build an organized methodology of documentation and internal communication.',
 ];
@@ -46,165 +47,164 @@ const teamData = [
 
 export default function IQAC() {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50/50">
-      {/* Hero Section */}
-      <div className="relative h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-[#1c2e5a]/85 z-10" />
-        <img 
-          src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2069" 
-          alt="IQAC Banner" 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="relative z-20 text-center px-6 max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-block px-4 py-1.5 bg-teal-500/20 backdrop-blur-md rounded-full border border-teal-500/30 text-teal-400 font-bold text-[10px] uppercase tracking-[0.3em] mb-6"
-          >
-            Excellence & Quality Control
-          </motion.div>
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-serif font-black text-white uppercase tracking-tight leading-tight"
-          >
-            Internal Quality Assurance Cell <span className="text-teal-400 font-serif">(IQAC)</span>
-          </motion.h1>
-          <div className="w-24 h-1 bg-teal-500 mx-auto mt-8 rounded-full" />
+    <div className="bg-background min-h-screen">
+      {/* Hero Banner — Clean Dark Primary Theme matching Hero */}
+      <div className="relative bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white py-16 sm:py-24 overflow-hidden">
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
+        
+        <div className="section-container relative z-10">
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-accent mb-4 tracking-widest uppercase">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-white/60">IQAC</span>
+          </div>
+
+          <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4">
+            Internal Quality Assurance Cell <span className="text-accent">(IQAC)</span>
+          </h1>
+          <p className="text-white/70 max-w-2xl text-sm sm:text-base leading-relaxed">
+            Consistently evaluating, planning, and enhancing academic standards to drive structural excellence.
+          </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-24 space-y-32">
-        {/* Objective Section */}
-        <section className="grid lg:grid-cols-2 gap-16 items-center">
+      {/* Objective Section */}
+      <div className="section-container py-12 sm:py-16">
+        <div className="grid lg:grid-cols-2 gap-10 items-center justify-between">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -15 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="space-y-6"
           >
-            <div className="inline-flex items-center gap-3 text-teal-600 font-black uppercase tracking-[0.2em] text-xs">
-              <Target size={20} />
+            <div className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider">
+              <Target size={14} />
               <span>Core Mandate</span>
             </div>
-            <h2 className="text-4xl font-serif font-black text-[#1c2e5a] uppercase leading-tight">
-              Primary Aim <br/><span className="text-gray-400">of IQAC</span>
+            <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">
+              Primary Aim of IQAC
             </h2>
-            <div className="space-y-6">
+            <div className="space-y-4">
               {objectives.map((obj, i) => (
-                <div key={i} className="flex gap-4 group">
-                  <div className="w-1.5 h-auto bg-teal-500/20 group-hover:bg-teal-500 transition-colors rounded-full shrink-0" />
-                  <p className="text-gray-600 font-medium leading-relaxed italic">{obj}</p>
+                <div key={i} className="flex gap-3 items-stretch">
+                  <div className="w-1 bg-secondary rounded-full shrink-0" />
+                  <p className="text-xs sm:text-sm text-muted leading-relaxed font-medium italic">{obj}</p>
                 </div>
               ))}
             </div>
           </motion.div>
+
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, x: 15 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute -inset-4 bg-teal-600/5 rounded-[2rem] blur-2xl" />
-            <img 
-              src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=2070" 
-              alt="Strategy" 
-              className="relative rounded-3xl shadow-2xl border border-white"
-            />
+            <div className="card !p-0 overflow-hidden relative border border-border shadow-soft aspect-[1.4]">
+              <img 
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2069" 
+                alt="Strategy" 
+                className="w-full h-full object-cover"
+              />
+            </div>
           </motion.div>
-        </section>
+        </div>
+      </div>
 
-        {/* Functions Section */}
-        <section className="space-y-16">
-          <div className="text-center space-y-4">
-             <div className="inline-flex items-center gap-3 text-teal-600 font-black uppercase tracking-[0.2em] text-xs">
-                <Settings size={20} className="animate-spin-slow" />
-                <span>Operational Framework</span>
-             </div>
-             <h2 className="text-4xl font-serif font-black text-[#1c2e5a] uppercase">Key Functions</h2>
+      {/* Functions Section */}
+      <div className="bg-surface py-12 sm:py-16 border-y border-border">
+        <div className="section-container">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider">
+              <Settings size={14} className="animate-spin-slow" />
+              <span>Operational Framework</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-primary">Key Functions</h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {functions.map((func, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.05 }}
-                className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-teal-100 transition-all flex gap-4"
+                transition={{ delay: i * 0.02 }}
+                className="p-4 bg-background border border-border rounded-xl flex gap-3 shadow-sm hover:border-secondary transition-colors"
               >
-                <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 font-black text-xs shrink-0">
+                <div className="w-7 h-7 rounded-lg bg-surface border border-border flex items-center justify-center text-secondary font-bold text-xs shrink-0 mt-0.5">
                   {String(i + 1).padStart(2, '0')}
                 </div>
-                <p className="text-sm font-medium text-gray-700 leading-relaxed">{func}</p>
+                <p className="text-xs font-semibold text-primary leading-relaxed">{func}</p>
               </motion.div>
             ))}
           </div>
-        </section>
-
-        {/* Benefits Section */}
-        <section className="bg-[#1c2e5a] rounded-[3rem] p-12 md:p-20 text-white relative overflow-hidden">
-           <div className="absolute top-0 right-0 w-64 h-64 bg-teal-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-           
-           <div className="relative z-10 grid lg:grid-cols-3 gap-16">
-              <div className="lg:col-span-1 space-y-6">
-                 <ShieldCheck size={48} className="text-teal-400" />
-                 <h2 className="text-4xl font-serif font-black uppercase tracking-tight">Institutional <br/>Benefits</h2>
-                 <p className="text-indigo-200/80 font-medium">Internalizing a culture of quality contributes significantly to the long-term success of every stakeholder.</p>
-              </div>
-              
-              <div className="lg:col-span-2 grid sm:grid-cols-2 gap-8">
-                {benefits.map((benefit, i) => (
-                  <div key={i} className="space-y-3 group">
-                     <div className="w-10 h-1 bg-teal-400/30 group-hover:w-full transition-all duration-500" />
-                     <p className="text-sm font-medium leading-relaxed text-indigo-100">{benefit}</p>
-                  </div>
-                ))}
-              </div>
-           </div>
-        </section>
-
-        {/* Records & Documents Section */}
-        <section className="space-y-16 pb-12">
-           <div className="flex flex-col md:flex-row justify-between items-end gap-8 border-b border-gray-100 pb-8">
-              <div className="space-y-4">
-                 <div className="inline-flex items-center gap-3 text-teal-600 font-black uppercase tracking-[0.2em] text-xs">
-                    <FileText size={20} />
-                    <span>Archives & Documentation</span>
-                 </div>
-                 <h2 className="text-4xl font-serif font-black text-[#1c2e5a] uppercase">Reports & Teams</h2>
-              </div>
-              <p className="max-w-md text-sm text-gray-500 font-medium">Access historical data of IQAC activities, NAAC preparations, and Annual Quality Assurance Reports.</p>
-           </div>
-
-           <div className="grid lg:grid-cols-3 gap-8">
-              {teamData.map((section) => (
-                <div key={section.category} className="space-y-6">
-                   <div className="flex items-center gap-3">
-                      {section.category.includes('Team') ? <Users className="text-teal-600" size={20} /> : <Award className="text-indigo-600" size={20} />}
-                      <h3 className="font-serif font-black text-xl text-[#1c2e5a] uppercase tracking-wider">{section.category}</h3>
-                   </div>
-                   <div className="grid grid-cols-2 gap-3">
-                      {section.years.map((year) => (
-                        <button 
-                          key={year}
-                          className="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-100 text-[11px] font-black text-gray-400 uppercase tracking-widest hover:border-teal-500 hover:text-teal-600 hover:shadow-lg transition-all"
-                        >
-                          {section.category === 'AQAR' ? `AQAR ${year}` : `${section.category} ${year}`}
-                          <ExternalLink size={12} className="opacity-0 group-hover:opacity-100" />
-                        </button>
-                      ))}
-                   </div>
-                </div>
-              ))}
-           </div>
-        </section>
+        </div>
       </div>
 
-      {/* Footer Branding */}
-      <div className="bg-[#1c2e5a] py-8 text-center border-t border-white/5">
-        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-teal-500/50">Internal Quality Assurance Cell • SEMCOM</p>
+      {/* Benefits Section */}
+      <div className="section-container py-12 sm:py-16">
+        <div className="card !p-8 sm:!p-12 bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white relative overflow-hidden shadow-soft">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none" />
+          
+          <div className="relative z-10 grid lg:grid-cols-3 gap-8 items-center">
+            <div className="lg:col-span-1 space-y-4">
+              <ShieldCheck size={36} className="text-accent" />
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Institutional Benefits</h2>
+              <p className="text-white/70 text-xs sm:text-sm font-semibold leading-relaxed">
+                Internalizing a culture of quality contributes significantly to the long-term success of every stakeholder.
+              </p>
+            </div>
+            
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {benefits.map((benefit, i) => (
+                <div key={i} className="space-y-2 group">
+                  <div className="w-8 h-0.5 bg-accent/30 group-hover:w-full transition-all duration-500" />
+                  <p className="text-xs text-white/80 font-medium leading-relaxed">{benefit}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Records & Documents Section */}
+      <div className="bg-surface py-12 sm:py-16 border-t border-border">
+        <div className="section-container">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 pb-6 border-b border-border mb-8">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider">
+                <FileText size={16} />
+                <span>Archives & Documentation</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold text-primary">Reports & Teams</h2>
+            </div>
+            <p className="max-w-xs text-[10px] font-bold text-muted uppercase tracking-wider leading-relaxed">Access historical data of IQAC activities, NAAC preparations, and AQAR papers.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {teamData.map((section) => (
+              <div key={section.category} className="space-y-4">
+                <div className="flex items-center gap-2 pb-2 border-b border-border">
+                  {section.category.includes('Team') ? <Users className="text-secondary" size={16} /> : <Award className="text-secondary" size={16} />}
+                  <h3 className="font-bold text-xs text-primary uppercase tracking-wider">{section.category}</h3>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {section.years.map((year) => (
+                    <button 
+                      key={year}
+                      className="flex items-center justify-between p-2.5 bg-background border border-border rounded-lg text-[9px] font-bold text-muted uppercase tracking-wider hover:border-secondary hover:text-secondary transition-all shadow-sm"
+                    >
+                      <span>{section.category === 'AQAR' ? `AQAR ${year}` : `${section.category} ${year}`}</span>
+                      <ExternalLink size={10} className="shrink-0 ml-1.5" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

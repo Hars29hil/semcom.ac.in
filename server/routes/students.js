@@ -11,11 +11,9 @@ router.get('/', async (req, res, next) => {
         s.name,
         s.enrollment_number,
         s.email,
-        sc.sem,
-        p.name as dept
+        'N/A' as sem,
+        'General' as dept
       FROM students s
-      LEFT JOIN student_classes sc ON s.class_id = sc.id
-      LEFT JOIN programs p ON sc.stream = p.program_id
       LIMIT 100
     `;
     

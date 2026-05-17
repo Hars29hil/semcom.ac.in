@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { ArrowRight, Clock, Users, GraduationCap, Sparkles, BookOpen } from 'lucide-react';
+import { ArrowRight, Clock, Users, BookOpen, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const courses = [
@@ -10,7 +10,7 @@ const courses = [
     seats: '60 Seats',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2026&auto=format&fit=crop',
     category: 'Technology',
-    link: '/academics/bba-itm'
+    link: '/academics/bba-itm',
   },
   {
     title: 'BBA (Hons.)',
@@ -19,7 +19,7 @@ const courses = [
     seats: '120 Seats',
     image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop',
     category: 'Management',
-    link: '/academics/bba'
+    link: '/academics/bba',
   },
   {
     title: 'BCom (Hons.)',
@@ -28,7 +28,7 @@ const courses = [
     seats: '120 Seats',
     image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2011&auto=format&fit=crop',
     category: 'Commerce',
-    link: '/academics/bcom'
+    link: '/academics/bcom',
   },
   {
     title: 'BCA (Hons.)',
@@ -37,123 +37,107 @@ const courses = [
     seats: '120 Seats',
     image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop',
     category: 'Computer Science',
-    link: '/academics/bca'
+    link: '/academics/bca',
   },
 ];
 
 export default function Courses() {
   return (
-    <section id="courses" className="section-padding bg-white relative overflow-hidden py-32">
-       {/* Background Decoration */}
-       <div className="absolute top-0 left-0 w-full h-1/2 bg-brand-bg/50 -z-10" />
-       
-      <div className="max-w-[1440px] mx-auto relative z-10 px-6">
-        <div className="flex flex-col lg:flex-row justify-between items-end gap-12 mb-28">
-          <div className="max-w-4xl space-y-6">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="subheading"
-            >
-              Academic Portfolio
-            </motion.div>
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-5xl md:text-6xl lg:text-7xl font-heading font-black text-brand-text leading-[0.95] tracking-tight italic"
-            >
-              Curated <span className="text-gradient">Pathways</span> <br/> 
-              To Global <span className="relative inline-block">
-                Success.
-                <div className="absolute -bottom-2 left-0 w-full h-[6px] bg-brand-primary/10 rounded-full" />
-              </span>
-            </motion.h2>
+    <section className="section-padding bg-surface">
+      <div className="section-container">
+        {/* Section Header */}
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-12 sm:mb-16">
+          <div className="max-w-2xl">
+            <span className="section-label">Academic Programs</span>
+            <h2>
+              Curated Pathways to <span className="text-secondary">Success</span>
+            </h2>
           </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-          >
-            <Link to="/academics" className="btn-primary group flex items-center gap-3 px-10 h-16 text-base shadow-2xl shadow-brand-primary/20">
-              Explore Full Catalog
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </motion.div>
+          <Link to="/academics" className="btn-primary group !py-3 !px-6">
+            <span>Explore All Programs</span>
+            <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+          </Link>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10">
+        {/* Courses Grid */}
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
           {courses.map((course, index) => (
             <motion.div
               key={course.title}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="group bg-white rounded-[4rem] overflow-hidden border border-brand-border hover:shadow-[0_50px_100px_rgba(30,58,138,0.12)] transition-all duration-700 flex flex-col md:flex-row min-h-[440px]"
+              transition={{ delay: index * 0.1, duration: 0.5 }}
+              className="group bg-surface rounded-2xl overflow-hidden border border-border hover:shadow-soft hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row"
             >
-              {/* Image Section */}
-              <div className="relative w-full md:w-[42%] overflow-hidden bg-slate-900 group-hover:w-[45%] transition-all duration-700 ease-in-out">
-                <motion.img
+              {/* Image */}
+              <div className="relative w-full md:w-[42%] h-48 md:h-auto overflow-hidden shrink-0">
+                <img
                   src={course.image}
                   alt={course.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2s] ease-out opacity-80 group-hover:opacity-100"
+                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/40 to-transparent" />
-                <div className="absolute top-8 left-8">
-                  <div className="px-5 py-2 rounded-2xl bg-white/10 backdrop-blur-xl text-[10px] font-black uppercase tracking-[0.2em] text-white border border-white/20 shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/40 via-transparent to-transparent" />
+
+                {/* Category Badge */}
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1.5 rounded-lg bg-white/90 text-[11px] font-semibold text-primary flex items-center gap-1.5">
+                    <Award size={12} />
                     {course.category}
-                  </div>
+                  </span>
                 </div>
               </div>
 
-              {/* Content Section */}
-              <div className="p-12 md:w-[58%] flex flex-col justify-between group-hover:w-[55%] transition-all duration-700 ease-in-out">
+              {/* Content */}
+              <div className="p-6 sm:p-8 md:w-[58%] flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="flex items-center gap-2 px-4 py-2 bg-brand-bg rounded-xl text-brand-primary text-[10px] font-black uppercase tracking-widest border border-brand-border">
-                      <Clock size={16} className="text-brand-secondary" />
+                  {/* Meta */}
+                  <div className="flex items-center gap-2.5 mb-4">
+                    <span className="flex items-center gap-1.5 px-2.5 py-1.5 bg-background rounded-lg text-[11px] font-medium text-muted border border-border">
+                      <Clock size={12} className="text-secondary" />
                       {course.duration}
-                    </div>
-                    <div className="flex items-center gap-2 px-4 py-2 bg-brand-bg rounded-xl text-brand-primary text-[10px] font-black uppercase tracking-widest border border-brand-border">
-                      <Users size={16} className="text-brand-secondary" />
+                    </span>
+                    <span className="flex items-center gap-1.5 px-2.5 py-1.5 bg-background rounded-lg text-[11px] font-medium text-muted border border-border">
+                      <Users size={12} className="text-secondary" />
                       {course.seats}
-                    </div>
+                    </span>
                   </div>
 
-                  <h3 className="text-3xl font-heading font-black text-brand-text mb-6 group-hover:text-brand-primary transition-colors leading-tight italic tracking-tighter">
+                  <h3 className="!text-xl font-semibold text-primary mb-2 group-hover:text-secondary transition-colors">
                     {course.title}
                   </h3>
-                  
-                  <p className="text-brand-subtext font-medium text-lg leading-relaxed mb-10 opacity-80 group-hover:opacity-100 transition-opacity line-clamp-3">
+                  <p className="text-sm text-muted leading-relaxed mb-6 line-clamp-2">
                     {course.description}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between pt-10 border-t border-brand-border/40">
-                   <Link to={course.link} className="flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-brand-primary group/link">
-                      <div className="flex flex-col">
-                        <span>Course</span>
-                        <span className="text-brand-secondary">Briefing</span>
-                      </div>
-                      <div className="w-10 h-10 rounded-full border border-brand-primary/10 flex items-center justify-center group-hover/link:bg-brand-primary group-hover/link:text-white transition-all">
-                        <ArrowRight size={18} className="group-hover/link:translate-x-1 transition-transform" />
-                      </div>
-                   </Link>
-                   <div className="w-14 h-14 rounded-2xl bg-brand-bg flex items-center justify-center text-brand-primary border border-brand-border shadow-sm group-hover:rotate-12 transition-transform">
-                      <BookOpen size={24} />
-                   </div>
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-5 border-t border-border/60">
+                  <Link
+                    to={course.link}
+                    className="flex items-center gap-2 text-xs font-semibold text-secondary group/link"
+                  >
+                    View Details
+                    <div className="w-8 h-8 rounded-full border border-secondary/30 flex items-center justify-center group-hover/link:bg-secondary group-hover/link:text-white transition-all">
+                      <ArrowRight size={14} className="group-hover/link:translate-x-0.5 transition-transform" />
+                    </div>
+                  </Link>
+                  <div className="w-10 h-10 rounded-lg bg-background flex items-center justify-center text-muted border border-border">
+                    <BookOpen size={18} />
+                  </div>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
-      </div>
 
-      {/* Decorative Blob */}
-       <div className="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-brand-primary/5 rounded-full blur-[100px]" />
+        {/* Bottom Badge */}
+        <div className="mt-10 text-center">
+          <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-background rounded-full border border-border text-xs font-medium text-muted">
+            UGC Recognized • CVM University
+          </span>
+        </div>
+      </div>
     </section>
   );
 }

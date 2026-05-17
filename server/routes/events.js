@@ -12,7 +12,17 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// Get all activities (often used as announcements/events in this system)
+// Get single event
+router.get('/:id', async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const [rows] = await db.execute('SELECT * FROM events WHERE id = ?', [id]);
+    if (rows.length === 0) return res.status(404).json({ success: false, message: 'Event not found' });
+    res.json({ success: true, data: rows[0] });
+  } catch (error) {
+    next(error);
+  }
+});
 router.get('/activities', async (req, res, next) => {
   try {
     const [rows] = await db.execute('SELECT DISTINCT name, from_date, to_date FROM activities ORDER BY from_date DESC LIMIT 50');
@@ -24,11 +34,11 @@ router.get('/activities', async (req, res, next) => {
 
 // Create event
 router.post('/', async (req, res, next) => {
-  const { title, date, location, description, image_url } = req.body;
+  const { title, date, location, description, image_url, highlights, schedule, committee } = req.body;
   try {
     await db.execute(
-      'INSERT INTO events (title, date, location, description, image_url) VALUES (?, ?, ?, ?, ?)',
-      [title, date, location, description, image_url]
+      'INSERT INTO events (title, date, location, description, image_url, highlights, schedule, committee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      [title, date, location, description, image_url, highlights, schedule, JSON.stringify(committee || [])]
     );
     res.json({ success: true, message: 'Event created' });
   } catch (error) {
@@ -39,11 +49,11 @@ router.post('/', async (req, res, next) => {
 // Update event
 router.put('/:id', async (req, res, next) => {
   const { id } = req.params;
-  const { title, date, location, description, image_url } = req.body;
+  const { title, date, location, description, image_url, highlights, schedule, committee } = req.body;
   try {
     await db.execute(
-      'UPDATE events SET title = ?, date = ?, location = ?, description = ?, image_url = ? WHERE id = ?',
-      [title, date, location, description, image_url, id]
+      'UPDATE events SET title = ?, date = ?, location = ?, description = ?, image_url = ?, highlights = ?, schedule = ?, committee = ? WHERE id = ?',
+      [title, date, location, description, image_url, highlights, schedule, JSON.stringify(committee || []), id]
     );
     res.json({ success: true, message: 'Event updated' });
   } catch (error) {

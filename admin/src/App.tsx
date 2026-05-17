@@ -15,9 +15,8 @@ import ProgramsPage from "./pages/ProgramsPage";
 import AdmissionsPage from "./pages/AdmissionsPage";
 import ResearchPage from "./pages/ResearchPage";
 import FacultyPage from "./pages/FacultyPage";
-import StudentsPage from "./pages/StudentsPage";
 import AlumniPage from "./pages/AlumniPage";
-import PlacementsPage from "./pages/PlacementsPage";
+import PressNotesPage from "./pages/PressNotesPage";
 import GalleryPage from "./pages/GalleryPage";
 import AccreditationsPage from "./pages/AccreditationsPage";
 import ContactPage from "./pages/ContactPage";
@@ -51,13 +50,12 @@ const App = () => (
           <Route path="/" element={<AuthGuard role="admin"><DashboardPage /></AuthGuard>} />
           <Route path="/announcements" element={<AuthGuard role="admin"><AnnouncementsPage /></AuthGuard>} />
           <Route path="/events" element={<AuthGuard role="admin"><EventsPage /></AuthGuard>} />
+          <Route path="/press-notes" element={<AuthGuard role="admin"><PressNotesPage /></AuthGuard>} />
           <Route path="/programs" element={<AuthGuard role="admin"><ProgramsPage /></AuthGuard>} />
           <Route path="/admissions" element={<AuthGuard role="admin"><AdmissionsPage /></AuthGuard>} />
           <Route path="/research" element={<AuthGuard role="admin"><ResearchPage /></AuthGuard>} />
           <Route path="/faculty" element={<AuthGuard role="admin"><FacultyPage /></AuthGuard>} />
-          <Route path="/students" element={<AuthGuard role="admin"><StudentsPage /></AuthGuard>} />
           <Route path="/alumni" element={<AuthGuard role="admin"><AlumniPage /></AuthGuard>} />
-          <Route path="/placements" element={<AuthGuard role="admin"><PlacementsPage /></AuthGuard>} />
           <Route path="/gallery" element={<AuthGuard role="admin"><GalleryPage /></AuthGuard>} />
           <Route path="/accreditations" element={<AuthGuard role="admin"><AccreditationsPage /></AuthGuard>} />
           <Route path="/contact" element={<AuthGuard role="admin"><ContactPage /></AuthGuard>} />

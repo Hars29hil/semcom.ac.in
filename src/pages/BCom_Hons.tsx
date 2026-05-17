@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   Laptop
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const programOutcomes = [
   {
@@ -23,17 +24,17 @@ const programOutcomes = [
   {
     id: 'PO-2',
     title: 'Analytical Precision',
-    description: 'Analytical and problem-solving skills within various disciplines of management, business, accounting, finance, costing and law with help of IT applications.'
+    description: 'Analytical and problem-solving skills within various disciplines of management, business, accounting, finance, costing and law with the help of IT applications.'
   },
   {
     id: 'PO-3',
     title: 'Strong Foundation',
-    description: 'In-depth learning experience in the various fields of business and also to provide a strong foundation for students to prepare for various professional courses.'
+    description: 'In-depth learning experiences in the various fields of business and also to provide a strong foundation for students to prepare for professional courses.'
   },
   {
     id: 'PO-4',
     title: 'Practical Relevancy',
-    description: 'Learning experience to demonstrate relevancy of theoretical knowledge of their course to gain career related experience.'
+    description: 'Learning experiences to demonstrate the relevancy of theoretical knowledge of their course to gain career-related experience.'
   }
 ];
 
@@ -46,171 +47,176 @@ const specializations = [
 
 export default function BCom_Hons() {
   return (
-    <div className="pt-20">
-      {/* Hero Section */}
-      <section className="relative h-[60vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2011&auto=format&fit=crop" 
-            alt="Financial analysis on a screen"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a] to-[#0f172a]/70 mix-blend-multiply" />
-        </div>
+    <div className="bg-background min-h-screen">
+      {/* Hero Banner — Clean Dark Primary Theme matching Hero */}
+      <div className="relative bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white py-16 sm:py-24 overflow-hidden">
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
         
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl"
-          >
-            <h1 className="text-5xl md:text-7xl font-serif font-black text-white mb-6 leading-tight text-glow">
-              BCOM <br />
-              <span className="text-secondary italic">(HONS.)</span>
-            </h1>
-            <p className="text-xl text-gray-200 leading-relaxed font-sans max-w-2xl">
-              Bachelor of Commerce (Hons.) - Bridging tradition with technology through unique specializations in FinTech, AccTech, and more.
-            </p>
-          </motion.div>
+        <div className="section-container relative z-10">
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-accent mb-4 tracking-widest uppercase">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/</span>
+            <Link to="/courses" className="hover:text-white transition-colors">Courses</Link>
+            <span>/</span>
+            <span className="text-white/60">B.Com (Hons.)</span>
+          </div>
+
+          <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4">
+            B.Com <span className="text-accent">(Hons.)</span>
+          </h1>
+          <p className="text-white/70 max-w-2xl text-sm sm:text-base leading-relaxed">
+            Bachelor of Commerce (Hons.) - Bridging tradition with technology through unique specializations in FinTech, AccTech, and more.
+          </p>
         </div>
-      </section>
+      </div>
 
       {/* Program Overview */}
-      <section className="py-24 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="text-secondary font-black uppercase tracking-[0.2em] text-sm mb-4 block underline decoration-secondary decoration-4 underline-offset-8">Program Overview</span>
-              <h2 className="text-4xl md:text-5xl font-serif font-black text-primary mb-8 leading-tight">
-                The Tech-Driven <br />Commerce Future
-              </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                The BCom (Hons.) program at SEMCOM stands out with its unique "Tech" specializations: AccTech, CostTech, FinTech, and TaxTech. These tracks integrate cutting-edge technology with fundamental commerce fields.
-              </p>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Designed for ambitious students aiming for professional excellence, this program provides a powerful launchpad for careers in Chartered Accountancy, Cost Accountancy, and Financial Analytics.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-3 bg-gray-50 px-6 py-4 rounded-2xl border border-gray-100">
-                  <Laptop className="text-secondary" />
-                  <span className="font-bold text-primary">40 Seats Intake</span>
-                </div>
-                <div className="flex items-center gap-3 bg-gray-50 px-6 py-4 rounded-2xl border border-gray-100">
-                  <ShieldCheck className="text-secondary" />
-                  <span className="font-bold text-primary">Professional Focus</span>
-                </div>
+      <div className="section-container py-12 sm:py-16">
+        <div className="grid lg:grid-cols-2 gap-10 items-center justify-between">
+          <motion.div
+            initial={{ opacity: 0, x: -15 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-6"
+          >
+            <div className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider">
+              <span>Program Overview</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">
+              The Tech-Driven Commerce Future
+            </h2>
+            <p className="text-sm text-muted leading-relaxed font-medium">
+              The BCom (Hons.) program at SEMCOM stands out with its unique "Tech" specializations: AccTech, CostTech, FinTech, and TaxTech. These tracks integrate cutting-edge technology with fundamental commerce fields.
+            </p>
+            <p className="text-sm text-muted leading-relaxed font-medium">
+              Designed for ambitious students aiming for professional excellence, this program provides a powerful launchpad for careers in Chartered Accountancy, Cost Accountancy, and Financial Analytics.
+            </p>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <div className="flex items-center gap-3 bg-surface px-5 py-3 rounded-xl border border-border">
+                <Laptop className="text-secondary" size={18} />
+                <span className="font-bold text-xs text-primary">40 Seats Intake</span>
               </div>
-            </motion.div>
+              <div className="flex items-center gap-3 bg-surface px-5 py-3 rounded-xl border border-border">
+                <ShieldCheck className="text-secondary" size={18} />
+                <span className="font-bold text-xs text-primary">Professional Focus</span>
+              </div>
+            </div>
+          </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="aspect-[4/3] rounded-[3rem] overflow-hidden shadow-2xl skew-x-2 border-8 border-white">
-                <img 
-                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" 
-                  alt="Financial charts and data"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-10 -left-10 bg-[#1c2e5a] text-white p-8 rounded-3xl shadow-xl max-w-xs">
-                <Trophy className="text-secondary w-12 h-12 mb-4" />
-                <h4 className="font-black text-xl mb-2 italic">Innovation Leader</h4>
-                <p className="text-sm text-gray-300">First in the region to offer technology-integrated commerce degrees.</p>
-              </div>
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, x: 15 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="card !p-0 overflow-hidden relative border border-border shadow-soft aspect-[1.4] group">
+              <img 
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" 
+                alt="Financial charts and data"
+                className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700"
+              />
+            </div>
+            <div className="absolute -bottom-6 -left-6 card !p-6 max-w-[200px] border border-border shadow-soft hidden sm:block">
+              <Trophy className="text-secondary w-9 h-9 mb-4" />
+              <h4 className="font-bold text-xs text-primary mb-1">Innovation Leader</h4>
+              <p className="text-[9px] font-semibold text-muted leading-relaxed">First in the region to offer technology-integrated commerce degrees.</p>
+            </div>
+          </motion.div>
         </div>
-      </section>
+      </div>
 
       {/* Program Outcomes */}
-      <section className="py-24 bg-gray-50 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto text-center mb-16">
-          <span className="text-secondary font-black uppercase tracking-[0.2em] text-sm mb-4 block underline decoration-secondary decoration-4 underline-offset-8">Outcomes</span>
-          <h2 className="text-4xl md:text-6xl font-serif font-black text-primary">Program Outcomes</h2>
-        </div>
+      <div className="bg-surface py-12 sm:py-16 border-y border-border">
+        <div className="section-container">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3">Program Outcomes</h2>
+            <p className="text-muted text-sm font-medium">Core proficiencies our graduates achieve throughout the program.</p>
+          </div>
 
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {programOutcomes.map((po, index) => (
-            <motion.div
-              key={po.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white p-10 rounded-[2.5rem] shadow-xl border border-gray-100 group hover:-translate-y-2 transition-transform duration-500"
-            >
-              <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center text-primary font-black text-xl mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
-                {po.id}
-              </div>
-              <h3 className="font-bold text-xl text-primary mb-4">{po.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{po.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Specialization & Eligibility */}
-      <section className="py-24 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16">
-            <div>
-              <h2 className="text-4xl font-serif font-black text-primary mb-10">Electronic Specializations</h2>
-              <div className="grid gap-4">
-                {specializations.map((spec, i) => (
-                  <div key={i} className="flex items-center gap-6 p-8 bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl transition-all group">
-                    <div className="w-14 h-14 bg-secondary flex items-center justify-center text-primary rounded-2xl group-hover:rotate-12 transition-transform">
-                      <spec.icon size={28} />
-                    </div>
-                    <span className="font-bold text-xl text-gray-800">{spec.name}</span>
-                    <ArrowRight size={24} className="ml-auto text-gray-300 group-hover:text-secondary group-hover:translate-x-2 transition-all" />
-                  </div>
-                ))}
-              </div>
-              <p className="mt-8 text-primary font-black text-lg">
-                * Prepare for <span className="text-secondary italic">CA, CS, and Cost Accountancy</span> certificates.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-12">
-              <div className="bg-primary text-white p-12 rounded-[3.5rem] relative overflow-hidden h-full shadow-2xl">
-                <div className="relative z-10 flex flex-col h-full">
-                  <GraduationCap size={48} className="text-secondary mb-8" />
-                  <h2 className="text-4xl font-serif font-black mb-6 italic">Eligibility Criteria</h2>
-                  <p className="text-2xl font-bold leading-relaxed mb-10 text-gray-200">
-                    Candidate who has completed <span className="text-white underline decoration-secondary decoration-4">12th / HSC / Equivalent</span> from a recognized board.
-                  </p>
-                  
-                  <div className="mt-auto">
-                    <button className="flex items-center gap-3 bg-secondary text-primary px-8 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:scale-105 transition-transform shadow-lg shadow-secondary/20">
-                      Apply For Admission <ArrowRight size={20} />
-                    </button>
-                  </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {programOutcomes.map((po, index) => (
+              <motion.div
+                key={po.id}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.03, duration: 0.3 }}
+                className="card flex flex-col justify-between"
+              >
+                <div>
+                  <span className="text-secondary font-bold text-lg block mb-4">{po.id}</span>
+                  <h3 className="font-bold text-sm text-primary mb-3">{po.title}</h3>
+                  <p className="text-muted text-xs leading-relaxed font-medium">{po.description}</p>
                 </div>
-                {/* Visual Glow */}
-                <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-              </div>
-
-              <div className="border-[6px] border-primary/10 bg-white p-10 rounded-[3.5rem] flex flex-col items-center justify-center text-center">
-                <h3 className="text-gray-400 font-black uppercase tracking-widest text-xs mb-4">Course Structure</h3>
-                <h4 className="text-2xl font-serif font-black text-primary mb-6 italic">BCom (Hons.) (2024-25)</h4>
-                <div className="flex gap-4">
-                  <button className="bg-primary text-white p-5 rounded-2xl font-bold flex items-center gap-3 hover:bg-secondary hover:text-primary transition-colors group">
-                    <BookOpen size={20} />
-                    Download PDF
-                  </button>
-                </div>
-              </div>
-            </div>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* Specialization & Eligibility */}
+      <div className="section-container py-12 sm:py-16">
+        <div className="grid lg:grid-cols-2 gap-10 items-stretch">
+          
+          {/* Specializations */}
+          <div className="space-y-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">AccTech / FinTech Specialties</h2>
+            <div className="space-y-3.5">
+              {specializations.map((spec, i) => (
+                <div key={i} className="flex items-center gap-4 p-4 bg-surface rounded-xl border border-border shadow-sm">
+                  <div className="w-10 h-10 bg-background border border-border rounded-xl flex items-center justify-center text-secondary shrink-0">
+                    <spec.icon size={18} />
+                  </div>
+                  <span className="font-bold text-xs sm:text-sm text-primary">{spec.name}</span>
+                  <ArrowRight size={16} className="ml-auto text-muted shrink-0" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Eligibility & Curriculum */}
+          <div className="flex flex-col gap-6">
+            
+            {/* Eligibility Box */}
+            <div className="card !p-8 bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white space-y-6 relative overflow-hidden flex-1 flex flex-col justify-between">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
+              
+              <div className="relative z-10 space-y-4">
+                <GraduationCap size={32} className="text-accent mb-4" />
+                <h3 className="text-lg font-bold">Eligibility Criteria</h3>
+                <p className="text-white/70 text-xs sm:text-sm leading-relaxed font-semibold">
+                  Candidates who have completed <span className="text-accent font-bold">12th / HSC / Equivalent</span> from a recognized board.
+                </p>
+              </div>
+
+              <div className="pt-4 relative z-10">
+                <a 
+                  href="https://admissions.cvmu.edu.in/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="inline-flex items-center gap-2 bg-accent text-primary px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-white hover:text-primary transition-all shadow"
+                >
+                  <span>Apply Now</span>
+                  <ArrowRight size={13} />
+                </a>
+              </div>
+            </div>
+
+            {/* Curriculum Box */}
+            <div className="card !p-6 flex flex-col items-center justify-center text-center border border-border shadow-sm bg-surface">
+              <h3 className="text-muted font-bold uppercase tracking-wider text-[9px] mb-2">Program Structure</h3>
+              <h4 className="text-sm font-bold text-primary mb-5">B.Com (Hons.) Curriculum</h4>
+              <button className="btn-primary !py-2.5 !px-6 !text-xs">
+                <BookOpen size={14} />
+                <span>Download Curriculum</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
     </div>
   );
 }

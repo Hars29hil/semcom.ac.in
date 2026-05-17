@@ -1,7 +1,21 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Target, Eye, Award, History, Users, Sparkles } from 'lucide-react';
 
 export default function About() {
+  const [legacyImage, setLegacyImage] = useState("https://images.unsplash.com/photo-1541339906194-e1620a96f5b9?q=80&w=2072&auto=format&fit=crop");
+
+  useEffect(() => {
+    fetch('/api/config')
+      .then(res => res.json())
+      .then(data => {
+        if (data.institutional_excellence_image) {
+          setLegacyImage(data.institutional_excellence_image);
+        }
+      })
+      .catch(err => console.error('Error fetching config:', err));
+  }, []);
+
   return (
     <div className="bg-brand-bg relative overflow-hidden">
       {/* Decorative Branding */}
@@ -88,9 +102,9 @@ export default function About() {
               >
                 <div className="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white bg-white skew-y-1 hover:skew-y-0 transition-transform duration-700 mx-1">
                   <img
-                    src="https://images.unsplash.com/photo-1541339906194-e1620a96f5b9?q=80&w=2072&auto=format&fit=crop"
+                    src={legacyImage}
                     alt="Institutional Excellence"
-                    className="w-full h-full object-cover grayscale-0"
+                    className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-brand-primary/5 group-hover:bg-transparent transition-all" />
                 </div>

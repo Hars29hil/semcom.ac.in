@@ -82,10 +82,14 @@ export default function CounsellorPage() {
       const expData = await expRes.json();
       setExperiences(expData || []);
       
-      const profRes = await fetch(`/api/faculty`);
+      const profRes = await fetch(`/api/faculty?t=${Date.now()}`);
       const profData = await profRes.json();
       if (profData.success) {
-         const me = profData.data.find((f: any) => f.email === user.username);
+         const me = profData.data.find((f: any) => 
+           f.email === user.username || 
+           f.email === `mr..${user.username}` ||
+           f.email === user.username.replace('mr..', '')
+         );
          if (me) {
            setName(me.name);
            setQualifications(me.qualification || "");
@@ -112,9 +116,31 @@ export default function CounsellorPage() {
     if (file) {
       if (file.size > 2 * 1024 * 1024) return toast.error("File is too large (max 2MB)");
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageUrl(reader.result as string);
-        toast.info("Photo updated. Please sync profile to save.");
+      reader.onloadend = async () => {
+        const newImageUrl = reader.result as string;
+        setImageUrl(newImageUrl);
+        
+        // Auto-save the image
+        if (user?.username) {
+          try {
+            const res = await fetch(`/api/faculty/profile/${user.username}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                name, 
+                qualification: qualifications, 
+                area, 
+                bio, 
+                image_url: newImageUrl 
+              })
+            });
+            if (res.ok) {
+              toast.success("Profile photo saved automatically");
+            }
+          } catch (e) {
+            toast.error("Failed to auto-save photo");
+          }
+        }
       };
       reader.readAsDataURL(file);
     }

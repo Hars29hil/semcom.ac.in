@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Trophy, Award, Star, CheckCircle2, FileText, ExternalLink, Shield } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const rankingData = {
   NIRF: [
@@ -21,147 +22,138 @@ export default function Rankings() {
   const [activeTab, setActiveTab] = useState('NIRF');
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      {/* Hero Section */}
-      <div className="relative h-[450px] flex items-center justify-center overflow-hidden bg-[#1c2e5a]">
-        <div className="absolute inset-0 bg-[#1c2e5a]/85 z-10" />
-        <img 
-          src="https://images.unsplash.com/photo-1523240755646-9dac372338de?auto=format&fit=crop&q=80&w=2070" 
-          alt="Excellence" 
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="relative z-20 text-center px-6 max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-3 px-5 py-2 bg-teal-500/20 backdrop-blur-md rounded-full border border-teal-500/30 text-teal-400 font-bold text-[10px] uppercase tracking-[0.4em] mb-8"
-          >
-            <Shield size={16} />
-            Institutional Excellence
-          </motion.div>
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-7xl font-serif font-black text-white uppercase tracking-tight leading-none"
-          >
-            Accreditations <br/><span className="text-teal-400">&</span> Rankings
-          </motion.h1>
-          <div className="w-32 h-1 bg-teal-500 mx-auto mt-10 rounded-full shadow-[0_0_20px_rgba(20,184,166,0.5)]" />
+    <div className="bg-background min-h-screen">
+      {/* Hero Banner — Clean Dark Primary Theme matching Hero */}
+      <div className="relative bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white py-16 sm:py-24 overflow-hidden">
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
+        
+        <div className="section-container relative z-10">
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-accent mb-4 tracking-widest uppercase">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-white/60">Rankings</span>
+          </div>
+
+          <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4">
+            Accreditations <span className="text-accent">& Rankings</span>
+          </h1>
+          <p className="text-white/70 max-w-2xl text-sm sm:text-base leading-relaxed">
+            Celebrating institutional excellence, academic rigor, and globally recognized quality benchmarks.
+          </p>
         </div>
       </div>
 
       {/* Stats Counter Section */}
-      <section className="relative z-30 -mt-20 max-w-7xl mx-auto w-full px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-           {[
-             { label: 'NAAC GRADE', value: 'A', icon: <Award className="text-teal-400" /> },
-             { label: 'GSIRF RATING', value: '5 STAR', icon: <Star className="text-teal-400" /> },
-             { label: 'INSTITUTION AGE', value: '25+ YRS', icon: <Trophy className="text-teal-400" /> },
-           ].map((stat, i) => (
-             <motion.div 
-               key={stat.label}
-               initial={{ opacity: 0, y: 20 }}
-               animate={{ opacity: 1, y: 0 }}
-               transition={{ delay: i * 0.1 }}
-               className="bg-white p-10 rounded-[2.5rem] shadow-2xl border border-gray-100 flex items-center justify-between group"
-             >
-                <div className="space-y-1">
-                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{stat.label}</p>
-                   <p className="text-3xl font-serif font-black text-[#1c2e5a] uppercase">{stat.value}</p>
-                </div>
-                <div className="w-14 h-14 bg-[#1c2e5a] rounded-2xl flex items-center justify-center text-white group-hover:bg-teal-600 transition-colors">
-                   {stat.icon}
-                </div>
-             </motion.div>
-           ))}
+      <div className="relative z-30 -mt-8 max-w-6xl mx-auto w-full px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {[
+            { label: 'NAAC GRADE', value: 'A Grade', icon: <Award className="text-secondary" /> },
+            { label: 'GSIRF RATING', value: '5 Star', icon: <Star className="text-secondary" /> },
+            { label: 'INSTITUTION AGE', value: '25+ Years', icon: <Trophy className="text-secondary" /> },
+          ].map((stat, i) => (
+            <motion.div 
+              key={stat.label}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.02 }}
+              className="card border border-border shadow-soft flex items-center justify-between bg-surface"
+            >
+              <div className="space-y-1.5">
+                <p className="text-[9px] font-bold text-muted uppercase tracking-wider">{stat.label}</p>
+                <p className="text-xl font-bold text-primary">{stat.value}</p>
+              </div>
+              <div className="w-10 h-10 bg-background border border-border rounded-xl flex items-center justify-center shrink-0">
+                {stat.icon}
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </section>
+      </div>
 
       {/* Tabs Section */}
-      <section className="max-w-7xl mx-auto px-6 py-24 w-full">
-         <div className="flex flex-col items-center gap-16">
-            {/* Tab Controllers */}
-            <div className="inline-flex p-2 bg-gray-50 rounded-[2rem] border border-gray-100 shadow-inner">
-               {Object.keys(rankingData).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-12 py-4 rounded-[1.5rem] text-xs font-black uppercase tracking-widest transition-all duration-300 ${activeTab === tab ? 'bg-[#1c2e5a] text-white shadow-xl' : 'text-gray-400 hover:text-[#1c2e5a]'}`}
-                  >
-                    {tab}
-                  </button>
-               ))}
-            </div>
+      <div className="section-container py-12 sm:py-16">
+        <div className="flex flex-col items-center gap-10">
+          
+          {/* Tab Controllers */}
+          <div className="inline-flex p-1.5 bg-surface rounded-xl border border-border">
+            {Object.keys(rankingData).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-6 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 ${activeTab === tab ? 'bg-primary text-white shadow-sm' : 'text-muted hover:text-primary'}`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
 
-            {/* Content Area */}
-            <div className="w-full min-h-[400px]">
-               <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    className="grid md:grid-cols-2 gap-8"
+          {/* Content Area */}
+          <div className="w-full min-h-[300px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="grid md:grid-cols-2 gap-6"
+              >
+                {rankingData[activeTab as keyof typeof rankingData].map((item) => (
+                  <div 
+                    key={item.name}
+                    className="card border border-border bg-surface hover:border-secondary transition-all flex flex-col justify-between"
                   >
-                    {rankingData[activeTab as keyof typeof rankingData].map((item, i) => (
-                      <div 
-                        key={item.name}
-                        className="group bg-white p-8 rounded-3xl border border-gray-100 hover:border-teal-500 transition-all hover:bg-teal-50/10"
-                      >
-                         <div className="flex items-start justify-between gap-6">
-                            <div className="space-y-4">
-                               <div className="flex items-center gap-3">
-                                  <CheckCircle2 size={18} className="text-teal-600" />
-                                  <h3 className="text-xl font-serif font-black text-[#1c2e5a] uppercase tracking-tight">{item.name}</h3>
-                               </div>
-                               <p className="text-[10px] font-black uppercase tracking-widest text-[#0b807b] bg-teal-50 px-3 py-1 rounded-full w-fit">
-                                  Status: {item.status}
-                               </p>
-                            </div>
-                            <div className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-400 group-hover:bg-[#1c2e5a] group-hover:text-white transition-all shadow-sm">
-                               <FileText size={24} />
-                            </div>
-                         </div>
-                         <div className="mt-8 pt-8 border-t border-gray-50 flex justify-between items-center">
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">Official Institutional Data</span>
-                            <a 
-                              href={item.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-2 text-[10px] font-black text-teal-600 uppercase tracking-widest hover:translate-x-1 transition-transform"
-                            >
-                               View Document
-                               <ExternalLink size={12} />
-                            </a>
-                         </div>
+                    <div>
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle2 size={16} className="text-secondary" />
+                            <h3 className="font-bold text-sm text-primary">{item.name}</h3>
+                          </div>
+                          <span className="inline-block text-[9px] font-bold uppercase tracking-wider text-secondary bg-secondary/15 px-3 py-1 rounded-md">
+                            Status: {item.status}
+                          </span>
+                        </div>
+                        <div className="w-10 h-10 bg-background border border-border rounded-xl flex items-center justify-center text-muted">
+                          <FileText size={18} />
+                        </div>
                       </div>
-                    ))}
-                  </motion.div>
-               </AnimatePresence>
-            </div>
-         </div>
-      </section>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-border flex justify-between items-center text-[10px]">
+                      <span className="font-bold text-muted uppercase tracking-wider">Official Data</span>
+                      <a 
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-secondary font-bold hover:text-primary transition-colors"
+                      >
+                        <span>View Document</span>
+                        <ExternalLink size={11} />
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+        </div>
+      </div>
 
       {/* Accreditation Badges */}
-      <section className="bg-gray-50 py-24 px-6">
-         <div className="max-w-7xl mx-auto space-y-16">
-            <div className="text-center">
-               <h2 className="text-3xl font-serif font-black text-[#1c2e5a] uppercase tracking-tight">Accreditation <span className="text-teal-600">&</span> Partnerships</h2>
-               <div className="w-20 h-1 bg-teal-500 mx-auto mt-6 rounded-full" />
-            </div>
-            
-            <div className="flex flex-wrap justify-center items-center gap-16 opacity-50 grayscale hover:grayscale-0 transition-all">
-               {/* Placeholders for accreditation logos */}
-               {['NAAC', 'NIRF', 'GSIRF', 'ISO', 'UGC', 'CVM'].map((logo) => (
-                 <div key={logo} className="text-2xl font-black text-[#1c2e5a] uppercase tracking-[0.3em] font-serif">{logo}</div>
-               ))}
-            </div>
-         </div>
-      </section>
-
-      {/* Footer Branding */}
-      <div className="bg-[#1c2e5a] py-8 text-center border-t border-white/5">
-        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-teal-500/50">Quality Benchmark • SEMCOM • Rankings Section</p>
+      <div className="bg-surface py-12 sm:py-16 border-t border-border">
+        <div className="section-container space-y-10">
+          <div className="text-center">
+            <h2 className="text-lg font-bold text-primary">Accreditations & Partnerships</h2>
+          </div>
+          
+          <div className="flex flex-wrap justify-center items-center gap-12 sm:gap-16">
+            {['NAAC', 'NIRF', 'GSIRF', 'ISO', 'UGC', 'CVM'].map((logo) => (
+              <div key={logo} className="text-lg sm:text-xl font-black text-muted/60 uppercase tracking-widest">{logo}</div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

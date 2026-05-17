@@ -2,13 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter
-} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Plus, Search, Edit, Trash2, Calendar, Loader2, Image as ImageIcon, MapPin } from "lucide-react";
 import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -25,6 +20,9 @@ export default function EventsPage() {
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
+  const [highlights, setHighlights] = useState("");
+  const [schedule, setSchedule] = useState("");
+  const [committee, setCommittee] = useState<any[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -65,6 +63,9 @@ export default function EventsPage() {
     setDate("");
     setLocation("");
     setDescription("");
+    setHighlights("");
+    setSchedule("");
+    setCommittee([]);
     setSelectedImage(null);
     setEditingId(null);
   };
@@ -75,7 +76,28 @@ export default function EventsPage() {
     setDate(event.date ? new Date(event.date).toISOString().split('T')[0] : "");
     setLocation(event.location || "");
     setDescription(event.description || "");
+    setHighlights(event.highlights || "");
+    setSchedule(event.schedule || "");
+    try {
+      setCommittee(typeof event.committee === 'string' ? JSON.parse(event.committee) : (event.committee || []));
+    } catch (e) {
+      setCommittee([]);
+    }
     setOpenDialog(true);
+  };
+
+  const addCommitteeMember = () => {
+    setCommittee([...committee, { name: "", role: "Convenor", email: "", phone: "" }]);
+  };
+
+  const updateMember = (index: number, field: string, value: string) => {
+    const updated = [...committee];
+    updated[index][field] = value;
+    setCommittee(updated);
+  };
+
+  const removeMember = (index: number) => {
+    setCommittee(committee.filter((_, i) => i !== index));
   };
 
   const events = eventsRes?.success ? eventsRes.data : [];
@@ -86,25 +108,97 @@ export default function EventsPage() {
   return (
     <div className="space-y-6">
       <Dialog open={openDialog} onOpenChange={(open) => !open && resetForm()}>
-        <DialogContent className="rounded-3xl clay border-none max-w-md">
-          <DialogHeader><DialogTitle className="text-2xl font-black">{editingId ? "Edit Event" : "Create New Event"}</DialogTitle></DialogHeader>
-          <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto px-1">
-            <div className="space-y-2"><Label>Event Title</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" className="rounded-xl border-none neu-inset h-12" /></div>
-            <div className="space-y-2"><Label>Date</Label><Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="rounded-xl border-none neu-inset h-12" /></div>
-            <div className="space-y-2"><Label>Location</Label><Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Venue" className="rounded-xl border-none neu-inset h-12" /></div>
-            <div className="space-y-2"><Label>Description</Label><Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Short summary" className="rounded-xl border-none neu-inset h-12" /></div>
-            <div className="space-y-2">
-              <Label>Event Poster</Label>
-              <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-primary/20 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-primary/5 transition-all">
-                <ImageIcon className="h-6 w-6 text-primary mb-2" />
-                <p className="text-xs font-bold">{selectedImage ? selectedImage.name : "Choose file"}</p>
-                <input type="file" ref={fileInputRef} className="hidden" onChange={(e) => setSelectedImage(e.target.files?.[0] || null)} />
+        <DialogContent className="rounded-3xl clay border-none max-w-4xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black">{editingId ? "Edit Event" : "Create New Event"}</DialogTitle>
+            <DialogDescription>
+              Set the date, location, and detailed sections including committee members.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-4 max-h-[75vh] overflow-y-auto px-1">
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-sm font-black uppercase tracking-widest text-primary italic">Basic Info</h3>
+                <div className="space-y-2"><Label>Event Title</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" className="rounded-xl border-none neu-inset h-12" /></div>
+                <div className="space-y-2"><Label>Date</Label><Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="rounded-xl border-none neu-inset h-12" /></div>
+                <div className="space-y-2"><Label>Location</Label><Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Venue" className="rounded-xl border-none neu-inset h-12" /></div>
+                <div className="space-y-2">
+                  <Label>Event Poster</Label>
+                  <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-primary/20 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-primary/5 transition-all h-32">
+                    <ImageIcon className="h-6 w-6 text-primary mb-2" />
+                    <p className="text-[10px] font-bold text-center px-2">{selectedImage ? selectedImage.name : "Choose file"}</p>
+                    <input type="file" ref={fileInputRef} className="hidden" onChange={(e) => setSelectedImage(e.target.files?.[0] || null)} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-sm font-black uppercase tracking-widest text-primary italic">Detailed Content</h3>
+                <div className="space-y-2">
+                  <Label>About Event</Label>
+                  <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Detailed about section" className="rounded-xl border-none neu-inset min-h-[100px] resize-none" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Highlights</Label>
+                  <Textarea value={highlights} onChange={(e) => setHighlights(e.target.value)} placeholder="Bullet points" className="rounded-xl border-none neu-inset min-h-[100px] resize-none" />
+                </div>
+                <div className="space-y-2">
+                  <Label>Schedule / At a Glance</Label>
+                  <Textarea value={schedule} onChange={(e) => setSchedule(e.target.value)} placeholder="Time slots" className="rounded-xl border-none neu-inset min-h-[100px] resize-none" />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-black uppercase tracking-widest text-success italic">Committee Members</h3>
+                <Button variant="outline" size="sm" onClick={addCommitteeMember} className="rounded-lg h-8 px-3 text-[10px] font-bold"><Plus size={14} className="mr-1" /> Add Member</Button>
+              </div>
+              
+              <div className="space-y-4">
+                {committee.map((member, idx) => (
+                  <div key={idx} className="p-4 rounded-2xl neu-inset space-y-3 relative group">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="absolute top-2 right-2 h-7 w-7 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => removeMember(idx)}
+                    >
+                      <Trash2 size={14} className="text-destructive" />
+                    </Button>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <Label className="text-[10px] opacity-60">Name</Label>
+                        <Input value={member.name} onChange={(e) => updateMember(idx, 'name', e.target.value)} placeholder="Dr. Name" className="h-9 rounded-lg border-none bg-white/50 text-xs font-bold" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-[10px] opacity-60">Role/Designation</Label>
+                        <Input value={member.role} onChange={(e) => updateMember(idx, 'role', e.target.value)} placeholder="Convenor" className="h-9 rounded-lg border-none bg-white/50 text-xs font-bold" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <Label className="text-[10px] opacity-60">Email</Label>
+                        <Input value={member.email} onChange={(e) => updateMember(idx, 'email', e.target.value)} placeholder="email@semcom.ac.in" className="h-9 rounded-lg border-none bg-white/50 text-xs font-bold" />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-[10px] opacity-60">Phone</Label>
+                        <Input value={member.phone} onChange={(e) => updateMember(idx, 'phone', e.target.value)} placeholder="98XXXXXXXX" className="h-9 rounded-lg border-none bg-white/50 text-xs font-bold" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {committee.length === 0 && (
+                  <div className="text-center py-10 border-2 border-dashed border-gray-100 rounded-2xl">
+                    <p className="text-xs font-bold text-muted-foreground italic">No members added yet.</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
           <DialogFooter>
             <Button variant="ghost" onClick={resetForm}>Cancel</Button>
-            <Button disabled={isSaving} onClick={() => saveEvent({ title, date, location, description })} className="rounded-xl px-10 shadow-lg">
+            <Button disabled={isSaving} onClick={() => saveEvent({ title, date, location, description, highlights, schedule, committee })} className="rounded-xl px-10 shadow-lg">
               {isSaving ? <Loader2 className="animate-spin" /> : (editingId ? "Save Changes" : "Save Event")}
             </Button>
           </DialogFooter>

@@ -35,6 +35,7 @@ const galleryRoutes = require('./routes/gallery');
 const programRoutes = require('./routes/programs');
 const researchRoutes = require('./routes/research');
 const placementRoutes = require('./routes/placements');
+const configRoutes = require('./routes/config');
 
 const path = require('path');
 const fs = require('fs');
@@ -69,9 +70,11 @@ app.use('/api/events', simpleAuth, eventRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/news', simpleAuth, newsRoutes);
 app.use('/api/gallery', galleryRoutes);
-app.use('/api/programs', programRoutes);
-app.use('/api/research', researchRoutes);
+app.use('/api/programs', require('./routes/programs'));
+app.use('/api/research', require('./routes/research'));
+app.use('/api/smtr', require('./routes/smtr'));
 app.use('/api/placements', placementRoutes);
+app.use('/api/config', configRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

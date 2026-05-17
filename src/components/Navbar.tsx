@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, ChevronDown, GraduationCap, ArrowRight } from 'lucide-react';
+import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/src/lib/utils';
 
@@ -43,7 +43,7 @@ const navLinks = [
       { name: 'FAQs', href: '/admission/faqs' },
       { name: 'Admission Brochure For Foreign Students', href: '/admission/brochure' },
       { name: 'UG/PG Admission Inquiry Form', href: '/admission/inquiry' },
-      { name: 'UG/PG Admission Form', href: '/admission/form' },
+      { name: 'UG/PG Admission Form', href: 'https://admissions.cvmu.edu.in/', isExternal: true },
       { name: 'PhD Admission', href: 'https://phdadmission.cvmu.ac.in/', isExternal: true },
     ],
   },
@@ -64,7 +64,6 @@ const navLinks = [
       { name: 'Facilities', href: '/student/facilities' },
       { name: 'Mega Events', href: '/student/events' },
       { name: 'Extension Activities', href: '/student/activities' },
-      { name: 'NEEV Cell', href: '/student/neev' },
       { name: 'Important Links', href: '/student/links' },
       { name: 'Downloadable Forms', href: '/student/forms' },
     ],
@@ -113,79 +112,87 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 120);
+      setIsScrolled(window.scrollY > 60);
     };
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   return (
-    <nav
+    <>
+      <nav
       className={cn(
-        'sticky top-0 z-[100] transition-all duration-500 px-6 md:px-12',
-        isScrolled 
-          ? 'bg-white/90 backdrop-blur-xl py-3 shadow-[0_10px_40px_rgba(0,0,0,0.06)] border-b border-brand-border' 
-          : 'bg-white/50 backdrop-blur-md py-6 border-b border-brand-border/5'
+        'sticky top-0 z-[100] transition-all duration-300',
+        isScrolled
+          ? 'bg-surface/95 backdrop-blur-md py-3 shadow-soft border-b border-border/50'
+          : 'bg-surface py-4 border-b border-border'
       )}
     >
-      <div className="max-w-[1440px] mx-auto flex items-center justify-between">
-        <Link to="/" className={cn(
-          "flex items-center gap-4 group shrink-0 transition-all duration-500",
-          !isScrolled && "lg:opacity-0 lg:pointer-events-none lg:-translate-x-4"
-        )}>
-          <div className={cn(
-            "w-10 h-10 rounded-xl flex items-center justify-center text-white transition-all duration-500 shadow-2xl",
-            isScrolled ? "bg-brand-primary" : "bg-brand-primary/10"
-          )}>
-            <GraduationCap size={24} className={isScrolled ? "text-white" : "text-brand-primary"} />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xl font-heading font-black tracking-tighter block leading-none text-brand-primary">
-              SEMCOM
-            </span>
-            <span className="text-[8px] font-black uppercase tracking-[0.2em] block mt-1 text-brand-subtext">
-              Excellence Node
-            </span>
-          </div>
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        {/* Logo — visible on mobile */}
+        <div className="flex items-center gap-3 xl:hidden">
+          <Link to="/" className="flex items-center gap-2">
+            <img src="/images/Picsart_26-04-28_09-18-02-251.png" alt="SEMCOM" className="h-10 w-auto object-contain" />
+            <span className="text-lg font-bold text-primary font-heading">SEMCOM</span>
+          </Link>
+        </div>
 
         {/* Desktop Nav */}
-        <div className="hidden xl:flex items-center gap-1">
+        <div className="hidden xl:flex items-center gap-1 w-full justify-center">
           {navLinks.map((link, idx) => (
             <div
               key={link.name}
-              className="relative group px-0.5"
+              className="relative group"
               onMouseEnter={() => setActiveSubmenu(link.name)}
               onMouseLeave={() => setActiveSubmenu(null)}
             >
               <Link
                 to={link.href}
                 className={cn(
-                  'px-3 py-2 text-[9.5px] font-bold uppercase tracking-[0.12em] transition-all flex items-center gap-1.5 h-10 rounded-xl hover:bg-brand-primary/5',
-                  isScrolled 
-                    ? location.pathname === link.href ? 'text-brand-primary bg-brand-primary/5' : 'text-brand-text'
-                    : location.pathname === link.href ? 'text-brand-primary' : 'text-brand-text'
+                  'px-3.5 py-2.5 text-[12px] font-semibold transition-colors duration-200 flex items-center gap-1.5 rounded-lg',
+                  location.pathname === link.href
+                    ? 'text-secondary bg-secondary/5'
+                    : 'text-text/80 hover:text-secondary hover:bg-secondary/5'
                 )}
               >
-                <span className="relative">
-                  {link.name}
-                  {location.pathname === link.href && (
-                    <motion.div layoutId="nav-pill" className="absolute -bottom-1 left-0 right-0 h-[2px] bg-brand-secondary rounded-full" />
-                  )}
-                </span>
-                {link.submenu && <ChevronDown size={14} className={cn('transition-transform duration-300 opacity-40', activeSubmenu === link.name && 'rotate-180 opacity-100 text-brand-secondary')} />}
+                {link.name}
+                {link.submenu && (
+                  <ChevronDown
+                    size={13}
+                    className={cn(
+                      'opacity-50 transition-transform duration-200',
+                      activeSubmenu === link.name && 'rotate-180 opacity-100 text-secondary'
+                    )}
+                  />
+                )}
               </Link>
-              
-              {link.submenu && activeSubmenu === link.name && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  className={cn(
-                    "absolute top-[calc(100%-4px)] w-72 bg-white shadow-[0_30px_70px_rgba(0,0,0,0.12)] rounded-[2rem] border border-brand-border p-3",
-                    idx > navLinks.length - 4 ? "right-0" : "left-0"
-                  )}
-                >
-                  <div className="max-h-[60vh] overflow-y-auto custom-scrollbar space-y-1">
+
+              {/* Dropdown */}
+              <AnimatePresence>
+                {link.submenu && activeSubmenu === link.name && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.15, ease: 'easeOut' }}
+                    className={cn(
+                      'absolute top-full mt-1 w-72 bg-surface shadow-soft rounded-xl border border-border p-2 overflow-hidden',
+                      idx > navLinks.length - 4 ? 'right-0' : 'left-0'
+                    )}
+                  >
                     {link.submenu.map((sub, i) => (
                       <div key={i}>
                         {sub.isExternal ? (
@@ -193,117 +200,140 @@ export default function Navbar() {
                             href={sub.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-3 px-4 py-3 text-[11px] font-bold text-brand-subtext hover:bg-brand-secondary/5 hover:text-brand-secondary transition-all rounded-2xl group/item"
+                            className="flex items-center justify-between px-3.5 py-2.5 text-[13px] font-medium text-text/70 hover:bg-secondary/5 hover:text-secondary transition-colors duration-200 rounded-lg group/item"
                           >
-                            <div className="w-1.5 h-1.5 rounded-full bg-brand-border group-hover/item:bg-brand-secondary transition-colors" />
                             {sub.name}
+                            <ArrowRight size={13} className="opacity-0 group-hover/item:opacity-70 transition-opacity" />
                           </a>
                         ) : (
                           <Link
                             to={sub.href}
-                            className="flex items-center gap-3 px-4 py-3 text-[11px] font-bold text-brand-subtext hover:bg-brand-secondary/5 hover:text-brand-secondary transition-all rounded-2xl group/item"
+                            onClick={() => setActiveSubmenu(null)}
+                            className="flex items-center justify-between px-3.5 py-2.5 text-[13px] font-medium text-text/70 hover:bg-secondary/5 hover:text-secondary transition-colors duration-200 rounded-lg group/item"
                           >
-                            <div className="w-1.5 h-1.5 rounded-full bg-brand-border group-hover/item:bg-brand-secondary transition-colors" />
                             {sub.name}
+                            <ArrowRight size={13} className="opacity-0 group-hover/item:opacity-70 transition-opacity" />
                           </Link>
                         )}
                       </div>
                     ))}
-                  </div>
-                </motion.div>
-              )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ))}
         </div>
 
-        {/* Action Toggle */}
-        <div className="flex items-center gap-4">
-           <Link to="/admission" className="btn-primary hidden md:flex items-center gap-2 !px-7 !py-2.5 !text-[10px] !rounded-xl !h-auto">
-             Get Started
-             <ArrowRight size={14} />
-           </Link>
-           <button
-             className="xl:hidden w-11 h-11 flex items-center justify-center bg-brand-primary/5 rounded-xl text-brand-primary"
-             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-           >
-             {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-           </button>
+        {/* Right Actions */}
+        <div className="flex items-center gap-3">
+          <a
+            href="https://admissions.cvmu.edu.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary !py-2.5 !px-5 !text-xs hidden md:flex"
+          >
+            Apply Now
+          </a>
+
+          {/* Mobile Toggle */}
+          <button
+            className="xl:hidden w-11 h-11 flex items-center justify-center rounded-lg border border-border text-primary hover:bg-background transition-colors"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
       </div>
+    </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-gray-100 p-6 xl:hidden flex flex-col gap-2 max-h-[85vh] overflow-y-auto"
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+            className="fixed inset-0 bg-surface z-[200] p-6 xl:hidden flex flex-col overflow-y-auto"
           >
-            {navLinks.map((link) => (
-              <div key={link.name} className="border-b border-gray-50 last:border-0">
-                <div className="flex items-center justify-between py-4">
-                  <Link
-                    to={link.href}
-                    className={cn(
-                      'text-lg font-bold transition-colors',
-                      location.pathname === link.href ? 'text-brand-primary' : 'text-brand-text'
-                    )}
-                    onClick={() => setIsMobileMenuOpen(false)}
+            <div className="flex items-center justify-between mb-8">
+              <Link to="/" className="flex items-center gap-3" onClick={() => setIsMobileMenuOpen(false)}>
+                <img src="/images/Picsart_26-04-28_09-18-02-251.png" alt="SEMCOM" className="h-10 w-auto object-contain" />
+                <span className="text-xl font-bold text-primary font-heading">SEMCOM</span>
+              </Link>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-10 h-10 rounded-lg bg-background flex items-center justify-center"
+                aria-label="Close menu"
+              >
+                <X size={22} />
+              </button>
+            </div>
+
+            <div className="flex-1 space-y-1">
+              {navLinks.map((link) => (
+                <div key={link.name}>
+                  <div
+                    className="flex items-center justify-between py-3 px-2 cursor-pointer"
+                    onClick={() => link.submenu && setActiveSubmenu(activeSubmenu === link.name ? null : link.name)}
                   >
-                    {link.name}
-                  </Link>
-                  {link.submenu && (
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveSubmenu(activeSubmenu === link.name ? null : link.name);
-                      }}
-                      className="p-2 bg-gray-50 rounded-lg"
+                    <Link
+                      to={link.href}
+                      className="text-lg font-semibold text-primary"
+                      onClick={() => !link.submenu && setIsMobileMenuOpen(false)}
                     >
-                      <ChevronDown size={20} className={cn('transition-transform duration-300', activeSubmenu === link.name && 'rotate-180')} />
-                    </button>
-                  )}
+                      {link.name}
+                    </Link>
+                    {link.submenu && (
+                      <ChevronDown
+                        size={20}
+                        className={cn(
+                          'text-muted transition-transform duration-200',
+                          activeSubmenu === link.name && 'rotate-180 text-secondary'
+                        )}
+                      />
+                    )}
+                  </div>
+
+                  <AnimatePresence>
+                    {link.submenu && activeSubmenu === link.name && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="pl-4 space-y-1 border-l-2 border-secondary/20 ml-2 mb-2 overflow-hidden"
+                      >
+                        {link.submenu.map((sub, i) => (
+                          <Link
+                            key={i}
+                            to={sub.href}
+                            className="block py-2.5 px-3 text-[15px] font-medium text-muted hover:text-secondary transition-colors rounded-lg"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                          >
+                            {sub.name}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-                {link.submenu && activeSubmenu === link.name && (
-                  <motion.div 
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    className="pl-4 pb-4 flex flex-col gap-1 border-l-2 border-brand-secondary/20"
-                  >
-                    {link.submenu.map((sub, i) => (
-                      sub.isExternal ? (
-                        <a
-                          key={i}
-                          href={sub.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-brand-subtext py-2.5 text-sm font-semibold hover:text-brand-secondary transition-colors"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          {sub.name}
-                        </a>
-                      ) : (
-                        <Link
-                          key={i}
-                          to={sub.href}
-                          className="text-brand-subtext py-2.5 text-sm font-semibold hover:text-brand-secondary transition-colors"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                          {sub.name}
-                        </Link>
-                      )
-                    ))}
-                  </motion.div>
-                )}
-              </div>
-            ))}
-            <Link to="/admission" className="btn-primary mt-6 text-center text-sm font-bold uppercase tracking-widest" onClick={() => setIsMobileMenuOpen(false)}>
-              Start Admission Process
-            </Link>
+              ))}
+            </div>
+
+            <a
+              href="https://admissions.cvmu.edu.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary mt-6 w-full justify-center"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Apply Online
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </>
   );
 }

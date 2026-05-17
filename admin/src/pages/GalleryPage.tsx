@@ -3,15 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Upload, Trash2, Image as ImageIcon, Eye, X, Loader2 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -128,6 +120,26 @@ export default function GalleryPage() {
       }
     } catch (error) {
       toast.error("Failed to delete album");
+    }
+  };
+
+  const handleDeletePhoto = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this photo?")) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/photos/${id}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        toast.success("Photo deleted successfully");
+        if (currentAlbum) {
+          handleViewAlbum(currentAlbum);
+          fetchAlbums(); // To update the count
+        }
+      }
+    } catch (error) {
+      toast.error("Failed to delete photo");
     }
   };
 
@@ -303,7 +315,12 @@ export default function GalleryPage() {
                   <div key={photo.id} className="relative aspect-square rounded-xl overflow-hidden group">
                     <img src={photo.url} alt="Gallery" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Button variant="destructive" size="icon" className="h-8 w-8">
+                      <Button 
+                        variant="destructive" 
+                        size="icon" 
+                        className="h-8 w-8"
+                        onClick={() => handleDeletePhoto(photo.id)}
+                      >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>

@@ -4,14 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Search, Edit, Trash2, Users, Loader2, X } from "lucide-react";
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
@@ -22,6 +15,7 @@ interface Program {
   type: string;
   students: number;
   status: 'active' | 'new' | 'archived';
+  description?: string;
 }
 
 const API_BASE = "/api/programs";
@@ -38,7 +32,8 @@ export default function ProgramsPage() {
     name: "",
     type: "UG",
     students: 0,
-    status: "active"
+    status: "active",
+    description: ""
   });
 
   const fetchPrograms = async () => {
@@ -144,10 +139,7 @@ export default function ProgramsPage() {
                 <Badge variant={prog.status === "new" ? "default" : "secondary"}>{prog.status}</Badge>
               </div>
               <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">{prog.name}</h3>
-              <div className="flex items-center gap-1.5 mt-2.5 text-muted-foreground">
-                <Users className="h-3.5 w-3.5" />
-                <span className="text-xs font-medium">{prog.students} students enrolled</span>
-              </div>
+
               <div className="flex gap-2 mt-4">
                 <Button 
                   variant="outline" 
@@ -215,18 +207,7 @@ export default function ProgramsPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="students">Enrolled Students</Label>
-              <Input
-                id="students"
-                type="number"
-                value={editingProgram?.students || newProgram.students}
-                onChange={(e) => editingProgram
-                  ? setEditingProgram({...editingProgram, students: parseInt(e.target.value) || 0})
-                  : setNewProgram({...newProgram, students: parseInt(e.target.value) || 0})
-                }
-              />
-            </div>
+
             <div className="grid gap-2">
               <Label htmlFor="status">Status</Label>
               <Select 
@@ -245,6 +226,20 @@ export default function ProgramsPage() {
                   <SelectItem value="archived">Archived</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="description">Program Details / Description</Label>
+              <textarea
+                id="description"
+                rows={4}
+                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                value={editingProgram?.description || newProgram.description}
+                onChange={(e) => editingProgram
+                  ? setEditingProgram({...editingProgram, description: e.target.value})
+                  : setNewProgram({...newProgram, description: e.target.value})
+                }
+                placeholder="Enter detailed program information, curriculum summary, etc."
+              />
             </div>
           </div>
           <DialogFooter>

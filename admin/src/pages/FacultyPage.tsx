@@ -3,13 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogFooter 
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Plus, Search, Edit, Trash2, Mail, Loader2, Image as ImageIcon } from "lucide-react";
 import { useState, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -26,6 +20,8 @@ const colors = [
 
 export default function FacultyPage() {
   const [search, setSearch] = useState("");
+  const [filterDept, setFilterDept] = useState("All");
+  const [filterType, setFilterType] = useState("All");
   const [openDialog, setOpenDialog] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 
@@ -37,6 +33,7 @@ export default function FacultyPage() {
   const [qualification, setQualification] = useState("");
   const [area, setArea] = useState("");
   const [staffType, setStaffType] = useState("Teaching");
+  const [isVP, setIsVP] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [currentImageUrl, setCurrentImageUrl] = useState("");
 
@@ -72,6 +69,7 @@ export default function FacultyPage() {
     setQualification("");
     setArea("");
     setStaffType("Teaching");
+    setIsVP(false);
     setSelectedImage(null);
     setCurrentImageUrl("");
     setEditingId(null);
@@ -86,20 +84,33 @@ export default function FacultyPage() {
     setQualification(f.qualification || "");
     setArea(f.area || "");
     setStaffType(f.staff_type || "Teaching");
+    setIsVP(f.is_vp === 1 || f.is_vp === true);
     setCurrentImageUrl(f.image_url || "");
     setOpenDialog(true);
   };
 
   const faculty = facultyResponse?.success ? facultyResponse.data : [];
-  const filtered = faculty.filter((f: any) =>
-    f.name.toLowerCase().includes(search.toLowerCase()) || f.dept.toLowerCase().includes(search.toLowerCase())
-  );
+  
+  const departments = ["All", ...new Set(faculty.map((f: any) => f.dept))] as string[];
+
+  const filtered = faculty.filter((f: any) => {
+    const matchesSearch = f.name.toLowerCase().includes(search.toLowerCase()) || 
+                          f.dept.toLowerCase().includes(search.toLowerCase());
+    const matchesDept = filterDept === "All" || f.dept === filterDept;
+    const matchesType = filterType === "All" || f.staff_type === filterType;
+    return matchesSearch && matchesDept && matchesType;
+  });
 
   return (
     <div className="space-y-6">
       <Dialog open={openDialog} onOpenChange={(open) => !open && resetForm()}>
         <DialogContent className="rounded-3xl clay border-none max-w-lg">
-          <DialogHeader><DialogTitle className="text-2xl font-black">{editingId ? "Edit Faculty Profile" : "Add Faculty"}</DialogTitle></DialogHeader>
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black">{editingId ? "Edit Faculty Profile" : "Add Faculty"}</DialogTitle>
+            <DialogDescription>
+              Update the staff member's profile and academic details.
+            </DialogDescription>
+          </DialogHeader>
           <div className="space-y-4 py-4 max-h-[70vh] overflow-y-auto px-1">
              <div className="flex justify-center mb-4">
                 <div 
@@ -127,6 +138,10 @@ export default function FacultyPage() {
 
              <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2"><Label>Designation</Label><Input value={designation} onChange={(e) => setDesignation(e.target.value)} placeholder="e.g. Professor" className="rounded-xl border-none neu-inset h-12" /></div>
+                <div className="space-y-2"><Label>Department</Label><Input value={dept} onChange={(e) => setDept(e.target.value)} placeholder="e.g. BBA" className="rounded-xl border-none neu-inset h-12" /></div>
+             </div>
+
+             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Staff Category</Label>
                   <select value={staffType} onChange={(e) => setStaffType(e.target.value)} className="w-full rounded-xl border-none neu-inset h-12 px-3 focus:outline-none text-sm font-medium">
@@ -136,6 +151,16 @@ export default function FacultyPage() {
                      <option value="Support">Supportive Staff</option>
                   </select>
                 </div>
+                <div className="flex items-center gap-3 pt-8">
+                   <input 
+                    type="checkbox" 
+                    id="is_vp" 
+                    checked={isVP} 
+                    onChange={(e) => setIsVP(e.target.checked)}
+                    className="w-5 h-5 accent-primary"
+                   />
+                   <Label htmlFor="is_vp" className="cursor-pointer">Assign as Vice Principal (VP)</Label>
+                </div>
              </div>
 
              <div className="space-y-2"><Label>Qualification</Label><Input value={qualification} onChange={(e) => setQualification(e.target.value)} placeholder="e.g. M.Com, PhD" className="rounded-xl border-none neu-inset h-12" /></div>
@@ -144,7 +169,7 @@ export default function FacultyPage() {
           </div>
           <DialogFooter>
              <Button variant="ghost" onClick={resetForm}>Cancel</Button>
-             <Button disabled={isUpdating} onClick={() => updateFaculty({ name, email, designation, qualification, area, staff_type: staffType, image_url: currentImageUrl })} className="rounded-xl px-10 shadow-lg">
+             <Button disabled={isUpdating} onClick={() => updateFaculty({ name, email, designation, dept, qualification, area, staff_type: staffType, is_vp: isVP, image_url: currentImageUrl })} className="rounded-xl px-10 shadow-lg">
                 {isUpdating ? <Loader2 className="animate-spin" /> : "Save Profile"}
              </Button>
           </DialogFooter>
@@ -154,15 +179,60 @@ export default function FacultyPage() {
 
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-extrabold gradient-text">Faculty</h2>
+          <h2 className="text-3xl font-extrabold gradient-text">Faculty & Staff</h2>
           <p className="text-muted-foreground text-sm mt-1">Manage institutional staff and academic profiles</p>
         </div>
-        <Button onClick={() => setOpenDialog(true)}><Plus className="h-4 w-4 mr-2" />Add Faculty</Button>
+        <div className="flex gap-3">
+          <Button variant="outline" onClick={() => {
+            const headers = ["Name", "Email", "Designation", "Department", "Staff Type", "Qualification", "Expertise"];
+            const csvData = filtered.map((f: any) => [
+              f.name, f.email, f.designation, f.dept, f.staff_type, f.qualification, f.area
+            ]);
+            const csvContent = [headers, ...csvData].map(e => e.join(",")).join("\n");
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `faculty_data_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+          }}>
+            Download List (CSV)
+          </Button>
+          <Button onClick={() => setOpenDialog(true)}><Plus className="h-4 w-4 mr-2" />Add New Staff</Button>
+        </div>
       </div>
 
-      <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input placeholder="Search faculty..." className="pl-9 neu-inset rounded-xl border-none" value={search} onChange={(e) => setSearch(e.target.value)} />
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="relative max-w-xs flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input placeholder="Search name..." className="pl-9 neu-inset rounded-xl border-none h-11" value={search} onChange={(e) => setSearch(e.target.value)} />
+        </div>
+        
+        <div className="flex items-center gap-2">
+           <Label className="text-[10px] uppercase font-black text-muted-foreground tracking-widest hidden sm:block">Dept:</Label>
+           <select 
+            value={filterDept} 
+            onChange={(e) => setFilterDept(e.target.value)}
+            className="rounded-xl border-none bg-white shadow-sm h-11 px-6 text-xs font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+           >
+              {departments.map(d => <option key={d} value={d}>{d}</option>)}
+           </select>
+        </div>
+
+        <div className="flex items-center gap-2">
+           <Label className="text-[10px] uppercase font-black text-muted-foreground tracking-widest hidden sm:block">Type:</Label>
+           <select 
+            value={filterType} 
+            onChange={(e) => setFilterType(e.target.value)}
+            className="rounded-xl border-none bg-white shadow-sm h-11 px-6 text-xs font-bold focus:ring-2 focus:ring-primary/20 outline-none"
+           >
+              <option value="All">All Categories</option>
+              <option value="Teaching">Teaching</option>
+              <option value="Technical">Technical</option>
+              <option value="Admin">Admin</option>
+              <option value="Support">Support</option>
+           </select>
+        </div>
       </div>
 
       {isLoading ? (
@@ -170,7 +240,12 @@ export default function FacultyPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((f: any, i: number) => (
-            <div key={f.id} className="clay p-5 group flex flex-col justify-between">
+            <div key={f.id} className="clay p-5 group flex flex-col justify-between relative overflow-hidden">
+              {f.is_vp === 1 && (
+                <div className="absolute top-0 right-0 bg-yellow-400 text-black text-[8px] font-black px-3 py-1 rounded-bl-xl shadow-sm uppercase tracking-widest z-10">
+                  VP
+                </div>
+              )}
               <div>
                 <div className="flex items-center gap-3.5 mb-4">
                   {f.image_url ? (

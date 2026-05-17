@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
-import { CheckCircle2, Award, Zap, Target, Sparkles, ArrowRight } from 'lucide-react';
+import { CheckCircle2, Award, Zap, Target, ArrowRight, TrendingUp, Shield, Globe, Users } from 'lucide-react';
+import { cn } from '@/src/lib/utils';
 
 const reasons = [
   {
@@ -21,102 +22,103 @@ const reasons = [
 
 export default function WhySemcom() {
   return (
-    <section className="section-padding bg-brand-primary relative overflow-hidden">
-      {/* Dynamic Texture */}
-      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] border-l border-b border-brand-secondary/30 rounded-bl-[20rem]" />
-        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brand-secondary/50 to-transparent" />
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10 px-6 md:px-12">
-        <div className="grid lg:grid-cols-2 gap-24 items-center">
+    <section className="section-padding bg-background">
+      <div className="section-container">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Left Content */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="space-y-12"
+            transition={{ duration: 0.5 }}
+            className="space-y-8"
           >
-            <div className="space-y-6">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-brand-secondary"
-              >
-                The SEMCOM Advantage
-              </motion.div>
-              <h2 className="text-[44px] md:text-[64px] font-heading font-black text-white leading-[1.1] italic tracking-tighter">
-                Why Should You <br />
-                <span className="text-brand-secondary">Join</span> SEMCOM?
+            <div>
+              <span className="section-label">The SEMCOM Advantage</span>
+              <h2>
+                Why Choose <span className="text-secondary">SEMCOM?</span>
               </h2>
-              <p className="text-xl text-white/70 leading-relaxed max-w-lg font-medium italic">
-                We go beyond conventional teaching to inspire a mindset of leadership and continuous innovation.
+              <p className="max-w-lg mt-4 text-sm text-muted leading-relaxed">
+                We bridge the gap between academic theory and real-world application, empowering students with a mindset of leadership and innovation.
               </p>
             </div>
-            
-            <div className="grid gap-6">
-              {['State-of-the-Art Digital Campus', 'Global Institutional Mentorship', 'Direct Corporate Placement Access', 'Vibrant Alumni Networking Node'].map((item, i) => (
-                <motion.div 
-                  key={i} 
-                  initial={{ opacity: 0, x: -20 }}
+
+            {/* Feature Checklist */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-4">
+              {[
+                { text: 'Digital Learning Ecosystem', icon: Shield },
+                { text: 'Global Mentorship Network', icon: Globe },
+                { text: 'Industry Placement Access', icon: TrendingUp },
+                { text: 'Vibrant Alumni Network', icon: Users },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="flex items-center gap-5 group"
+                  transition={{ delay: i * 0.08, duration: 0.4 }}
+                  className="flex items-center gap-4 group"
                 >
-                  <div className="w-8 h-8 rounded-xl bg-brand-secondary flex items-center justify-center text-white shadow-lg shadow-brand-secondary/20 group-hover:rotate-12 transition-transform">
-                    <CheckCircle2 size={18} />
+                  <div className="w-10 h-10 rounded-lg bg-secondary/8 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors duration-300 shrink-0">
+                    <item.icon size={18} />
                   </div>
-                  <span className="text-lg font-bold text-white/90 uppercase tracking-widest text-[12px] group-hover:text-brand-secondary transition-colors italic">{item}</span>
+                  <span className="text-sm font-medium text-text/80 group-hover:text-secondary transition-colors">
+                    {item.text}
+                  </span>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          <div className="grid gap-10">
+          {/* Right Cards */}
+          <div className="space-y-5">
             {reasons.map((reason, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white/5 backdrop-blur-xl border border-white/10 p-10 rounded-[3rem] hover:bg-white/10 transition-all duration-500 group relative overflow-hidden"
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="card group !p-6"
               >
-                {/* Decorative Icon */}
-                <div className="absolute top-[-20%] right-[-10%] opacity-[0.05] group-hover:opacity-[0.1] transition-opacity">
-                   <reason.icon size={120} className="text-white" />
-                </div>
-
-                <div className="flex gap-10 items-center relative z-10">
-                  <div className="w-16 h-16 rounded-2xl bg-brand-secondary flex items-center justify-center text-white shadow-xl shadow-brand-secondary/20 group-hover:scale-110 transition-transform duration-500">
-                    <reason.icon size={32} />
+                <div className="flex gap-5 items-start">
+                  <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors duration-300 shrink-0">
+                    <reason.icon size={22} />
                   </div>
-                  <div className="space-y-2">
-                    <h3 className="text-2xl font-heading font-black text-white italic">{reason.title}</h3>
-                    <p className="text-white/60 leading-relaxed text-sm font-medium">{reason.description}</p>
+                  <div>
+                    <h3 className="!text-lg font-semibold text-primary mb-1.5">{reason.title}</h3>
+                    <p className="text-sm text-muted leading-relaxed">{reason.description}</p>
                   </div>
                 </div>
               </motion.div>
             ))}
-            
-            <motion.div 
-               whileHover={{ y: -5 }}
-               className="bg-brand-secondary p-8 rounded-[3rem] shadow-2xl flex items-center justify-between group cursor-pointer"
+
+            {/* CTA Card */}
+            <motion.a
+              href="https://admissions.cvmu.edu.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="block p-6 rounded-2xl bg-primary group hover:bg-primary-light transition-colors duration-300"
             >
-               <div className="flex items-center gap-6">
-                  <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-brand-secondary">
-                     <Sparkles size={28} />
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center text-accent">
+                    <CheckCircle2 size={22} />
                   </div>
                   <div>
-                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white opacity-80">Strategic Journey</p>
-                     <p className="text-xl font-heading font-black text-brand-primary italic">Apply For 2026 Batch</p>
+                    <p className="text-[11px] font-medium text-white/50 uppercase tracking-wider mb-0.5">Admission Open</p>
+                    <p className="text-lg font-semibold text-white">Apply For 2026 Batch</p>
                   </div>
-               </div>
-               <div className="w-12 h-12 rounded-full border-2 border-white/20 flex items-center justify-center text-white group-hover:bg-white group-hover:text-brand-secondary transition-all">
-                  <ArrowRight size={24} />
-               </div>
-            </motion.div>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-accent group-hover:text-primary transition-all duration-300">
+                  <ArrowRight size={18} />
+                </div>
+              </div>
+            </motion.a>
           </div>
         </div>
       </div>

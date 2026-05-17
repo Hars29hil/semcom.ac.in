@@ -1,13 +1,14 @@
 import { GraduationCap, Mail, Phone, MapPin, Facebook, Instagram, Linkedin, ArrowUpRight, Youtube, Globe, Shield } from 'lucide-react';
+import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 
 const footerLinks = [
   {
-    title: 'Institutional Link',
+    title: 'Institutional',
     links: [
       { name: 'About SEMCOM', href: '/about/semcom' },
       { name: 'Admissions 2026', href: '/admission' },
-      { name: 'Academic Calendar', href: '/academics' },
+      { name: 'Academic Programs', href: '/academics' },
       { name: 'Research Journal', href: '/research/journal' },
       { name: 'Placement Cell', href: '/placement' },
       { name: 'IQAC Portal', href: '/about/iqac' },
@@ -16,141 +17,161 @@ const footerLinks = [
   {
     title: 'Student Services',
     links: [
-      { name: 'NEEV Cell', href: '/student/neev' },
-      { name: 'Facilities', href: '/student/facilities' },
+      { name: 'Campus Facilities', href: '/student/facilities' },
       { name: 'Alumni Network', href: '/alumni' },
       { name: 'Downloads', href: '/student/downloads' },
-      { name: 'Reach Us', href: '/contact' },
+      { name: 'Media Kit', href: '/media-kit' },
+      { name: 'Gallery', href: '/gallery' },
+      { name: 'Contact Us', href: '/contact' },
     ],
   },
 ];
 
+const socialLinks = [
+  { icon: Facebook, href: 'https://www.facebook.com/SEMCOMIndia/', label: 'Facebook' },
+  { icon: Instagram, href: 'https://www.instagram.com/semcomindia/', label: 'Instagram' },
+  { icon: Linkedin, href: '#', label: 'LinkedIn' },
+  { icon: Youtube, href: '#', label: 'YouTube' },
+];
+
 export default function Footer() {
   return (
-    <footer className="bg-brand-primary pt-32 pb-16 text-white overflow-hidden relative">
-      {/* Background Accent Architecture */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-10">
-         <div className="absolute top-[-20%] right-[-10%] w-[1000px] h-[1000px] bg-brand-secondary rounded-full blur-[200px]" />
-         <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-white rounded-full blur-[150px]" />
-         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-30" />
-      </div>
+    <footer className="bg-primary pt-16 sm:pt-20 pb-8 text-white">
+      <div className="section-container">
+        <div className="grid lg:grid-cols-4 gap-10 sm:gap-12 mb-12 sm:mb-16">
 
-      <div className="max-w-[1440px] mx-auto px-6 md:px-12 lg:px-24 relative z-10">
-        <div className="grid lg:grid-cols-4 gap-20 mb-28">
-          <div className="lg:col-span-1 space-y-12">
-            <Link to="/" className="flex items-center gap-4 group">
-              <div className="w-16 h-16 bg-white/10 backdrop-blur-2xl rounded-2xl flex items-center justify-center text-white border border-white/20 group-hover:bg-brand-secondary group-hover:border-transparent transition-all duration-500 shadow-2xl group-hover:rotate-12">
-                <GraduationCap size={36} />
+          {/* Brand Column */}
+          <div className="lg:col-span-1 space-y-6">
+            <Link to="/" className="flex items-center gap-3">
+              <div className="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center text-white border border-white/10">
+                <GraduationCap size={22} />
               </div>
-              <div className="space-y-1">
-                <span className="text-4xl font-heading font-black tracking-[-0.05em] block leading-none italic">
-                  SEMCOM
-                </span>
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-secondary block opacity-80">
-                  Legacy Node
-                </span>
+              <div>
+                <span className="text-xl font-bold leading-none block">SEMCOM</span>
+                <span className="text-[10px] text-accent font-medium tracking-wider">CVM University</span>
               </div>
             </Link>
-            
-            <p className="text-white/60 font-medium leading-relaxed italic text-base max-w-xs">
-              Pioneering commerce and management education since 1997. A premier institution of Charutar Vidya Mandal (CVM) University.
+
+            <p className="text-white/50 text-sm leading-relaxed">
+              Pioneering commerce and management education since 1997. A premier institution of Charutar Vidya Mandal University.
             </p>
-            
-            <div className="flex gap-4">
-              {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
+
+            {/* Social Icons */}
+            <div className="flex gap-2.5">
+              {socialLinks.map((social, i) => (
                 <a
                   key={i}
-                  href="#"
-                  className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-brand-secondary hover:text-white hover:-translate-y-2 transition-all duration-300"
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-secondary hover:border-secondary text-white/70 hover:text-white transition-all duration-300"
+                  aria-label={social.label}
                 >
-                  <Icon size={22} />
+                  <social.icon size={16} />
                 </a>
               ))}
             </div>
+
+            {/* Newsletter */}
+            <div className="pt-5 border-t border-white/10">
+              <p className="text-[11px] font-medium text-white/40 uppercase tracking-wider mb-3">Stay Connected</p>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-secondary/50 transition-colors"
+                />
+                <button className="px-3 py-2.5 bg-secondary rounded-lg text-white hover:bg-secondary-hover transition-colors">
+                  <ArrowUpRight size={16} />
+                </button>
+              </div>
+            </div>
           </div>
 
-          {footerLinks.map((section) => (section.title === 'Institutional Link' ? (
-            <div key={section.title} className="space-y-10">
-              <h4 className="text-xs font-black uppercase tracking-[0.4em] text-brand-secondary border-b border-white/10 pb-4 inline-block">{section.title}</h4>
-              <ul className="space-y-6">
+          {/* Links Columns */}
+          {footerLinks.map((section) => (
+            <div key={section.title} className="space-y-5">
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-accent border-b border-white/10 pb-3">
+                {section.title}
+              </h4>
+              <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className="text-white/60 font-bold hover:text-brand-secondary transition-all flex items-center gap-4 group text-[13px] uppercase tracking-widest"
+                      className="text-white/50 text-sm font-medium hover:text-white transition-colors flex items-center gap-2"
                     >
-                      <div className="w-2 h-2 rounded-full bg-brand-secondary scale-50 group-hover:scale-100 opacity-20 group-hover:opacity-100 transition-all" />
+                      <div className="w-1 h-1 rounded-full bg-secondary/50" />
                       {link.name}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
-          ) : (
-            <div key={section.title} className="space-y-10">
-              <h4 className="text-xs font-black uppercase tracking-[0.4em] text-brand-secondary border-b border-white/10 pb-4 inline-block">{section.title}</h4>
-              <ul className="space-y-6">
-                {section.links.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      to={link.href}
-                      className="text-white/60 font-bold hover:text-brand-secondary transition-all flex items-center gap-4 group text-[13px] uppercase tracking-widest"
-                    >
-                      <div className="w-2 h-2 rounded-full bg-brand-secondary scale-50 group-hover:scale-100 opacity-20 group-hover:opacity-100 transition-all" />
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )))}
+          ))}
 
-          <div className="space-y-10">
-            <h4 className="text-xs font-black uppercase tracking-[0.4em] text-brand-secondary border-b border-white/10 pb-4 inline-block">Contact Hub</h4>
-            <ul className="space-y-10">
-              <li className="flex gap-6">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-brand-secondary border border-white/10 shrink-0 group hover:bg-brand-secondary hover:text-white transition-all">
-                  <MapPin size={24} />
+          {/* Contact Column */}
+          <div className="space-y-5">
+            <h4 className="text-xs font-semibold uppercase tracking-widest text-accent border-b border-white/10 pb-3">
+              Contact
+            </h4>
+            <ul className="space-y-5">
+              <li className="flex gap-3.5 group">
+                <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-secondary group-hover:text-white group-hover:border-secondary transition-all duration-300">
+                  <MapPin size={16} />
                 </div>
-                <div className="space-y-1">
-                   <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/30">Official Address</p>
-                   <p className="text-white/80 text-sm font-bold leading-relaxed max-w-[200px] italic">
-                     Opp. Shastri Ground, V.V. Nagar - 388120, Gujarat, India.
-                   </p>
+                <div>
+                  <p className="text-[10px] font-medium text-white/30 uppercase tracking-wider mb-0.5">Address</p>
+                  <p className="text-white/70 text-sm leading-relaxed">
+                    Opp. Shastri Ground, V.V. Nagar - 388120, Gujarat, India.
+                  </p>
                 </div>
               </li>
-              <li className="flex gap-6">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-brand-secondary border border-white/10 shrink-0 group hover:bg-brand-secondary hover:text-white transition-all">
-                  <Mail size={24} />
+              <li className="flex gap-3.5 group">
+                <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-secondary group-hover:text-white group-hover:border-secondary transition-all duration-300">
+                  <Mail size={16} />
                 </div>
-                <div className="space-y-1">
-                   <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/30">Direct Enquiry</p>
-                   <p className="text-white/80 text-sm font-bold leading-relaxed italic">
-                     principal.semcom@cvmu.edu.in
-                   </p>
+                <div>
+                  <p className="text-[10px] font-medium text-white/30 uppercase tracking-wider mb-0.5">Email</p>
+                  <a href="mailto:principal.semcom@cvmu.edu.in" className="text-white/70 text-sm hover:text-white transition-colors">
+                    principal.semcom@cvmu.edu.in
+                  </a>
+                </div>
+              </li>
+              <li className="flex gap-3.5 group">
+                <div className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-secondary group-hover:text-white group-hover:border-secondary transition-all duration-300">
+                  <Phone size={16} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-medium text-white/30 uppercase tracking-wider mb-0.5">Phone</p>
+                  <a href="tel:+91-2692-230331" className="text-white/70 text-sm hover:text-white transition-colors">
+                    +91-2692-230331
+                  </a>
                 </div>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Legal & Sub-footer */}
-        <div className="pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-12 group/sub">
-          <div className="flex items-center gap-4">
-             <div className="w-3 h-3 rounded-full bg-brand-secondary animate-pulse shadow-[0_0_15px_rgba(13,148,136,0.5)]" />
-             <p className="text-white/20 text-[11px] font-black uppercase tracking-[0.3em] group-hover/sub:text-white/40 transition-colors">
-               © 2026 SEMCOM • A CVM University Institution • Crafted For Excellence
-             </p>
-          </div>
-          <div className="flex gap-12 text-white/20 text-[10px] font-black uppercase tracking-[0.4em] items-center">
-            <Link to="/about/aicte" className="hover:text-brand-secondary transition-colors flex items-center gap-2">
-              <Shield size={14} />
-              AICTE
-            </Link>
-            <Link to="/rankings" className="hover:text-brand-secondary transition-colors flex items-center gap-2">
-              <Globe size={14} />
-              University
-            </Link>
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-white/5">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+            <p className="text-white/25 text-xs font-medium">
+              © 2026 SEMCOM — A CVM University Institution. All rights reserved.
+            </p>
+            <div className="flex flex-wrap justify-center gap-5 text-white/25 text-[11px] font-medium items-center">
+              <Link to="/about/aicte" className="hover:text-white/60 transition-colors flex items-center gap-1.5">
+                <Shield size={12} />
+                AICTE Approved
+              </Link>
+              <Link to="/rankings" className="hover:text-white/60 transition-colors flex items-center gap-1.5">
+                <Globe size={12} />
+                NAAC A+
+              </Link>
+              <span className="text-accent/50 flex items-center gap-1.5">
+                UGC Recognized
+              </span>
+            </div>
           </div>
         </div>
       </div>

@@ -38,19 +38,17 @@ const mainItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Announcements", url: "/announcements", icon: Bell },
   { title: "Events", url: "/events", icon: Calendar },
+  { title: "Press Notes", url: "/press-notes", icon: FileText },
 ];
 
 const academicItems = [
   { title: "Programs", url: "/programs", icon: GraduationCap },
-  { title: "Admissions", url: "/admissions", icon: FileText },
   { title: "Research", url: "/research", icon: FlaskConical },
   { title: "Faculty", url: "/faculty", icon: BookOpen },
 ];
 
 const communityItems = [
-  { title: "Students", url: "/students", icon: Users },
   { title: "Alumni", url: "/alumni", icon: UserCheck },
-  { title: "Placements", url: "/placements", icon: Briefcase },
 ];
 
 const contentItems = [

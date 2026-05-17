@@ -1,17 +1,17 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { 
-  Home, 
-  Info, 
-  BookOpen, 
-  UserPlus, 
-  Search, 
-  Users, 
-  Target, 
-  GraduationCap, 
-  Image as ImageIcon, 
-  Award, 
-  MapPin 
+import {
+  Home,
+  Info,
+  BookOpen,
+  UserPlus,
+  Search,
+  Users,
+  Target,
+  GraduationCap,
+  Image as ImageIcon,
+  Award,
+  MapPin
 } from 'lucide-react';
 
 const quickLinks = [
@@ -30,25 +30,25 @@ const quickLinks = [
 
 export default function QuickNav() {
   return (
-    <section className="bg-gray-50 py-12 px-6 md:px-12 lg:px-24">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+    <section className="bg-background py-10 sm:py-14">
+      <div className="section-container">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
           {quickLinks.map((link, index) => (
             <motion.div
               key={link.name}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
+              transition={{ delay: index * 0.03, duration: 0.4 }}
             >
               <Link
                 to={link.href}
-                className="group p-4 bg-white rounded-2xl border border-gray-100 flex flex-col items-center justify-center text-center gap-3 hover:shadow-xl hover:shadow-primary/5 hover:border-primary/20 transition-all duration-300 h-full"
+                className="group flex flex-col items-center justify-center text-center gap-2.5 p-4 sm:p-5 bg-surface rounded-xl border border-border w-[100px] sm:w-[120px] hover:shadow-soft hover:border-secondary/20 hover:-translate-y-1 transition-all duration-300"
               >
-                <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                <div className="w-10 h-10 rounded-lg bg-secondary/8 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors duration-300">
                   <link.icon size={20} />
                 </div>
-                <span className="text-xs font-semibold text-gray-700 group-hover:text-primary transition-colors">
+                <span className="text-[11px] sm:text-xs font-medium text-text/80 group-hover:text-secondary transition-colors leading-tight">
                   {link.name}
                 </span>
               </Link>

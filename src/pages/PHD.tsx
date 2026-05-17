@@ -197,10 +197,10 @@ export default function PHD() {
                 </button>
               </div>
 
-              <div className="bg-secondary p-12 rounded-[3.5rem] text-primary flex items-center justify-between group overflow-hidden relative">
+              <div className="bg-secondary p-12 rounded-[3.5rem] text-white flex items-center justify-between group overflow-hidden relative shadow-2xl shadow-secondary/20">
                 <div className="relative z-10">
                   <h4 className="text-2xl font-serif font-black mb-2 italic tracking-tight">Ready to begin your journey?</h4>
-                  <p className="font-bold uppercase tracking-widest text-xs opacity-60">Admission is currently open for eligible candidates</p>
+                  <p className="font-bold uppercase tracking-widest text-xs text-white/80">Admission is currently open for eligible candidates</p>
                 </div>
                 <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center -rotate-45 group-hover:rotate-0 transition-transform relative z-10">
                   <ArrowRight size={32} />

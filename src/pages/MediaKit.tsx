@@ -171,7 +171,7 @@ export default function MediaKit() {
             <div className="rounded-[4rem] overflow-hidden shadow-2xl h-[500px] border-8 border-white group">
               <img 
                 src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070" 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" 
                 alt="Brand meeting"
               />
             </div>

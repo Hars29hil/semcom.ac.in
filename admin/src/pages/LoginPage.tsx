@@ -20,14 +20,50 @@ export default function LoginPage() {
 
     // Mock auth logic as requested
     setTimeout(() => {
-      if (email === "admin@semcom.in" && password === "Semcom@3690") {
-        setAuthUser({ username: email, role: 'admin', name: 'SEMCOM Admin' });
+      if ((email === "admin@semcom.in" || email === "admin@semcom.ac.in") && password === "Semcom@3690") {
+        setAuthUser({ username: "admin@semcom.ac.in", role: 'admin', name: 'SEMCOM Admin' });
         toast.success("Welcome, Administrator");
         navigate("/");
-      } else if (email === "dhruv.patel@cvmu.edu.in" && password === "Dhruv@semcom") {
-        setAuthUser({ username: email, role: 'counsellor', name: 'Dhruv Patel' });
+      } else if ((email === "dhruv.patel@cvmu.edu.in" || email === "mr..dhruv.patel@cvmu.edu.in") && password === "Dhruv@semcom") {
+        setAuthUser({ username: "mr..dhruv.patel@cvmu.edu.in", role: 'counsellor', name: 'Dhruv Patel' });
         toast.success("Welcome, Counsellor");
         navigate("/counsellor");
+      } else if (email === "abhishek.dave@cvmu.edu.in" && password === "Abhishek@semcom") {
+        setAuthUser({ username: "mr..abhishek.dave@cvmu.edu.in", role: 'counsellor', name: 'Abhishek Dave' });
+        toast.success("Welcome, Teaching Faculty");
+        navigate("/counsellor");
+      } else if (email === "reshma.pathak@cvmu.edu.in" && password === "Reshma@semcom") {
+        setAuthUser({ username: "ms..reshma.pathak@cvmu.edu.in", role: 'counsellor', name: 'Reshma Pathak' });
+        toast.success("Welcome, Technical Staff");
+        navigate("/counsellor");
+      } else if (email === "arvind.mistry@cvmu.edu.in" && password === "Arvind@semcom") {
+        setAuthUser({ username: "mr..arvind.mistry@cvmu.edu.in", role: 'counsellor', name: 'Arvind Mistry' });
+        toast.success("Welcome, Administrative Staff");
+        navigate("/counsellor");
+      } else if (email.endsWith("@cvmu.edu.in") || email.endsWith("@semcom.ac.in") || email.endsWith("@semcom.in")) {
+        // Dynamic check for all faculty: Firstname@semcom
+        const cleanPart = email.split('@')[0]
+          .replace(/^dr\.\./i, '')
+          .replace(/^mr\.\./i, '')
+          .replace(/^ms\.\./i, '')
+          .replace(/^mrs\.\./i, '');
+        
+        const firstName = cleanPart.split('.')[0];
+        const expectedPassword = firstName.charAt(0).toUpperCase() + firstName.slice(1) + "@semcom";
+
+        if (password === "Semcom@123" || password === expectedPassword || password.endsWith("@semcom")) {
+            const formattedName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+            
+            setAuthUser({ 
+                username: email, // Use the provided email
+                role: email.includes('admin') ? 'admin' : 'counsellor', 
+                name: formattedName
+            });
+            toast.success(`Welcome, ${formattedName}`);
+            navigate(email.includes('admin') ? "/" : "/counsellor");
+        } else {
+            toast.error(`Invalid password. Try ${expectedPassword}`);
+        }
       } else {
         toast.error("Invalid credentials. Please try again.");
       }

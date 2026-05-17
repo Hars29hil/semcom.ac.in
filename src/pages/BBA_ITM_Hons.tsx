@@ -11,6 +11,7 @@ import {
   Compass,
   ArrowRight
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const programOutcomes = [
   {
@@ -26,7 +27,7 @@ const programOutcomes = [
   {
     id: 'PO-3',
     title: 'Ethical Decision Making',
-    description: 'Analytical and critical thinking abilities for business decision making by promoting ethical and value based leadership.'
+    description: 'Analytical and critical thinking abilities for business decision making by promoting ethical and value-based leadership.'
   },
   {
     id: 'PO-4',
@@ -45,169 +46,179 @@ const specializations = [
 
 export default function BBA_ITM_Hons() {
   return (
-    <div className="pt-20">
-      {/* Hero Section */}
-      <section className="relative h-[60vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" 
-            alt="Students collaborating"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1c2e5a] to-[#1c2e5a]/60 mix-blend-multiply" />
-        </div>
+    <div className="bg-background min-h-screen">
+      {/* Hero Banner — Clean Dark Primary Theme matching Hero */}
+      <div className="relative bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white py-16 sm:py-24 overflow-hidden">
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
         
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl"
-          >
-            <h1 className="text-5xl md:text-7xl font-serif font-black text-white mb-6 leading-tight">
-              BBA (ITM) <br />
-              <span className="text-secondary italic">(HONS.)</span>
-            </h1>
-            <p className="text-xl text-gray-200 leading-relaxed font-sans max-w-2xl">
-              Bachelor of Business Administration (Information Technology Management)(Hons.) - Preparing the next generation of business leaders for the digital age.
-            </p>
-          </motion.div>
+        <div className="section-container relative z-10">
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-accent mb-4 tracking-widest uppercase">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/</span>
+            <Link to="/courses" className="hover:text-white transition-colors">Courses</Link>
+            <span>/</span>
+            <span className="text-white/60">BBA (ITM) (Hons.)</span>
+          </div>
+
+          <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4">
+            BBA (ITM) <span className="text-accent">(Hons.)</span>
+          </h1>
+          <p className="text-white/70 max-w-2xl text-sm sm:text-base leading-relaxed">
+            Bachelor of Business Administration (Information Technology Management)(Hons.) - Preparing the next generation of business leaders for the digital age.
+          </p>
         </div>
-      </section>
+      </div>
 
       {/* Program Overview */}
-      <section className="py-24 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="text-secondary font-black uppercase tracking-[0.2em] text-sm mb-4 block">Program Overview</span>
-              <h2 className="text-4xl md:text-5xl font-serif font-black text-primary mb-8 leading-tight">
-                Empowering Leaders with a Dual Edge
-              </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                The BBA IT Management (Hons.) program offers dual specialization in Human Resource Management, Marketing Management, Financial Management, & International Business.
-              </p>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                This program also offers practical exposure in terms of Industrial Visits and training as a part of course curriculum. In addition, the focus is on enhancing presentation skills and other managerial skills, ensuring our graduates are ready for the professional world.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-3 bg-gray-50 px-6 py-4 rounded-2xl border border-gray-100">
-                  <Users className="text-secondary" />
-                  <span className="font-bold text-primary">180 Students Intake</span>
-                </div>
-                <div className="flex items-center gap-3 bg-gray-50 px-6 py-4 rounded-2xl border border-gray-100">
-                  <BookOpen className="text-secondary" />
-                  <span className="font-bold text-primary">3 Years Program</span>
-                </div>
+      <div className="section-container py-12 sm:py-16">
+        <div className="grid lg:grid-cols-2 gap-10 items-center justify-between">
+          <motion.div
+            initial={{ opacity: 0, x: -15 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-6"
+          >
+            <div className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider">
+              <span>Program Overview</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">
+              Empowering Leaders with a Dual Edge
+            </h2>
+            <p className="text-sm text-muted leading-relaxed font-medium">
+              The BBA IT Management (Hons.) program offers dual specialization in Human Resource Management, Marketing Management, Financial Management, & International Business.
+            </p>
+            <p className="text-sm text-muted leading-relaxed font-medium">
+              This program also offers practical exposure in terms of Industrial Visits and training as a part of the course curriculum. In addition, the focus is on enhancing presentation skills and other managerial skills, ensuring our graduates are ready for the professional world.
+            </p>
+            <div className="flex flex-wrap gap-4 pt-2">
+              <div className="flex items-center gap-3 bg-surface px-5 py-3 rounded-xl border border-border">
+                <Users className="text-secondary" size={18} />
+                <span className="font-bold text-xs text-primary">180 Students Intake</span>
               </div>
-            </motion.div>
+              <div className="flex items-center gap-3 bg-surface px-5 py-3 rounded-xl border border-border">
+                <BookOpen className="text-secondary" size={18} />
+                <span className="font-bold text-xs text-primary">3 Years Program</span>
+              </div>
+            </div>
+          </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="aspect-[4/3] rounded-[3rem] overflow-hidden shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Student learning"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-10 -left-10 bg-white p-8 rounded-3xl shadow-xl border border-gray-100 max-w-xs">
-                <Trophy className="text-secondary w-12 h-12 mb-4" />
-                <h4 className="font-black text-xl text-primary mb-2">Academic Excellence</h4>
-                <p className="text-sm text-gray-500">Ranked consistently among top management programs.</p>
-              </div>
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, x: 15 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="card !p-0 overflow-hidden relative border border-border shadow-soft aspect-[1.4] group">
+              <img 
+                src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop" 
+                alt="Student learning"
+                className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700"
+              />
+            </div>
+            <div className="absolute -bottom-6 -left-6 card !p-6 max-w-[200px] border border-border shadow-soft hidden sm:block">
+              <Trophy className="text-secondary w-9 h-9 mb-4" />
+              <h4 className="font-bold text-xs text-primary mb-1">Academic Excellence</h4>
+              <p className="text-[9px] font-semibold text-muted leading-relaxed">Ranked consistently among the top management programs.</p>
+            </div>
+          </motion.div>
         </div>
-      </section>
+      </div>
 
       {/* Program Outcomes */}
-      <section className="py-24 bg-gray-50 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto text-center mb-16">
-          <span className="text-secondary font-black uppercase tracking-[0.2em] text-sm mb-4 block underline decoration-secondary decoration-4 underline-offset-8">Outcomes</span>
-          <h2 className="text-4xl md:text-6xl font-serif font-black text-primary">Program Outcomes</h2>
-        </div>
+      <div className="bg-surface py-12 sm:py-16 border-y border-border">
+        <div className="section-container">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3">Program Outcomes</h2>
+            <p className="text-muted text-sm font-medium">Core proficiencies our graduates achieve throughout the program.</p>
+          </div>
 
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {programOutcomes.map((po, index) => (
-            <motion.div
-              key={po.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 hover:border-secondary transition-colors"
-            >
-              <span className="text-secondary font-black text-2xl block mb-4">{po.id}</span>
-              <h3 className="font-bold text-xl text-primary mb-4">{po.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{po.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Specialization & Eligibility */}
-      <section className="py-24 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16">
-            <div>
-              <h2 className="text-4xl font-serif font-black text-primary mb-10">Specialization</h2>
-              <div className="space-y-4">
-                {specializations.map((spec, i) => (
-                  <div key={i} className="flex items-center gap-6 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                    <div className="w-12 h-12 bg-primary/5 rounded-xl flex items-center justify-center text-primary">
-                      <spec.icon size={24} />
-                    </div>
-                    <span className="font-bold text-lg text-gray-800">{spec.name}</span>
-                    <CheckCircle2 size={24} className="ml-auto text-secondary" />
-                  </div>
-                ))}
-              </div>
-              <p className="mt-8 text-secondary font-black italic">
-                * Dual Specialization in Management and Information Technology
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-12">
-              <div className="bg-[#1c2e5a] text-white p-12 rounded-[3.5rem] relative overflow-hidden h-full">
-                <div className="relative z-10 flex flex-col h-full">
-                  <GraduationCap size={48} className="text-secondary mb-8" />
-                  <h2 className="text-4xl font-serif font-bold mb-6 italic">Eligibility</h2>
-                  <p className="text-xl text-gray-300 leading-relaxed mb-10">
-                    Candidate who has completed <span className="text-secondary font-bold">12th / HSC / Equivalent</span> in any stream with recognized board.
-                  </p>
-                  
-                  <div className="mt-auto">
-                    <button className="flex items-center gap-3 text-secondary font-black uppercase tracking-widest text-sm group hover:gap-5 transition-all">
-                      Apply Now <ArrowRight size={20} />
-                    </button>
-                  </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {programOutcomes.map((po, index) => (
+              <motion.div
+                key={po.id}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.03, duration: 0.3 }}
+                className="card flex flex-col justify-between"
+              >
+                <div>
+                  <span className="text-secondary font-bold text-lg block mb-4">{po.id}</span>
+                  <h3 className="font-bold text-sm text-primary mb-3">{po.title}</h3>
+                  <p className="text-muted text-xs leading-relaxed font-medium">{po.description}</p>
                 </div>
-                
-                {/* Decorative Elements */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-secondary/20 blur-3xl" />
-              </div>
-
-              <div className="border-4 border-dashed border-gray-200 p-10 rounded-[3.5rem] flex flex-col items-center justify-center text-center">
-                <h3 className="text-gray-400 font-black uppercase tracking-widest text-sm mb-4">Program Structure</h3>
-                <h4 className="text-2xl font-serif font-bold text-primary mb-6">BBA ITM (Hons.) (2024-25)</h4>
-                <button className="bg-primary text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-3 hover:scale-105 transition-transform shadow-xl shadow-primary/20">
-                  <BookOpen size={20} />
-                  Download Curriculum
-                </button>
-              </div>
-            </div>
+              </motion.div>
+            ))}
           </div>
         </div>
-      </section>
+      </div>
+
+      {/* Specialization & Eligibility */}
+      <div className="section-container py-12 sm:py-16">
+        <div className="grid lg:grid-cols-2 gap-10 items-stretch">
+          
+          {/* Specializations */}
+          <div className="space-y-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">Specialization Options</h2>
+            <div className="space-y-3.5">
+              {specializations.map((spec, i) => (
+                <div key={i} className="flex items-center gap-4 p-4 bg-surface rounded-xl border border-border shadow-sm">
+                  <div className="w-10 h-10 bg-background border border-border rounded-xl flex items-center justify-center text-secondary shrink-0">
+                    <spec.icon size={18} />
+                  </div>
+                  <span className="font-bold text-xs sm:text-sm text-primary">{spec.name}</span>
+                  <CheckCircle2 size={18} className="ml-auto text-secondary shrink-0" />
+                </div>
+              ))}
+            </div>
+            <p className="text-[10px] font-bold text-secondary italic">
+              * Dual Specialization in Management and Information Technology
+            </p>
+          </div>
+
+          {/* Eligibility & Curriculum */}
+          <div className="flex flex-col gap-6">
+            
+            {/* Eligibility Box */}
+            <div className="card !p-8 bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white space-y-6 relative overflow-hidden flex-1 flex flex-col justify-between">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
+              
+              <div className="relative z-10 space-y-4">
+                <GraduationCap size={32} className="text-accent mb-4" />
+                <h3 className="text-lg font-bold">Eligibility Criteria</h3>
+                <p className="text-white/70 text-xs sm:text-sm leading-relaxed font-semibold">
+                  Candidates who have completed <span className="text-accent font-bold">12th / HSC / Equivalent</span> in any stream from a recognized board.
+                </p>
+              </div>
+
+              <div className="pt-4 relative z-10">
+                <a 
+                  href="https://admissions.cvmu.edu.in/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="inline-flex items-center gap-2 bg-accent text-primary px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-white hover:text-primary transition-all shadow"
+                >
+                  <span>Apply Now</span>
+                  <ArrowRight size={13} />
+                </a>
+              </div>
+            </div>
+
+            {/* Curriculum Box */}
+            <div className="card !p-6 flex flex-col items-center justify-center text-center border border-border shadow-sm bg-surface">
+              <h3 className="text-muted font-bold uppercase tracking-wider text-[9px] mb-2">Program Structure</h3>
+              <h4 className="text-sm font-bold text-primary mb-5">BBA ITM (Hons.) Curriculum</h4>
+              <button className="btn-primary !py-2.5 !px-6 !text-xs">
+                <BookOpen size={14} />
+                <span>Download Curriculum</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
     </div>
   );
 }

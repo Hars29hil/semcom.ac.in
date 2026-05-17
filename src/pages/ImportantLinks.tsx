@@ -9,6 +9,7 @@ import {
   Zap,
   LayoutGrid
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const importantLinks = [
   {
@@ -36,100 +37,93 @@ const importantLinks = [
 
 export default function ImportantLinks() {
   return (
-    <div className="pt-20 bg-gray-50 min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-white py-24 px-6 md:px-12 lg:px-24 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col md:flex-row md:items-center justify-between gap-12"
-          >
-            <div className="max-w-2xl">
-              <div className="flex items-center gap-3 mb-6 bg-primary/5 w-fit px-4 py-2 rounded-full border border-primary/10">
-                <Zap size={16} className="text-primary animate-pulse" />
-                <span className="text-primary font-black text-xs uppercase tracking-[0.3em]">Quick Access Portal</span>
-              </div>
-              <h1 className="text-5xl md:text-7xl font-serif font-black text-primary italic leading-tight mb-8">
-                Important <br />
-                <span className="text-secondary">Resources</span>
-              </h1>
-              <p className="text-xl text-gray-500 font-light leading-relaxed border-l-4 border-secondary pl-8">
-                Connect with our governing bodies, educational trusts, and regulatory authorities to access official platforms and information.
-              </p>
+    <div className="bg-background min-h-screen">
+      {/* Hero Banner — Clean Dark Primary Theme matching Hero */}
+      <div className="relative bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white py-16 sm:py-24 overflow-hidden">
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
+        
+        <div className="section-container relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-10">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2.5 text-xs font-semibold text-accent mb-4 tracking-widest uppercase">
+              <Link to="/" className="hover:text-white transition-colors">Home</Link>
+              <span>/</span>
+              <span className="text-white/60">Important Links</span>
             </div>
-            
-            <div className="hidden lg:block w-96 h-96 relative">
-              <div className="absolute inset-0 bg-secondary/10 rounded-full animate-ping opacity-20" />
-              <div className="absolute inset-4 bg-white rounded-full shadow-2xl flex items-center justify-center p-12">
-                <LayoutGrid size={120} className="text-primary opacity-10" />
-                <Globe size={180} className="text-primary absolute" />
-              </div>
-            </div>
-          </motion.div>
+
+            <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4">
+              Important <span className="text-accent">Resources</span>
+            </h1>
+            <p className="text-white/70 max-w-xl text-sm sm:text-base leading-relaxed">
+              Connect with our governing bodies, educational trusts, and regulatory authorities to access official platforms.
+            </p>
+          </div>
+          
+          <div className="hidden lg:flex w-24 h-24 bg-white/5 border border-white/10 rounded-full items-center justify-center p-6 text-accent">
+            <Globe size={48} className="animate-spin-slow" />
+          </div>
         </div>
-      </section>
+      </div>
 
       {/* Links Grid */}
-      <section className="py-24 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {importantLinks.map((link, idx) => (
-              <motion.a
-                key={link.name}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="group relative bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden"
-              >
-                {/* Background Gradient Hover Effect */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
-                
-                <div className="relative z-10">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${link.color} rounded-2xl flex items-center justify-center text-white shadow-lg mb-8 group-hover:scale-110 transition-transform`}>
-                    <link.icon size={32} />
-                  </div>
-                  
-                  <h3 className="text-2xl font-serif font-black text-primary mb-4 group-hover:text-secondary transition-colors italic">
-                    {link.name}
-                  </h3>
-                  
-                  <p className="text-gray-500 text-sm leading-relaxed mb-8">
-                    {link.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between pt-6 border-t border-gray-100">
-                    <span className="text-primary font-black uppercase tracking-widest text-[10px]">Visit Website</span>
-                    <div className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
-                      <ExternalLink size={18} />
-                    </div>
-                  </div>
+      <div className="section-container py-12 sm:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {importantLinks.map((link, idx) => (
+            <motion.a
+              key={link.name}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.02 }}
+              className="card border border-border bg-surface hover:border-secondary transition-all flex flex-col justify-between group shadow-sm"
+            >
+              <div>
+                <div className="w-10 h-10 bg-background border border-border rounded-xl flex items-center justify-center text-secondary mb-6 group-hover:scale-105 transition-transform shrink-0">
+                  <link.icon size={20} />
                 </div>
-              </motion.a>
-            ))}
-          </div>
+                
+                <h3 className="font-bold text-sm text-primary mb-3">
+                  {link.name}
+                </h3>
+                
+                <p className="text-xs text-muted leading-relaxed font-semibold mb-6">
+                  {link.description}
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-border flex items-center justify-between">
+                <span className="text-[9px] font-bold text-muted uppercase tracking-wider">Visit Website</span>
+                <div className="w-8 h-8 bg-background border border-border rounded-lg flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all">
+                  <ExternalLink size={14} />
+                </div>
+              </div>
+            </motion.a>
+          ))}
         </div>
-      </section>
+      </div>
 
       {/* Call to Action */}
-      <section className="pb-32 px-6">
-        <div className="max-w-4xl mx-auto bg-[#1c2e5a] text-white p-12 md:p-20 rounded-[4rem] text-center shadow-2xl relative overflow-hidden">
-          <div className="relative z-10">
-            <h3 className="text-3xl md:text-5xl font-serif font-black mb-6 italic">Looking for Student Internal Marks?</h3>
-            <p className="text-gray-400 text-lg mb-10 max-w-2xl mx-auto uppercase tracking-widest">Access the student portal for result verification and internal standings.</p>
-            <button className="bg-secondary text-primary px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform flex items-center gap-3 mx-auto">
-              Student Information System <ArrowRight size={18} />
-            </button>
-          </div>
-          {/* Decorative Elements */}
+      <div className="section-container pb-16">
+        <div className="card !p-8 sm:!p-12 bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white text-center space-y-6 relative overflow-hidden max-w-4xl mx-auto shadow-soft">
           <div className="absolute top-0 left-0 w-32 h-32 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-secondary/5 rounded-full translate-x-1/3 translate-y-1/3" />
+          
+          <div className="relative z-10 space-y-4">
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight">Looking for Student Internal Marks?</h3>
+            <p className="text-white/70 text-xs sm:text-sm leading-relaxed font-semibold max-w-xl mx-auto uppercase tracking-wider">Access the student portal for result verification and internal standings.</p>
+            
+            <div className="pt-2">
+              <button className="btn-primary inline-flex items-center gap-2 !py-2.5 !px-6 !text-xs mx-auto">
+                <span>Student Information System</span>
+                <ArrowRight size={14} />
+              </button>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

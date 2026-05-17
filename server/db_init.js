@@ -1,7 +1,65 @@
 const db = require('./db');
+const bcrypt = require('bcryptjs');
+
 
 async function initializeTables() {
   try {
+    // Users Table
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        short_name VARCHAR(50),
+        email VARCHAR(255) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL,
+        plain_password VARCHAR(255),
+        role VARCHAR(50) DEFAULT 'user',
+        image_url TEXT,
+        qualification VARCHAR(255),
+        area VARCHAR(255),
+        staff_type VARCHAR(50) DEFAULT 'Teaching',
+        phone_number VARCHAR(20),
+        is_vp BOOLEAN DEFAULT FALSE,
+        bio TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Seed default admin if not exists
+    const [userRows] = await db.execute('SELECT COUNT(*) as count FROM users');
+    if (userRows[0].count === 0) {
+      const hashedPassword = await bcrypt.hash('admin123', 10);
+      await db.execute(
+        'INSERT INTO users (name, short_name, email, password, plain_password, role) VALUES (?, ?, ?, ?, ?, ?)',
+        ['Admin User', 'Admin', 'admin@semcom.ac.in', hashedPassword, 'admin123', 'admin']
+      );
+      console.log('Default admin user created.');
+    }
+
+    // Events Table
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS events (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        date DATE,
+        location VARCHAR(255),
+        description TEXT,
+        image_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Activities Table (Used in some older components)
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS activities (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        from_date DATE,
+        to_date DATE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     // Press Notes Table
     await db.execute(`
       CREATE TABLE IF NOT EXISTS press_notes (
@@ -116,32 +174,135 @@ async function initializeTables() {
     await db.execute(`
       CREATE TABLE IF NOT EXISTS programs (
         id INT AUTO_INCREMENT PRIMARY KEY,
+        program_id INT UNIQUE,
         name VARCHAR(255) NOT NULL,
         type VARCHAR(50) NOT NULL,
         students INT DEFAULT 0,
         status ENUM('active', 'new', 'archived') DEFAULT 'active',
+        description TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    // Student Classes Table
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS student_classes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        sem INT DEFAULT 1,
+        stream INT,
+        name VARCHAR(100),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Students Table
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS students (
+        student_id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        enrollment_number VARCHAR(50) UNIQUE,
+        email VARCHAR(255) UNIQUE,
+        class_id INT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (class_id) REFERENCES student_classes(id) ON DELETE SET NULL
+      )
+    `);
+
+    // Subjects Table
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS subjects (
+        subject_id INT AUTO_INCREMENT PRIMARY KEY,
+        class_id INT,
+        name VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (class_id) REFERENCES student_classes(id) ON DELETE CASCADE
+      )
+    `);
+
+    // Teaching Staffs Table (Mapping users to subjects)
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS teaching_staffs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        staff_id INT,
+        subject_id INT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (staff_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
+      )
+    `);
+
+    // SMTR Submissions Table
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS smtr_submissions (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title TEXT NOT NULL,
+        authors TEXT NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        abstract TEXT,
+        file_url TEXT,
+        status ENUM('pending', 'under_review', 'accepted', 'rejected') DEFAULT 'pending',
+        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Ensure is_vp column exists in users (for Faculty management)
+    // (Already handled in CREATE TABLE but keeping for safety in case table exists)
+    try {
+      const [columns] = await db.execute('SHOW COLUMNS FROM users LIKE "is_vp"');
+      if (columns.length === 0) {
+        await db.execute('ALTER TABLE users ADD COLUMN is_vp BOOLEAN DEFAULT FALSE');
+      }
+    } catch (e) {}
 
     // SEED DATA: Programs
     const [progRows] = await db.execute('SELECT COUNT(*) as count FROM programs');
     if (progRows[0].count === 0) {
       const progSeeds = [
-        ['BBA (Hons.)', 'UG', 520, 'active'],
-        ['BCA', 'UG', 480, 'active'],
-        ['BCom (Hons.)', 'UG', 620, 'active'],
-        ['BBA (ITM) (Hons.)', 'UG', 310, 'active'],
-        ['BBA - Business Analytics', 'UG', 90, 'new'],
-        ['BBA - Digital Marketing', 'UG', 85, 'new'],
-        ['MCom', 'PG', 180, 'active'],
-        ['MBA (Dual Specialization)', 'PG', 150, 'new'],
-        ['Ph.D.', 'Doctoral', 45, 'active']
+        [101, 'BBA (Hons.)', 'UG', 520, 'active', 'Bachelor of Business Administration (Honours) is a 3-year undergraduate course.'],
+        [102, 'BCA', 'UG', 480, 'active', 'Bachelor of Computer Applications is a 3-year undergraduate course.'],
+        [103, 'BCom (Hons.)', 'UG', 620, 'active', 'Bachelor of Commerce (Honours) is a 3-year undergraduate course.'],
+        [104, 'BBA (ITM) (Hons.)', 'UG', 310, 'active', 'BBA in Information Technology Management.'],
+        [105, 'BBA - Business Analytics', 'UG', 90, 'new', 'Specialized BBA in Business Analytics and Data Science.'],
+        [106, 'BBA - Digital Marketing', 'UG', 85, 'new', 'Specialized BBA in Digital Marketing and E-Commerce.'],
+        [107, 'MCom', 'PG', 180, 'active', 'Master of Commerce is a 2-year postgraduate course.'],
+        [108, 'MBA (Dual Specialization)', 'PG', 150, 'new', 'Master of Business Administration with dual specialization.'],
+        [109, 'Ph.D.', 'Doctoral', 45, 'active', 'Doctoral program in various commerce and management disciplines.']
       ];
       for (const seed of progSeeds) {
-        await db.execute('INSERT INTO programs (name, type, students, status) VALUES (?, ?, ?, ?)', seed);
+        await db.execute('INSERT INTO programs (program_id, name, type, students, status, description) VALUES (?, ?, ?, ?, ?, ?)', seed);
       }
       console.log('Seeded programs.');
+    }
+
+    // SEED DATA: Student Classes
+    const [classRows] = await db.execute('SELECT COUNT(*) as count FROM student_classes');
+    if (classRows[0].count === 0) {
+      await db.execute('INSERT INTO student_classes (sem, stream, name) VALUES (1, 101, "FYBBA-A")');
+      await db.execute('INSERT INTO student_classes (sem, stream, name) VALUES (1, 102, "FYBCA-A")');
+      await db.execute('INSERT INTO student_classes (sem, stream, name) VALUES (3, 101, "SYBBA-A")');
+      console.log('Seeded student classes.');
+    }
+
+    // SEED DATA: Students
+    const [studentRows] = await db.execute('SELECT COUNT(*) as count FROM students');
+    if (studentRows[0].count === 0) {
+      const [classes] = await db.execute('SELECT id FROM student_classes LIMIT 2');
+      if (classes.length > 0) {
+        await db.execute('INSERT INTO students (name, enrollment_number, email, class_id) VALUES (?, ?, ?, ?)', ['John Doe', 'EN001', 'john@example.com', classes[0].id]);
+        await db.execute('INSERT INTO students (name, enrollment_number, email, class_id) VALUES (?, ?, ?, ?)', ['Jane Smith', 'EN002', 'jane@example.com', classes[1].id]);
+      }
+      console.log('Seeded students.');
+    }
+
+    // SEED DATA: Subjects
+    const [subjectRows] = await db.execute('SELECT COUNT(*) as count FROM subjects');
+    if (subjectRows[0].count === 0) {
+      const [classes] = await db.execute('SELECT id FROM student_classes LIMIT 1');
+      if (classes.length > 0) {
+        await db.execute('INSERT INTO subjects (class_id, name) VALUES (?, ?)', [classes[0].id, 'Management Principles']);
+        await db.execute('INSERT INTO subjects (class_id, name) VALUES (?, ?)', [classes[0].id, 'Financial Accounting']);
+      }
+      console.log('Seeded subjects.');
     }
 
     // Research & Consultancy Table
@@ -264,13 +425,63 @@ async function initializeTables() {
       console.log('Seeded placement data.');
     }
 
-    // Add bio and staff_type to users if missing
     try {
-      await db.execute('ALTER TABLE users ADD COLUMN bio TEXT');
+      const [columns] = await db.execute('SHOW COLUMNS FROM users LIKE "bio"');
+      if (columns.length === 0) {
+        await db.execute('ALTER TABLE users ADD COLUMN bio TEXT');
+      }
     } catch (e) {}
     try {
-      await db.execute('ALTER TABLE users ADD COLUMN staff_type VARCHAR(50) DEFAULT "Teaching"');
+      const [columns] = await db.execute('SHOW COLUMNS FROM users LIKE "staff_type"');
+      if (columns.length === 0) {
+        await db.execute('ALTER TABLE users ADD COLUMN staff_type VARCHAR(50) DEFAULT "Teaching"');
+      }
     } catch (e) {}
+    try {
+      const [columns] = await db.execute('SHOW COLUMNS FROM users LIKE "image_url"');
+      if (columns.length === 0) {
+        await db.execute('ALTER TABLE users ADD COLUMN image_url TEXT');
+      }
+    } catch (e) {}
+    try {
+      const [columns] = await db.execute('SHOW COLUMNS FROM users LIKE "qualification"');
+      if (columns.length === 0) {
+        await db.execute('ALTER TABLE users ADD COLUMN qualification VARCHAR(255)');
+      }
+    } catch (e) {}
+    try {
+      const [columns] = await db.execute('SHOW COLUMNS FROM users LIKE "area"');
+      if (columns.length === 0) {
+        await db.execute('ALTER TABLE users ADD COLUMN area VARCHAR(255)');
+      }
+    } catch (e) {}
+
+    // Site Config Table
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS site_config (
+        config_key VARCHAR(255) PRIMARY KEY,
+        config_value TEXT
+      )
+    `);
+
+    // SEED DATA: Site Config
+    const [configRows] = await db.execute('SELECT COUNT(*) as count FROM site_config WHERE config_key = "chairman_image"');
+    if (configRows[0].count === 0) {
+      await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("chairman_image", "/images/chairman.png")');
+      await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("about_banner_image", "https://images.unsplash.com/photo-1541339907198-e08759dfc3ef?auto=format&fit=crop&q=80&w=2070")');
+      await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("about_building_image", "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=1986")');
+      await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("institutional_excellence_image", "https://images.unsplash.com/photo-1541339906194-e1620a96f5b9?q=80&w=2072&auto=format&fit=crop")');
+      
+      // Activity Images
+      await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("activity_cultural", "/images/activity_cultural.png")');
+      await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("activity_nss", "/images/activity_nss.png")');
+      await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("activity_sports", "/images/activity_sports.png")');
+      await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("activity_seminars", "https://images.unsplash.com/photo-1475721027187-401460590ed7?q=80&w=2070&auto=format&fit=crop")');
+      await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("activity_workshops", "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop")');
+      await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("activity_honors", "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop")');
+
+      console.log('Seeded site config (chairman, about, institutional, and activity images).');
+    }
 
     console.log('Database tables initialized or already exist.');
   } catch (error) {

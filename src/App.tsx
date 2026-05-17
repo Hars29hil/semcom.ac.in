@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import Navbar from './components/Navbar';
 import TopHeader from './components/TopHeader';
 import Footer from './components/Footer';
+import FloatingActions from './components/FloatingActions';
 import Home from './pages/Home';
 import About from './pages/About';
 import CoursesPage from './pages/CoursesPage';
@@ -22,7 +23,7 @@ import AICTE from './pages/AICTE';
 import Rankings from './pages/Rankings';
 import SEDGCell from './pages/SEDGCell';
 import GrievanceCell from './pages/GrievanceCell';
-import NEEV from './pages/NEEV';
+
 
 import BBA_ITM_Hons from './pages/BBA_ITM_Hons';
 import BBA_Hons from './pages/BBA_Hons';
@@ -46,6 +47,9 @@ import AlumniRegistration from './pages/AlumniRegistration';
 import Gallery from './pages/Gallery';
 import MediaKit from './pages/MediaKit';
 import EducationVerification from './pages/EducationVerification';
+import EventDetail from './pages/EventDetail';
+import PressNoteDetail from './pages/PressNoteDetail';
+import PressNotesList from './pages/PressNotesList';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -71,10 +75,15 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      {/* Skip Link for Accessibility */}
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:bg-white focus:text-brand-primary focus:px-6 focus:py-3 focus:rounded-xl focus:font-bold focus:shadow-2xl">
+        Skip to main content
+      </a>
       <ScrollToTop />
       <TopHeader />
       <Navbar />
-      <main className="flex-grow">
+      <FloatingActions />
+      <main id="main-content" className="flex-grow">
         <AnimatePresence mode="wait">
           <Routes location={location}>
             <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
@@ -105,7 +114,7 @@ export default function App() {
             <Route path="/student/activities" element={<PageWrapper><ExtensionActivities /></PageWrapper>} />
             <Route path="/student/links" element={<PageWrapper><ImportantLinks /></PageWrapper>} />
             <Route path="/student/downloads" element={<PageWrapper><DownloadForms /></PageWrapper>} />
-            <Route path="/student/neev" element={<PageWrapper><NEEV /></PageWrapper>} />
+
             
             <Route path="/placement" element={<PageWrapper><InternshipPlacement /></PageWrapper>} />
             <Route path="/placement/companies" element={<PageWrapper><CompanyDetail /></PageWrapper>} />
@@ -123,6 +132,9 @@ export default function App() {
             <Route path="/rankings" element={<PageWrapper><Rankings /></PageWrapper>} />
             <Route path="/education-verification" element={<PageWrapper><EducationVerification /></PageWrapper>} />
             <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+            <Route path="/events/:id" element={<PageWrapper><EventDetail /></PageWrapper>} />
+            <Route path="/news/press-note/:id" element={<PageWrapper><PressNoteDetail /></PageWrapper>} />
+            <Route path="/news/press-notes" element={<PageWrapper><PressNotesList /></PageWrapper>} />
           </Routes>
         </AnimatePresence>
       </main>
