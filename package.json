@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:main\" \"npm run dev:admin\"",
+    "dev:separate": "start-all.bat",
     "dev:main": "vite --port=3000 --host=0.0.0.0",
     "dev:admin": "cd admin && npm run dev",
     "dev:server": "cd server && npm run dev",
