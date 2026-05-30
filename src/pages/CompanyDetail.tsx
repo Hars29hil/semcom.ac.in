@@ -7,9 +7,11 @@ import {
   ExternalLink,
   ChevronRight,
   TrendingUp,
-  Briefcase
+  Briefcase,
+  ArrowRight
 } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const companies = [
   "Reliance Communication", "Alstom Ltd", "Serco BPO PVT. LTD.", "Merit Life Sciences Pvt Ltd",
@@ -37,139 +39,137 @@ export default function CompanyDetail() {
   );
 
   return (
-    <div className="pt-20 bg-gray-50 min-h-screen">
+    <div className="bg-background min-h-screen">
       {/* Hero Section */}
-      <section className="bg-white py-24 px-6 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto">
+      <div className="bg-surface py-16 sm:py-24 border-b border-border">
+        <div className="section-container">
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-secondary mb-6 tracking-widest uppercase">
+            <Link to="/" className="text-muted hover:text-primary transition-colors">Home</Link>
+            <span className="text-muted">/</span>
+            <Link to="/placement" className="text-muted hover:text-primary transition-colors">Placement</Link>
+            <span className="text-muted">/</span>
+            <span className="text-primary">Recruiters</span>
+          </div>
+
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col lg:flex-row justify-between items-end gap-12"
+            className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10"
           >
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-3 mb-6 bg-secondary/10 w-fit px-4 py-2 rounded-full border border-secondary/20">
-                <Building2 size={16} className="text-primary" />
-                <span className="text-primary font-black text-xs uppercase tracking-[0.3em]">Recruitment Partners</span>
-              </div>
-              <h1 className="text-5xl md:text-7xl font-serif font-black text-primary leading-tight italic mb-8">
-                Our Global <br />
-                <span className="text-secondary underline decoration-4 underline-offset-8">Network</span>
+            <div className="max-w-2xl space-y-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary tracking-tight">
+                Our Global <span className="text-secondary">Network</span>
               </h1>
-              <p className="text-xl text-gray-500 font-light leading-relaxed border-l-4 border-secondary pl-8">
+              <p className="text-sm sm:text-base text-muted font-medium leading-relaxed">
                 Partnering with industry leaders across diverse sectors—from technology giants to healthcare innovators—to provide our students with unparalleled corporate exposure.
               </p>
             </div>
             
-            <div className="w-full lg:w-96 relative">
+            <div className="w-full lg:w-80 relative shrink-0">
               <input 
                 type="text" 
                 placeholder="Search partners..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-gray-50 border border-gray-200 rounded-2xl py-5 px-8 focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all shadow-sm"
+                className="w-full bg-background border border-border rounded-xl py-3 pl-4 pr-10 focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all shadow-sm text-sm font-semibold text-primary"
               />
-              <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-300" />
+              <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted" size={16} />
             </div>
           </motion.div>
         </div>
-      </section>
+      </div>
 
       {/* Industry Overview */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {industryCategories.map((cat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className="bg-primary text-white p-8 rounded-[3rem] shadow-xl relative overflow-hidden group hover:-translate-y-2 transition-transform"
-              >
-                <div className="relative z-10">
-                  <cat.icon size={24} className="text-secondary mb-4" />
-                  <div className="text-3xl font-black mb-1">{cat.count}</div>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-gray-400">{cat.name}</div>
+      <section className="section-container py-12 sm:py-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {industryCategories.map((cat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              className="card !p-6 bg-primary text-white border border-primary relative overflow-hidden group hover:-translate-y-1 transition-transform shadow-soft"
+            >
+              <div className="relative z-10 space-y-3">
+                <cat.icon size={20} className="text-secondary" />
+                <div>
+                  <div className="text-2xl font-bold text-white mb-0.5">{cat.count}</div>
+                  <div className="text-[9px] font-bold uppercase tracking-widest text-white/60">{cat.name}</div>
                 </div>
-                <div className="absolute -bottom-4 -right-4 text-white/5 font-black text-8xl italic select-none">
-                  {i + 1}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+              <div className="absolute -bottom-2 -right-2 text-white/5 font-bold text-6xl select-none pointer-events-none group-hover:scale-110 transition-transform">
+                0{i + 1}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
       {/* Company List */}
-      <section className="py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCompanies.map((company, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: (idx % 20) * 0.03 }}
-                className="bg-white p-8 rounded-[2.5rem] border border-gray-100 flex items-center justify-between group hover:shadow-2xl hover:border-secondary transition-all cursor-default"
-              >
-                <div className="flex items-center gap-6">
-                  <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                    <Building2 size={24} />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-800 group-hover:text-primary transition-colors">{company}</h3>
-                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-gray-400 font-black mt-1">
-                      <MapPin size={10} className="text-secondary" /> Pan India / Global
-                    </div>
+      <section className="section-container pb-16 sm:pb-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredCompanies.map((company, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, scale: 0.98 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="card !p-5 border border-border bg-surface hover:border-secondary transition-all group flex items-center justify-between shadow-sm cursor-default"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 bg-background border border-border rounded-lg flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors shrink-0 shadow-sm">
+                  <Building2 size={18} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm text-primary group-hover:text-secondary transition-colors truncate">{company}</h3>
+                  <div className="flex items-center gap-1.5 text-[9px] uppercase tracking-widest text-muted font-bold mt-1">
+                    <MapPin size={10} className="text-secondary" /> <span>Pan India / Global</span>
                   </div>
                 </div>
-                <div className="w-8 h-8 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-secondary group-hover:text-primary group-hover:border-secondary transition-all">
-                  <ChevronRight size={16} />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          
-          {filteredCompanies.length === 0 && (
-            <div className="text-center py-32 bg-white rounded-[4rem] border-2 border-dashed border-gray-200">
-              <Search size={48} className="mx-auto text-gray-200 mb-6" />
-              <p className="text-gray-400 font-black uppercase tracking-widest text-sm italic">No matching partner found</p>
-            </div>
-          )}
+              </div>
+              <div className="w-6 h-6 rounded-md bg-background border border-border flex items-center justify-center text-muted group-hover:bg-secondary group-hover:text-white group-hover:border-secondary transition-all shrink-0">
+                <ChevronRight size={12} />
+              </div>
+            </motion.div>
+          ))}
         </div>
+        
+        {filteredCompanies.length === 0 && (
+          <div className="text-center py-24 bg-surface rounded-2xl border-2 border-dashed border-border mt-6">
+            <div className="w-16 h-16 bg-background rounded-full flex items-center justify-center mx-auto mb-4 border border-border">
+              <Search size={24} className="text-muted" />
+            </div>
+            <p className="text-primary font-bold text-sm">No matching partner found</p>
+            <p className="text-muted text-xs mt-1 font-medium">Try adjusting your search criteria</p>
+          </div>
+        )}
       </section>
 
       {/* Recruiter CTA */}
-      <section className="pb-32 px-6">
-        <div className="max-w-5xl mx-auto bg-gradient-to-br from-[#1a2e5a] to-[#0a1931] p-12 md:p-24 rounded-[4rem] text-center shadow-2xl relative overflow-hidden">
-          <div className="relative z-10">
-            <h2 className="text-4xl md:text-6xl font-serif font-black text-white italic mb-8">Join Our Network of <span className="text-secondary italic underline decoration-secondary underline-offset-8">Excellence</span></h2>
-            <p className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto leading-relaxed">
+      <section className="section-container pb-16">
+        <div className="card !p-8 sm:!p-12 bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white text-center space-y-8 relative overflow-hidden shadow-soft max-w-5xl mx-auto">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary/5 rounded-full -translate-x-1/4 translate-y-1/4 pointer-events-none" />
+          
+          <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+            <h2 className="text-2xl sm:text-3xl font-bold">Join Our Network of <span className="text-accent">Excellence</span></h2>
+            <p className="text-white/70 text-sm leading-relaxed font-semibold">
               Are you looking to recruit the bright minds of tomorrow? Partner with SEMCOM for your next internship or placement cycle.
             </p>
-            <div className="flex flex-wrap justify-center gap-6">
-              <button className="bg-secondary text-primary px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform flex items-center gap-3">
-                Register as Recruiter <ArrowRight size={16} />
+            <div className="flex flex-wrap justify-center gap-4 pt-2">
+              <button className="btn-primary flex items-center gap-2">
+                <span>Register as Recruiter</span>
+                <ArrowRight size={14} />
               </button>
-              <button className="bg-white/10 text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white/20 transition-all border border-white/10 flex items-center gap-3">
-                Placement Report <ExternalLink size={16} />
+              <button className="bg-white/10 text-white px-6 py-2.5 rounded-xl font-bold text-xs hover:bg-white/20 transition-all border border-white/10 flex items-center gap-2">
+                <span>Placement Report</span>
+                <ExternalLink size={14} />
               </button>
             </div>
           </div>
-          {/* Background Decorative Rings */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/5 rounded-full translate-x-1/2 -translate-y-1/2" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full -translate-x-1/3 translate-y-1/3" />
         </div>
       </section>
     </div>
-  );
-}
-
-function ArrowRight({ size }: { size: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 12h14M12 5l7 7-7 7" />
-    </svg>
   );
 }

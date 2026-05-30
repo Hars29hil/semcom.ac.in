@@ -29,10 +29,10 @@ export default function AccreditationsPage() {
       <h3 className="font-bold text-foreground text-lg">Accreditations</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {accreditations.map((a) => (
-          <div key={a.id} className="clay clay-hover p-5 group">
+          <div key={a.id} className="bg-white border border-border shadow-sm bg-white border border-border shadow-sm-hover p-5 group">
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-2.5">
-                <div className="h-9 w-9 rounded-xl clay-primary flex items-center justify-center">
+                <div className="h-9 w-9 rounded-xl bg-white border border-border shadow-sm-primary flex items-center justify-center">
                   <Award className="h-4 w-4 text-primary-foreground" />
                 </div>
                 <h4 className="font-bold text-foreground text-sm group-hover:text-primary transition-colors">{a.name}</h4>
@@ -50,7 +50,7 @@ export default function AccreditationsPage() {
       </div>
 
       <h3 className="font-bold text-foreground text-lg pt-2">Rankings</h3>
-      <div className="skeu-surface rounded-2xl overflow-hidden">
+      <div className="bg-white border border-border shadow-sm rounded-2xl overflow-hidden">
         <div className="divide-y divide-border/50">
           {rankings.map((r) => (
             <div key={r.id} className="flex items-center justify-between p-5 hover:bg-accent/30 transition-all group">

@@ -118,7 +118,7 @@ export default function ResearchPage() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input 
           placeholder="Search projects..." 
-          className="pl-9 neu-inset rounded-xl border-none" 
+          className="pl-9 border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" 
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
         />
@@ -129,7 +129,7 @@ export default function ResearchPage() {
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       ) : (
-        <div className="skeu-surface rounded-3xl border border-white/20 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
+        <div className="bg-white border border-border shadow-sm rounded-3xl border border-white/20 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
           <div className="divide-y divide-border/50">
             {filtered.length === 0 ? (
               <div className="p-20 text-center text-muted-foreground italic">No projects found matching your search.</div>
@@ -184,7 +184,7 @@ export default function ResearchPage() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] rounded-[2rem] border-none shadow-2xl">
+        <DialogContent className="sm:max-w-[425px] rounded-2xl border-none shadow-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black italic tracking-tighter">
               {editingProject ? "Refine Project" : "Initiate Project"}
@@ -198,7 +198,7 @@ export default function ResearchPage() {
               <Label htmlFor="title" className="text-[10px] font-black uppercase tracking-widest ml-1 text-muted-foreground">Project Title</Label>
               <Input
                 id="title"
-                className="neu-inset border-none rounded-2xl h-12 px-5"
+                className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none rounded-2xl h-12 px-5"
                 value={editingProject?.title || newProject.title}
                 onChange={(e) => editingProject 
                   ? setEditingProject({...editingProject, title: e.target.value})
@@ -210,7 +210,7 @@ export default function ResearchPage() {
               <Label htmlFor="faculty" className="text-[10px] font-black uppercase tracking-widest ml-1 text-muted-foreground">Faculty Lead</Label>
               <Input
                 id="faculty"
-                className="neu-inset border-none rounded-2xl h-12 px-5"
+                className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none rounded-2xl h-12 px-5"
                 value={editingProject?.faculty || newProject.faculty}
                 onChange={(e) => editingProject 
                   ? setEditingProject({...editingProject, faculty: e.target.value})
@@ -228,7 +228,7 @@ export default function ResearchPage() {
                     : setNewProject({...newProject, type: val})
                   }
                 >
-                  <SelectTrigger className="neu-inset border-none rounded-2xl h-12 px-5">
+                  <SelectTrigger className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none rounded-2xl h-12 px-5">
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -246,7 +246,7 @@ export default function ResearchPage() {
                     : setNewProject({...newProject, status: val})
                   }
                 >
-                  <SelectTrigger className="neu-inset border-none rounded-2xl h-12 px-5">
+                  <SelectTrigger className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none rounded-2xl h-12 px-5">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent>

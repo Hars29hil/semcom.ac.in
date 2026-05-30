@@ -94,7 +94,7 @@ export default function SEMSpire() {
                 <span className="px-2.5 py-1 bg-accent/90 text-primary text-[8px] font-bold uppercase rounded tracking-wider shadow">
                   Current Issue
                 </span>
-                <h3 className="text-2xl font-bold">November - December</h3>
+                <h3 className="text-2xl font-bold text-white">November - December</h3>
                 <p className="text-white/60 text-xs font-semibold uppercase tracking-wider">Session 2025-26</p>
               </div>
 

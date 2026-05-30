@@ -120,20 +120,44 @@ export function AdminSidebar() {
         </div>
       </SidebarHeader>
       <SidebarContent className="pt-3 px-2">
-        {getAuthUser()?.role === 'admin' ? (
-          <>
-            {renderGroup("Overview", mainItems)}
-            {renderGroup("Academics", academicItems)}
-            {renderGroup("Community", communityItems)}
-            {renderGroup("Content", contentItems)}
-          </>
-        ) : (
-          renderGroup("Profile Management", [
+        {(() => {
+          const role = getAuthUser()?.role;
+          if (role === 'admin') {
+            return (
+              <>
+                {renderGroup("Overview", mainItems)}
+                {renderGroup("Academics", academicItems)}
+                {renderGroup("Community", communityItems)}
+                {renderGroup("Content", contentItems)}
+              </>
+            );
+          }
+          if (role === 'librarian') {
+            return (
+              <>
+                {renderGroup("Operations", [
+                  { title: "Announcements", url: "/announcements", icon: Bell },
+                  { title: "Events", url: "/events", icon: Calendar },
+                  { title: "Press Notes", url: "/press-notes", icon: FileText },
+                ])}
+              </>
+            );
+          }
+          if (role === 'vp') {
+            return (
+              <>
+                {renderGroup("Administration", [
+                  { title: "Faculty & Staff", url: "/faculty", icon: Users },
+                ])}
+              </>
+            );
+          }
+          return renderGroup("Profile Management", [
             { title: "Personal Synopsis", url: "/counsellor#synopsis", icon: UserCheck },
             { title: "Achievement Records", url: "/counsellor#achievements", icon: Trophy },
             { title: "Career Path", url: "/counsellor#trajectory", icon: Briefcase },
-          ])
-        )}
+          ]);
+        })()}
       </SidebarContent>
       <SidebarFooter className="p-4 border-t border-sidebar-border/50">
         <SidebarMenu>

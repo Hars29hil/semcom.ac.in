@@ -180,12 +180,8 @@ export default function Hero() {
           </div>
 
           {/* CVM Badge */}
-          <div className="absolute -top-4 -right-4 z-20 bg-surface p-4 rounded-xl shadow-soft border border-border flex flex-col items-center gap-1">
-            <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center text-accent">
-              <GraduationCap size={22} />
-            </div>
-            <div className="text-sm font-bold text-primary">CVM</div>
-            <div className="text-[9px] text-muted font-medium">University</div>
+          <div className="absolute -top-4 -right-4 z-20 bg-surface p-3 rounded-xl shadow-soft border border-border flex flex-col items-center justify-center h-20 w-20">
+            <img src="/images/cvm-logo.png" alt="CVM University" className="w-full h-full object-contain" />
           </div>
 
           {/* Rating Badge */}

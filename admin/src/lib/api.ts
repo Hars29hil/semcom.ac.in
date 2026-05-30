@@ -103,3 +103,17 @@ export const newsApi = {
   }),
 };
 
+export const councilApi = {
+  getAll: () => fetcher('/council'),
+  add: (data: any) => fetcher('/council', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  }),
+  update: (id: number, data: any) => fetcher(`/council/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  }),
+  delete: (id: number) => fetcher(`/council/${id}`, {
+    method: 'DELETE',
+  }),
+};

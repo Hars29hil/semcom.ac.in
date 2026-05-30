@@ -186,7 +186,7 @@ export default function BBA_ITM_Hons() {
               
               <div className="relative z-10 space-y-4">
                 <GraduationCap size={32} className="text-accent mb-4" />
-                <h3 className="text-lg font-bold">Eligibility Criteria</h3>
+                <h3 className="text-lg font-bold text-white">Eligibility Criteria</h3>
                 <p className="text-white/70 text-xs sm:text-sm leading-relaxed font-semibold">
                   Candidates who have completed <span className="text-accent font-bold">12th / HSC / Equivalent</span> in any stream from a recognized board.
                 </p>

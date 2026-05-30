@@ -34,6 +34,7 @@ export default function NewsSection() {
           const formattedEvents = eventData.data.slice(0, 3).map((e: any) => {
             const d = new Date(e.date);
             return {
+              id: e.id,
               day: d.getDate().toString().padStart(2, '0'),
               month: d.toLocaleString('en-US', { month: 'short' }).toUpperCase(),
               title: e.name || e.title

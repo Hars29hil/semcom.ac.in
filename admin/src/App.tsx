@@ -22,16 +22,20 @@ import AccreditationsPage from "./pages/AccreditationsPage";
 import ContactPage from "./pages/ContactPage";
 import SettingsPage from "./pages/SettingsPage";
 import CounsellorPage from "./pages/CounsellorPage";
+import CouncilPage from "./pages/CouncilPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 // Auth Guard Component
-const AuthGuard = ({ children, role }: { children: React.ReactNode, role?: 'admin' | 'counsellor' }) => {
+const AuthGuard = ({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) => {
   const user = getAuthUser();
   if (!user) return <Navigate to="/login" replace />;
-  if (role && user.role !== role) {
-    return <Navigate to={user.role === 'admin' ? '/' : '/counsellor'} replace />;
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    if (user.role === 'admin') return <Navigate to="/" replace />;
+    if (user.role === 'librarian') return <Navigate to="/announcements" replace />;
+    if (user.role === 'vp') return <Navigate to="/faculty" replace />;
+    return <Navigate to="/counsellor" replace />;
   }
   return <AdminLayout>{children}</AdminLayout>;
 };
@@ -47,22 +51,25 @@ const App = () => (
           <Route path="/login" element={<LoginPage />} />
 
           {/* Admin Routes */}
-          <Route path="/" element={<AuthGuard role="admin"><DashboardPage /></AuthGuard>} />
-          <Route path="/announcements" element={<AuthGuard role="admin"><AnnouncementsPage /></AuthGuard>} />
-          <Route path="/events" element={<AuthGuard role="admin"><EventsPage /></AuthGuard>} />
-          <Route path="/press-notes" element={<AuthGuard role="admin"><PressNotesPage /></AuthGuard>} />
-          <Route path="/programs" element={<AuthGuard role="admin"><ProgramsPage /></AuthGuard>} />
-          <Route path="/admissions" element={<AuthGuard role="admin"><AdmissionsPage /></AuthGuard>} />
-          <Route path="/research" element={<AuthGuard role="admin"><ResearchPage /></AuthGuard>} />
-          <Route path="/faculty" element={<AuthGuard role="admin"><FacultyPage /></AuthGuard>} />
-          <Route path="/alumni" element={<AuthGuard role="admin"><AlumniPage /></AuthGuard>} />
-          <Route path="/gallery" element={<AuthGuard role="admin"><GalleryPage /></AuthGuard>} />
-          <Route path="/accreditations" element={<AuthGuard role="admin"><AccreditationsPage /></AuthGuard>} />
-          <Route path="/contact" element={<AuthGuard role="admin"><ContactPage /></AuthGuard>} />
-          <Route path="/settings" element={<AuthGuard role="admin"><SettingsPage /></AuthGuard>} />
+          {/* Admin Routes */}
+          <Route path="/" element={<AuthGuard allowedRoles={['admin']}><DashboardPage /></AuthGuard>} />
+          <Route path="/announcements" element={<AuthGuard allowedRoles={['admin', 'librarian']}><AnnouncementsPage /></AuthGuard>} />
+          <Route path="/events" element={<AuthGuard allowedRoles={['admin', 'librarian']}><EventsPage /></AuthGuard>} />
+          <Route path="/press-notes" element={<AuthGuard allowedRoles={['admin', 'librarian']}><PressNotesPage /></AuthGuard>} />
+          <Route path="/programs" element={<AuthGuard allowedRoles={['admin']}><ProgramsPage /></AuthGuard>} />
+          <Route path="/admissions" element={<AuthGuard allowedRoles={['admin']}><AdmissionsPage /></AuthGuard>} />
+          <Route path="/research" element={<AuthGuard allowedRoles={['admin']}><ResearchPage /></AuthGuard>} />
+          <Route path="/faculty" element={<AuthGuard allowedRoles={['admin', 'vp']}><FacultyPage /></AuthGuard>} />
+          <Route path="/alumni" element={<AuthGuard allowedRoles={['admin']}><AlumniPage /></AuthGuard>} />
+          <Route path="/gallery" element={<AuthGuard allowedRoles={['admin']}><GalleryPage /></AuthGuard>} />
+          <Route path="/accreditations" element={<AuthGuard allowedRoles={['admin']}><AccreditationsPage /></AuthGuard>} />
+          <Route path="/contact" element={<AuthGuard allowedRoles={['admin']}><ContactPage /></AuthGuard>} />
+          <Route path="/settings" element={<AuthGuard allowedRoles={['admin']}><SettingsPage /></AuthGuard>} />
+          
+          <Route path="/council" element={<AuthGuard allowedRoles={['admin']}><CouncilPage /></AuthGuard>} />
 
           {/* Counsellor Route */}
-          <Route path="/counsellor" element={<AuthGuard role="counsellor"><CounsellorPage /></AuthGuard>} />
+          <Route path="/counsellor" element={<AuthGuard allowedRoles={['counsellor']}><CounsellorPage /></AuthGuard>} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

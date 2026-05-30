@@ -74,7 +74,7 @@ export default function AnnouncementsPage() {
     <div className="space-y-8 pb-20">
       {/* DIALOG: ANNOUNCEMENT */}
       <Dialog open={openAnnounceDialog} onOpenChange={(open) => !open && resetAnnounceForm()}>
-        <DialogContent className="rounded-3xl clay border-none max-w-md">
+        <DialogContent className="rounded-3xl bg-white border border-border shadow-sm max-w-md">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black">{editingAnnounceId ? "Edit Announcement" : "New Announcement"}</DialogTitle>
             <DialogDescription>
@@ -84,15 +84,15 @@ export default function AnnouncementsPage() {
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label>Announcement Title</Label>
-              <Input value={announceTitle} onChange={(e) => setAnnounceTitle(e.target.value)} placeholder="e.g. Holiday List 2024" className="rounded-xl neu-inset border-none h-12" />
+              <Input value={announceTitle} onChange={(e) => setAnnounceTitle(e.target.value)} placeholder="e.g. Holiday List 2024" className="rounded-xl border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none h-12" />
             </div>
             <div className="space-y-2">
               <Label>Display Date</Label>
-              <Input value={announceDate} onChange={(e) => setAnnounceDate(e.target.value)} placeholder="e.g. 15 Aug 2024" className="rounded-xl neu-inset border-none h-12" />
+              <Input value={announceDate} onChange={(e) => setAnnounceDate(e.target.value)} placeholder="e.g. 15 Aug 2024" className="rounded-xl border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none h-12" />
             </div>
             <div className="space-y-2">
               <Label>Type</Label>
-              <select value={announceType} onChange={(e: any) => setAnnounceType(e.target.value)} className="w-full flex h-12 rounded-xl border-none neu-inset bg-transparent px-3 py-2 text-sm">
+              <select value={announceType} onChange={(e: any) => setAnnounceType(e.target.value)} className="w-full flex h-12 rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 bg-transparent px-3 py-2 text-sm">
                  <option value="bell">General Announcement (Bell)</option>
                  <option value="file">Document/Link (File)</option>
               </select>
@@ -121,12 +121,12 @@ export default function AnnouncementsPage() {
 
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input placeholder="Search announcements..." className="pl-9 neu-inset rounded-xl border-none" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Input placeholder="Search announcements..." className="pl-9 border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" value={search} onChange={(e) => setSearch(e.target.value)} />
       </div>
 
       {/* ANNOUNCEMENTS SECTION */}
       <section className="space-y-4">
-        <div className="skeu-surface rounded-2xl overflow-hidden">
+        <div className="bg-white border border-border shadow-sm rounded-2xl overflow-hidden">
           {loadingAnnouncements ? (
             <div className="flex justify-center p-12"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>
           ) : (

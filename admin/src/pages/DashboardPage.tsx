@@ -60,7 +60,7 @@ export default function DashboardPage() {
       {/* Stats - Claymorphism cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {stats.map((stat) => (
-          <div key={stat.label} className="clay clay-hover p-5">
+          <div key={stat.label} className="bg-white border border-border shadow-sm bg-white border border-border shadow-sm-hover p-5">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[11px] text-muted-foreground font-semibold uppercase tracking-wide">{stat.label}</p>
@@ -84,15 +84,15 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Quick Actions - Neumorphism buttons */}
-        <div className="neu rounded-2xl p-6">
+        <div className="border border-border bg-white shadow-sm rounded-2xl p-6">
           <h3 className="text-base font-bold text-foreground mb-4">Quick Actions</h3>
           <div className="space-y-3">
             {quickActions.map((action) => (
               <button
                 key={action.label}
-                className="w-full flex items-center gap-3.5 p-3.5 rounded-xl neu-inset neu-hover text-left group"
+                className="w-full flex items-center gap-3.5 p-3.5 rounded-xl border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border border-border bg-white shadow-sm-hover text-left group"
               >
-                <div className="h-9 w-9 rounded-xl clay-primary flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div className="h-9 w-9 rounded-xl bg-white border border-border shadow-sm-primary flex items-center justify-center group-hover:scale-110 transition-transform">
                   <action.icon className="h-4 w-4 text-primary-foreground" />
                 </div>
                 <div>
@@ -130,7 +130,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Programs Overview */}
-      <div className="skeu-surface rounded-2xl p-6">
+      <div className="bg-white border border-border shadow-sm rounded-2xl p-6">
         <h3 className="text-base font-bold text-foreground mb-4">Institutional Programs</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {[

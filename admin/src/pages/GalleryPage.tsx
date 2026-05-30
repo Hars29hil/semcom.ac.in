@@ -340,7 +340,7 @@ export default function GalleryPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {albums.map((album, i) => (
-            <div key={album.id} className="clay clay-hover overflow-hidden group">
+            <div key={album.id} className="bg-white border border-border shadow-sm bg-white border border-border shadow-sm-hover overflow-hidden group">
               <div className={`h-36 bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-5xl group-hover:scale-105 transition-transform`}>
                 {album.cover_emoji}
               </div>

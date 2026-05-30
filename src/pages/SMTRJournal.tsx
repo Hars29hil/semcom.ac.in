@@ -180,7 +180,7 @@ export default function SMTRJournal() {
               <div className="card !p-8 bg-primary border border-transparent text-white space-y-3 relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full blur-xl pointer-events-none" />
                 <Search size={24} className="text-accent" />
-                <h3 className="font-bold text-sm">Ethics and Policy</h3>
+                <h3 className="font-bold text-sm text-white">Ethics and Policy</h3>
                 <p className="text-white/70 text-xs leading-relaxed font-medium">
                   Our rigorous double-blind peer-review process ensures the highest quality of research paper publications.
                 </p>

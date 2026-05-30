@@ -120,7 +120,7 @@ export default function ProgramsPage() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input 
           placeholder="Search programs..." 
-          className="pl-9 neu-inset rounded-xl border-none" 
+          className="pl-9 border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" 
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
         />
@@ -133,7 +133,7 @@ export default function ProgramsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((prog) => (
-            <div key={prog.id} className="clay clay-hover p-5 group">
+            <div key={prog.id} className="bg-white border border-border shadow-sm bg-white border border-border shadow-sm-hover p-5 group">
               <div className="flex items-start justify-between mb-3">
                 <Badge variant="outline">{prog.type}</Badge>
                 <Badge variant={prog.status === "new" ? "default" : "secondary"}>{prog.status}</Badge>

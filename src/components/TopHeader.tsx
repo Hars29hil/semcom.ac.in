@@ -91,8 +91,8 @@ export default function TopHeader() {
                 <span className="text-xs font-semibold text-primary group-hover:text-secondary transition-colors">CVM University</span>
                 <span className="text-[10px] text-muted">Parent Body</span>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-background border border-border p-1.5 group-hover:border-secondary/30 transition-all flex items-center justify-center overflow-hidden">
-                <img src="/images/cvm-logo.png" alt="CVM University" className="w-full h-full object-contain" />
+              <div className="h-12 md:h-14 flex items-center transition-all group-hover:scale-105 overflow-hidden">
+                <img src="/images/cvm-logo.png" alt="CVM University" className="h-full w-auto object-contain" />
               </div>
             </a>
           </div>

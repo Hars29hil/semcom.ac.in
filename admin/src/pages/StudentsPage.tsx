@@ -41,13 +41,13 @@ export default function StudentsPage() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input 
           placeholder="Search students..." 
-          className="pl-9 neu-inset rounded-xl border-none" 
+          className="pl-9 border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" 
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
         />
       </div>
 
-      <div className="skeu-surface rounded-2xl overflow-hidden">
+      <div className="bg-white border border-border shadow-sm rounded-2xl overflow-hidden">
         <div className="p-5 border-b border-border/50">
           <h3 className="text-base font-bold text-foreground">Student Directory</h3>
         </div>

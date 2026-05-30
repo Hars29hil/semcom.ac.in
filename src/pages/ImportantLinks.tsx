@@ -112,7 +112,7 @@ export default function ImportantLinks() {
           <div className="absolute bottom-0 right-0 w-64 h-64 bg-secondary/5 rounded-full translate-x-1/3 translate-y-1/3" />
           
           <div className="relative z-10 space-y-4">
-            <h3 className="text-xl sm:text-2xl font-bold tracking-tight">Looking for Student Internal Marks?</h3>
+            <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Looking for Student Internal Marks?</h3>
             <p className="text-white/70 text-xs sm:text-sm leading-relaxed font-semibold max-w-xl mx-auto uppercase tracking-wider">Access the student portal for result verification and internal standings.</p>
             
             <div className="pt-2">

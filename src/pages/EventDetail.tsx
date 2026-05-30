@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { useParams, Link } from 'react-router-dom';
-import { Calendar, MapPin, Clock, ArrowLeft, Share2, Bookmark, Loader2, GraduationCap, Mail, Phone } from 'lucide-react';
+import { Calendar, MapPin, ArrowLeft, Share2, Bookmark, Loader2, GraduationCap, Mail, Phone, Building2, Flag, Tag, UserPlus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function EventDetail() {
@@ -11,7 +11,8 @@ export default function EventDetail() {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const res = await fetch(`/api/events/${id}`);
+        const headers = { "Authorization": "mysecret123" };
+        const res = await fetch(`/api/events/${id}`, { headers });
         const data = await res.json();
         if (data.success) {
           setEvent(data.data);
@@ -27,176 +28,244 @@ export default function EventDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <Loader2 size={40} className="animate-spin text-brand-secondary" />
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 size={40} className="animate-spin text-secondary" />
       </div>
     );
   }
 
   if (!event) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white gap-4">
-        <h2 className="text-2xl font-black text-brand-primary">Event Not Found</h2>
-        <Link to="/student/events" className="btn-primary">Back to Events</Link>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background p-6">
+        <Calendar size={64} className="text-muted mb-4 opacity-50" />
+        <h2 className="text-2xl font-bold text-text">Event Not Found</h2>
+        <Link to="/student/events" className="mt-6 btn-outline flex items-center gap-2">
+           <ArrowLeft size={16} /> Back to Events
+        </Link>
       </div>
     );
   }
 
-  // Format date
-  const eventDate = event.date ? new Date(event.date).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : "Date TBD";
+  // Format dates
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  };
+  
+  const eventDate = formatDate(event.date);
+  const endDate = formatDate(event.end_date);
+  const dateDisplay = endDate ? `${eventDate} - ${endDate}` : (eventDate || "Date TBD");
 
+  let departmentsArray: string[] = [];
+  if (event.departments) {
+    try {
+      departmentsArray = JSON.parse(event.departments);
+    } catch {
+      departmentsArray = [event.departments];
+    }
+  }
+
+  let committeeMembers = [];
+  try {
+    if (event.committee) {
+      committeeMembers = typeof event.committee === 'string' ? JSON.parse(event.committee) : event.committee;
+    }
+  } catch (e) {
+    console.error("Failed to parse committee data", e);
+  }
 
   return (
-    <div className="pt-20 bg-white min-h-screen">
+    <div className="pt-20 bg-background min-h-screen">
       {/* Hero Header */}
-      <section className="relative h-[60vh] overflow-hidden">
-        <img 
-          src={event.image_url || "https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?q=80&w=2070"} 
-          className="w-full h-full object-cover"
-          alt={event.title}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-primary via-brand-primary/40 to-transparent" />
-        
-        <div className="absolute bottom-0 left-0 w-full p-6 md:p-12">
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-6"
-            >
-              <Link to="/" className="inline-flex items-center gap-2 text-white/80 hover:text-brand-secondary transition-colors text-xs font-black uppercase tracking-widest">
-                <ArrowLeft size={16} /> All Events
-              </Link>
-              <h1 className="text-4xl md:text-7xl font-serif font-black text-white italic leading-tight">
-                {event.title}
-              </h1>
-              <div className="flex flex-wrap gap-8 text-white/90">
-                <div className="flex items-center gap-3 font-bold text-sm">
-                  <Calendar className="text-brand-secondary" size={20} />
-                  {eventDate}
-                </div>
-                <div className="flex items-center gap-3 font-bold text-sm">
-                  <MapPin className="text-brand-secondary" size={20} />
-                  {event.location || "SEMCOM Campus"}
-                </div>
+      <section className="section-padding bg-surface border-b border-border pb-8">
+        <div className="section-container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-4 max-w-4xl"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-800">
+              {event.title || event.name}
+            </h2>
+            
+            <div className="flex flex-wrap items-center gap-3 text-muted-foreground text-sm font-medium">
+              <div className="flex items-center gap-1.5">
+                <Calendar size={16} className="text-blue-400" />
+                {dateDisplay}
               </div>
-            </motion.div>
-          </div>
+              <span className="text-gray-300">|</span>
+              <div className="flex items-center gap-1.5">
+                <MapPin size={16} className="text-red-400" />
+                {event.location || "Location TBD"}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              {departmentsArray.map((dept, i) => (
+                <span key={i} className="inline-flex items-center gap-1.5 bg-slate-500 hover:bg-slate-600 text-white px-3 py-2 rounded-md text-sm font-semibold shadow-sm transition-colors cursor-default">
+                  <Building2 size={16} />
+                  {dept}
+                </span>
+              ))}
+              
+              {event.level && (
+                <span className="inline-flex items-center gap-1.5 bg-[#0dcaf0] hover:bg-[#0bacce] text-white px-3 py-2 rounded-md text-sm font-semibold shadow-sm transition-colors cursor-default">
+                  <Flag size={16} />
+                  {event.level}
+                </span>
+              )}
+              
+              {event.type && (
+                <span className="inline-flex items-center gap-1.5 bg-[#ffc107] hover:bg-[#e0a800] text-slate-900 px-3 py-2 rounded-md text-sm font-semibold shadow-sm transition-colors cursor-default">
+                  <Tag size={16} />
+                  {event.type}
+                </span>
+              )}
+
+              <span className="inline-flex items-center gap-1.5 bg-[#0d6efd] text-white px-3 py-2 rounded-md text-sm font-bold shadow-sm cursor-default">
+                <Calendar size={16} />
+                {event.status || 'Upcoming'}
+              </span>
+              
+              {event.registration_link && (
+                <a href={event.registration_link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-[#dc3545] hover:bg-[#c82333] text-white px-4 py-2 rounded-md text-sm font-bold shadow-sm transition-colors hover:shadow-md">
+                  <UserPlus size={18} />
+                  Register Now
+                </a>
+              )}
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Content */}
-      <section className="py-24 px-6">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-16">
-          <div className="lg:col-span-2 space-y-16">
-            <div className="prose prose-xl max-w-none">
-              <h2 className="text-3xl font-black text-brand-primary italic mb-8">About the <span className="text-brand-secondary">Event</span></h2>
-              <p className="text-gray-600 leading-relaxed text-lg whitespace-pre-line">
-                {event.description}
-              </p>
-            </div>
-
-            {event.highlights && (
-              <div className="bg-gray-50 rounded-[3rem] p-12 border border-gray-100">
-                <h3 className="text-2xl font-black text-brand-primary italic mb-8">Event Highlights</h3>
-                <ul className="grid md:grid-cols-1 gap-6">
-                  {event.highlights.split('\n').filter((h: string) => h.trim()).map((h: string, i: number) => (
-                    <li key={i} className="flex gap-4 items-start text-gray-600 font-medium italic">
-                      <div className="w-6 h-6 rounded-full bg-brand-secondary/20 flex items-center justify-center shrink-0">
-                        <div className="w-2 h-2 rounded-full bg-brand-secondary" />
-                      </div>
-                      {h}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {event.schedule && (
-              <div className="space-y-8">
-                <h3 className="text-2xl font-black text-brand-primary italic">At a <span className="text-brand-secondary">Glance</span></h3>
-                <div className="bg-white rounded-[2rem] p-10 border-2 border-brand-primary/5 shadow-xl">
-                   <div className="whitespace-pre-line text-gray-600 font-medium italic leading-loose">
-                     {event.schedule}
-                   </div>
+      <section className="section-padding bg-background">
+        <div className="section-container">
+          <div className="grid lg:grid-cols-3 gap-12">
+            
+            <div className="lg:col-span-2 space-y-12">
+              {event.image_url && (
+                <div className="w-full aspect-video rounded-2xl overflow-hidden bg-primary/5 border border-border shadow-sm">
+                  <img src={event.image_url} alt={event.title} className="w-full h-full object-cover" />
                 </div>
-              </div>
-            )}
+              )}
 
-            {event.committee && (
-              <div className="space-y-12">
-                <h3 className="text-2xl font-black text-brand-primary italic">Committee <span className="text-brand-secondary">Hub</span></h3>
-                <div className="grid md:grid-cols-2 gap-8">
-                  {(typeof event.committee === 'string' ? JSON.parse(event.committee) : event.committee).map((member: any, i: number) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      className="group relative p-8 rounded-[2.5rem] bg-white border border-gray-100 shadow-xl hover:shadow-2xl transition-all overflow-hidden"
-                    >
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-brand-secondary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
-                      
-                      <div className="relative space-y-6">
-                        <div className="flex items-start justify-between">
-                          <div className="w-14 h-14 rounded-2xl bg-brand-primary/5 flex items-center justify-center text-brand-primary group-hover:bg-brand-primary group-hover:text-white transition-colors duration-500">
-                            <GraduationCap size={28} />
+              <div className="prose max-w-none">
+                <h3 className="text-2xl font-bold text-text mb-6">About the <span className="text-secondary">Event</span></h3>
+                <p className="text-muted leading-relaxed text-lg whitespace-pre-line">
+                  {event.description}
+                </p>
+              </div>
+
+              {event.highlights && (
+                <div className="bg-surface rounded-2xl p-8 border border-border">
+                  <h3 className="text-xl font-bold text-text mb-6">Event Highlights</h3>
+                  <ul className="grid sm:grid-cols-2 gap-4">
+                    {event.highlights.split('\n').filter((h: string) => h.trim()).map((h: string, i: number) => (
+                      <li key={i} className="flex gap-3 items-start text-text font-medium text-sm">
+                        <div className="w-5 h-5 rounded-full bg-secondary/20 flex items-center justify-center shrink-0 mt-0.5">
+                          <div className="w-1.5 h-1.5 rounded-full bg-secondary" />
+                        </div>
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {event.schedule && (
+                <div className="space-y-6">
+                  <h3 className="text-xl font-bold text-text">Objectives of the Event</h3>
+                  <div className="bg-background rounded-2xl p-6 md:p-8 border border-border shadow-sm">
+                     <div className="whitespace-pre-line text-muted font-medium leading-loose">
+                       {event.schedule}
+                     </div>
+                  </div>
+                </div>
+              )}
+
+              {committeeMembers.length > 0 && (
+                <div className="space-y-8 pt-6">
+                  <h3 className="text-2xl font-bold text-text">Committee <span className="text-secondary">Hub</span></h3>
+                  <div className="grid sm:grid-cols-2 gap-6">
+                    {committeeMembers.map((member: any, i: number) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 }}
+                        className="group relative p-6 rounded-2xl bg-surface border border-border hover:shadow-card transition-all overflow-hidden"
+                      >
+                        <div className="relative space-y-4">
+                          <div className="flex items-start justify-between">
+                            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                              <GraduationCap size={24} />
+                            </div>
+                            {member.role && (
+                              <span className="px-3 py-1 rounded-lg bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-widest">
+                                {member.role}
+                              </span>
+                            )}
                           </div>
-                          <span className="px-4 py-1.5 rounded-full bg-brand-secondary/10 text-brand-secondary text-[10px] font-black uppercase tracking-widest">
-                            {member.role || "Member"}
-                          </span>
-                        </div>
 
-                        <div>
-                          <h4 className="text-xl font-black text-brand-primary italic group-hover:text-brand-secondary transition-colors truncate">
-                            {member.name}
-                          </h4>
-                          <p className="text-xs font-bold text-gray-400 uppercase tracking-tight mt-1">
-                            SEMCOM Institutional Body
-                          </p>
-                        </div>
+                          <div>
+                            <h4 className="text-lg font-bold text-text truncate">
+                              {member.name}
+                            </h4>
+                          </div>
 
-                        <div className="space-y-3 pt-4 border-t border-gray-50">
-                          <a href={`mailto:${member.email}`} className="flex items-center gap-3 text-gray-600 hover:text-brand-secondary transition-colors">
-                            <div className="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center shrink-0">
-                              <Mail size={14} />
+                          {(member.email || member.phone) && (
+                            <div className="space-y-2 pt-4 border-t border-border">
+                              {member.email && (
+                                <a href={`mailto:${member.email}`} className="flex items-center gap-3 text-muted hover:text-primary transition-colors text-sm font-medium">
+                                  <Mail size={16} />
+                                  <span className="truncate">{member.email}</span>
+                                </a>
+                              )}
+                              {member.phone && (
+                                <a href={`tel:${member.phone}`} className="flex items-center gap-3 text-muted hover:text-primary transition-colors text-sm font-medium">
+                                  <Phone size={16} />
+                                  <span>{member.phone}</span>
+                                </a>
+                              )}
                             </div>
-                            <span className="text-sm font-bold truncate">{member.email || "N/A"}</span>
-                          </a>
-                          <a href={`tel:${member.phone}`} className="flex items-center gap-3 text-gray-600 hover:text-brand-secondary transition-colors">
-                            <div className="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center shrink-0">
-                              <Phone size={14} />
-                            </div>
-                            <span className="text-sm font-bold">{member.phone || "N/A"}</span>
-                          </a>
+                          )}
                         </div>
-                      </div>
-                    </motion.div>
-                  ))}
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-6">
+              <div className="bg-surface p-8 rounded-2xl border border-border space-y-6 sticky top-28 shadow-sm">
+                <h3 className="text-xl font-bold text-text">Interested?</h3>
+                <p className="text-muted text-sm leading-relaxed">
+                  Join us for this event. Stay tuned for registration details or follow the provided instructions.
+                </p>
+                {event.registration_link ? (
+                  <a href={event.registration_link} target="_blank" rel="noopener noreferrer" className="w-full btn-primary !py-4 block text-center">
+                    Register for Event
+                  </a>
+                ) : (
+                  <button className="w-full btn-primary !py-4 opacity-50 cursor-not-allowed" disabled>
+                    Registration Not Open
+                  </button>
+                )}
+                <div className="flex justify-between items-center pt-6 border-t border-border">
+                  <button className="flex items-center gap-2 text-sm font-medium text-muted hover:text-primary transition-colors">
+                    <Share2 size={16} /> Share
+                  </button>
+                  <button className="flex items-center gap-2 text-sm font-medium text-muted hover:text-primary transition-colors">
+                    <Bookmark size={16} /> Save
+                  </button>
                 </div>
               </div>
-            )}
-          </div>
-
-          <div className="space-y-8">
-            <div className="bg-brand-primary p-10 rounded-[3rem] text-white space-y-8 sticky top-32 shadow-2xl">
-              <h3 className="text-2xl font-black italic">Interested?</h3>
-              <p className="text-gray-300 font-light leading-relaxed">
-                Registration is open for all SEMCOM students and relevant departments.
-              </p>
-              <button className="w-full bg-brand-secondary text-white font-black uppercase py-5 rounded-2xl hover:scale-105 transition-transform tracking-widest text-xs">
-                Register for Event
-              </button>
-              <div className="flex justify-between items-center pt-8 border-t border-white/10">
-                <button className="flex items-center gap-2 text-xs font-bold hover:text-brand-secondary transition-colors">
-                  <Share2 size={16} /> Share
-                </button>
-                <button className="flex items-center gap-2 text-xs font-bold hover:text-brand-secondary transition-colors">
-                  <Bookmark size={16} /> Save
-                </button>
-              </div>
             </div>
+
           </div>
         </div>
       </section>

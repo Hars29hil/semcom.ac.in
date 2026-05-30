@@ -14,58 +14,58 @@ export default function ContactPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="neu rounded-2xl p-6">
+        <div className="border border-border bg-white shadow-sm rounded-2xl p-6">
           <h3 className="text-base font-bold text-foreground mb-5">General Information</h3>
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>College Name</Label>
-              <Input className="neu-inset rounded-xl border-none" defaultValue="SEMCOM - S.G.M. English Medium College of Commerce & Management" />
+              <Input className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="SEMCOM - S.G.M. English Medium College of Commerce & Management" />
             </div>
             <div className="space-y-2">
               <Label>Email</Label>
-              <Input className="neu-inset rounded-xl border-none" defaultValue="principal.semcom@cvmu.edu.in" />
+              <Input className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="principal.semcom@cvmu.edu.in" />
             </div>
             <div className="space-y-2">
               <Label>Phone</Label>
-              <Input className="neu-inset rounded-xl border-none" defaultValue="+91 6352135360" />
+              <Input className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="+91 6352135360" />
             </div>
             <div className="space-y-2">
               <Label>Website</Label>
-              <Input className="neu-inset rounded-xl border-none" defaultValue="https://semcom.ac.in" />
+              <Input className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="https://semcom.ac.in" />
             </div>
             <div className="space-y-2">
               <Label>Address</Label>
-              <Textarea className="neu-inset rounded-xl border-none" defaultValue="Vallabh Vidyanagar, Anand, Gujarat, India - 388120" />
+              <Textarea className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="Vallabh Vidyanagar, Anand, Gujarat, India - 388120" />
             </div>
             <Button>Save Changes</Button>
           </div>
         </div>
 
-        <div className="neu rounded-2xl p-6">
+        <div className="border border-border bg-white shadow-sm rounded-2xl p-6">
           <h3 className="text-base font-bold text-foreground mb-5">Social Media Links</h3>
           <div className="space-y-4">
             <div className="space-y-2">
               <Label>Facebook</Label>
-              <Input className="neu-inset rounded-xl border-none" defaultValue="https://facebook.com/semcom" />
+              <Input className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="https://facebook.com/semcom" />
             </div>
             <div className="space-y-2">
               <Label>Instagram</Label>
-              <Input className="neu-inset rounded-xl border-none" defaultValue="https://instagram.com/semcom" />
+              <Input className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="https://instagram.com/semcom" />
             </div>
             <div className="space-y-2">
               <Label>Twitter</Label>
-              <Input className="neu-inset rounded-xl border-none" defaultValue="https://twitter.com/semcom" />
+              <Input className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="https://twitter.com/semcom" />
             </div>
             <div className="space-y-2">
               <Label>YouTube</Label>
-              <Input className="neu-inset rounded-xl border-none" defaultValue="https://youtube.com/semcom" />
+              <Input className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="https://youtube.com/semcom" />
             </div>
             <Button>Save Changes</Button>
           </div>
         </div>
       </div>
 
-      <div className="skeu-surface rounded-2xl p-6">
+      <div className="bg-white border border-border shadow-sm rounded-2xl p-6">
         <h3 className="text-base font-bold text-foreground mb-4">Current Contact Display</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
@@ -75,7 +75,7 @@ export default function ContactPage() {
             { icon: Globe, label: "Website", value: "semcom.ac.in" },
           ].map((item) => (
             <div key={item.label} className="glass-tint rounded-xl p-4 flex items-start gap-3">
-              <div className="h-8 w-8 rounded-lg clay-primary flex items-center justify-center shrink-0">
+              <div className="h-8 w-8 rounded-lg bg-white border border-border shadow-sm-primary flex items-center justify-center shrink-0">
                 <item.icon className="h-3.5 w-3.5 text-primary-foreground" />
               </div>
               <div>

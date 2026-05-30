@@ -103,7 +103,7 @@ export default function PressNotesPage() {
     <div className="space-y-8 pb-20">
       {/* DIALOG: PRESS NOTE */}
       <Dialog open={openPressNoteDialog} onOpenChange={(open) => !open && resetPressNoteForm()}>
-        <DialogContent className="rounded-3xl clay border-none max-w-md">
+        <DialogContent className="rounded-3xl bg-white border border-border shadow-sm max-w-md">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black">
               {editingPressId ? "Edit Press Note" : "New Press Note"}
@@ -119,7 +119,7 @@ export default function PressNotesPage() {
                 value={pressNoteTitle} 
                 onChange={(e) => setPressNoteTitle(e.target.value)} 
                 placeholder="Title" 
-                className="rounded-xl neu-inset border-none h-12" 
+                className="rounded-xl border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none h-12" 
               />
             </div>
             <div className="space-y-2">
@@ -128,7 +128,7 @@ export default function PressNotesPage() {
                 type="date" 
                 value={pressNoteDate} 
                 onChange={(e) => setPressNoteDate(e.target.value)} 
-                className="rounded-xl neu-inset border-none h-12" 
+                className="rounded-xl border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none h-12" 
               />
             </div>
             <div className="space-y-2">
@@ -174,7 +174,7 @@ export default function PressNotesPage() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input 
           placeholder="Search press notes..." 
-          className="pl-9 neu-inset rounded-xl border-none" 
+          className="pl-9 border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" 
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
         />
@@ -189,7 +189,7 @@ export default function PressNotesPage() {
              </div>
            ) : (
              filteredPressNotes.map((note: any) => (
-               <div key={note.id} className="clay p-5 flex gap-4 group items-center">
+               <div key={note.id} className="bg-white border border-border shadow-sm p-5 flex gap-4 group items-center">
                   <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                     <Newspaper className="h-6 w-6 text-primary" />
                   </div>

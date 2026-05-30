@@ -219,8 +219,8 @@ export default function CounsellorPage() {
   return (
     <div className="max-w-6xl mx-auto space-y-10 animate-in fade-in duration-700 pb-20">
       {/* Premium Header */}
-      <div className="relative p-10 bg-white shadow-[0_32px_64px_-16px_rgba(0,0,0,0.06)] rounded-[3rem] border border-white/50 flex flex-col md:flex-row items-center gap-8 group">
-        <label className="relative w-32 h-32 rounded-[2rem] bg-accent flex items-center justify-center shadow-2xl group/photo cursor-pointer overflow-hidden border-2 border-white ring-4 ring-primary/5">
+      <div className="relative p-10 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.06)] rounded-3xl border border-white/50 flex flex-col md:flex-row items-center gap-8 group">
+        <label className="relative w-32 h-32 rounded-2xl bg-accent flex items-center justify-center shadow-2xl group/photo cursor-pointer overflow-hidden border-2 border-white ring-4 ring-primary/5">
           {image_url ? (
             <img src={image_url} alt="Profile" className="w-full h-full object-cover"/>
           ) : (
@@ -234,13 +234,13 @@ export default function CounsellorPage() {
         </label>
         <div className="flex-1 text-center md:text-left">
            <Badge className="bg-primary text-white border-none rounded-lg font-bold uppercase text-[9px] tracking-widest mb-3 px-3 py-1 shadow-sm">Faculty Hub</Badge>
-           <h1 className="text-4xl font-black italic tracking-tighter text-[#1c2e5a]">{name || "Your Profile"}</h1>
+           <h1 className="text-4xl font-black italic tracking-tighter text-primary">{name || "Your Profile"}</h1>
            <p className="text-muted-foreground font-medium flex items-center justify-center md:justify-start gap-2 mt-1 px-1">
              {user?.username} • Faculty Member
            </p>
         </div>
         <div className="flex gap-3">
-           <Button variant="secondary" className="rounded-2xl h-12 px-6 font-bold bg-brand-secondary/10 text-brand-secondary hover:bg-brand-secondary/20" onClick={() => setShowPreview(true)}>
+           <Button variant="secondary" className="rounded-2xl h-12 px-6 font-bold bg-accent/10 text-accent hover:bg-accent/20" onClick={() => setShowPreview(true)}>
               <Eye className="w-4 h-4 mr-2" /> Live Preview
            </Button>
            <Button className="rounded-2xl h-12 px-8 font-bold bg-primary hover:bg-primary/90 shadow-xl shadow-primary/20" onClick={handleSaveProfile} disabled={saving}>
@@ -253,7 +253,7 @@ export default function CounsellorPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Info: Basic Profile */}
         <div className="lg:col-span-4 space-y-8" id="synopsis">
-           <Card className="rounded-[2.5rem] border-none shadow-xl overflow-hidden">
+           <Card className="rounded-2xl border-none shadow-xl overflow-hidden">
              <CardHeader className="bg-primary/5">
                 <CardTitle className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
                    <GradIcon className="w-4 h-4" /> Personal Synopsis
@@ -279,7 +279,7 @@ export default function CounsellorPage() {
              </CardContent>
            </Card>
 
-           <Card className="rounded-[2.5rem] border-none shadow-xl bg-gradient-to-br from-brand-secondary to-brand-secondary/80 text-white">
+           <Card className="rounded-2xl border-none shadow-xl bg-gradient-to-br from-brand-secondary to-brand-secondary/80 text-white">
              <CardContent className="p-8 space-y-6">
                 <div className="flex items-center justify-between">
                    <p className="text-[10px] font-black uppercase tracking-widest opacity-80">Achievement Count</p>
@@ -294,7 +294,7 @@ export default function CounsellorPage() {
         {/* Right Info: Achievement Tabs */}
         <div className="lg:col-span-8 space-y-8" id="achievements">
            <Tabs defaultValue="Research Papers Published" className="w-full">
-              <div className="flex items-center justify-between mb-6 bg-white p-2 rounded-[2rem] shadow-sm border border-gray-100 overflow-x-auto no-scrollbar">
+              <div className="flex items-center justify-between mb-6 bg-white p-2 rounded-2xl shadow-sm border border-gray-100 overflow-x-auto no-scrollbar">
                  <TabsList className="bg-transparent gap-1">
                     {achievementTypes.map(t => (
                       <TabsTrigger key={t.id} value={t.id} className="rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-widest data-[state=active]:bg-primary data-[state=active]:text-white transition-all whitespace-nowrap">
@@ -309,7 +309,7 @@ export default function CounsellorPage() {
                    <div className="flex justify-between items-center px-4">
                       <div className="flex items-center gap-3">
                          <div className="w-10 h-10 rounded-xl bg-primary/5 flex items-center justify-center text-primary">{type.icon}</div>
-                         <h3 className="text-xl font-black text-[#1c2e5a] italic">{type.id}</h3>
+                         <h3 className="text-xl font-black text-primary italic">{type.id}</h3>
                       </div>
                       <Button className="rounded-xl h-9 bg-primary text-white font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 border-none" onClick={() => setIsAddingAch(type.id)}>
                          <Plus className="w-4 h-4 mr-1.5" /> Add New
@@ -318,7 +318,7 @@ export default function CounsellorPage() {
 
                    <AnimatePresence>
                      {isAddingAch === type.id && (
-                       <motion.div initial={{opacity:0, y:-20}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-20}} className="p-8 skeu-surface rounded-[2.5rem] border-2 border-primary/20 bg-white space-y-6 relative">
+                       <motion.div initial={{opacity:0, y:-20}} animate={{opacity:1, y:0}} exit={{opacity:0, y:-20}} className="p-8 bg-white border border-border shadow-sm rounded-2xl border-2 border-primary/20 bg-white space-y-6 relative">
                           <button onClick={() => setIsAddingAch(null)} className="absolute top-6 right-6 text-muted-foreground"><X/></button>
                           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                              <div className="md:col-span-3 space-y-2">
@@ -334,7 +334,7 @@ export default function CounsellorPage() {
                              <Label className="text-[10px] font-black uppercase opacity-60">Details (Publisher, Supervisor name, DOI, etc.)</Label>
                              <Textarea value={newAch.details} onChange={(e) => setNewAch({...newAch, details: e.target.value})} className="rounded-2xl" placeholder="Provide context or links..."/>
                           </div>
-                          <Button className="w-full h-12 rounded-2xl bg-[#1c2e5a] text-white font-black uppercase text-[10px] tracking-widest shadow-xl shadow-blue-900/20" onClick={() => handleAddAchievement(type.id)}>
+                          <Button className="w-full h-12 rounded-2xl bg-primary text-white font-black uppercase text-[10px] tracking-widest shadow-xl shadow-blue-900/20" onClick={() => handleAddAchievement(type.id)}>
                              Commit Entry
                           </Button>
                        </motion.div>
@@ -347,7 +347,7 @@ export default function CounsellorPage() {
                            <CardContent className="p-6 flex items-center justify-between bg-white/40 group-hover:bg-white">
                               <div>
                                  <div className="text-[9px] font-black text-primary uppercase mb-1">{ach.achievement_year}</div>
-                                 <h4 className="font-bold text-[#1c2e5a] text-base leading-tight">{ach.title}</h4>
+                                 <h4 className="font-bold text-primary text-base leading-tight">{ach.title}</h4>
                                  <p className="text-xs text-muted-foreground mt-1 font-medium">{ach.details}</p>
                               </div>
                               <button onClick={() => removeAchievement(ach.id)} className="p-3 text-red-400 hover:bg-red-50 rounded-xl transition-colors opacity-0 group-hover:opacity-100"><Trash2 size={18}/></button>
@@ -355,7 +355,7 @@ export default function CounsellorPage() {
                         </Card>
                       ))}
                       {achievements.filter(a => a.achievement_type === type.id).length === 0 && !isAddingAch && (
-                        <div className="py-20 text-center border-2 border-dashed border-gray-100 rounded-[3rem] italic text-gray-300 font-medium">
+                        <div className="py-20 text-center border-2 border-dashed border-gray-100 rounded-3xl italic text-gray-300 font-medium">
                            No entries recorded for this category.
                         </div>
                       )}
@@ -370,22 +370,22 @@ export default function CounsellorPage() {
       <div className="space-y-8 pt-10 border-t border-gray-100" id="trajectory">
          <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
-               <div className="w-12 h-12 rounded-2xl bg-brand-secondary/10 flex items-center justify-center text-brand-secondary">
+               <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
                   <Briefcase className="w-6 h-6" />
                </div>
                <div>
-                  <h3 className="text-2xl font-black text-[#1c2e5a] italic">Career Path</h3>
+                  <h3 className="text-2xl font-black text-primary italic">Career Path</h3>
                   <p className="text-xs text-muted-foreground font-medium">Manage your professional journey and industry experience.</p>
                </div>
             </div>
-            <Button className="rounded-2xl h-11 bg-brand-secondary text-white hover:bg-brand-secondary/90 shadow-lg shadow-brand-secondary/20" onClick={() => setIsAddingExp(true)}>
+            <Button className="rounded-2xl h-11 bg-accent text-white hover:bg-accent/90 shadow-lg shadow-accent/20" onClick={() => setIsAddingExp(true)}>
                <Plus className="w-4 h-4 mr-2" /> Record Experience
             </Button>
          </div>
 
          <AnimatePresence>
             {isAddingExp && (
-              <motion.div initial={{opacity:0, scale:0.95}} animate={{opacity:1, scale:1}} exit={{opacity:0, scale:0.95}} className="p-10 bg-white rounded-[3rem] border-2 border-brand-secondary/20 shadow-2xl space-y-8 relative overflow-hidden">
+              <motion.div initial={{opacity:0, scale:0.95}} animate={{opacity:1, scale:1}} exit={{opacity:0, scale:0.95}} className="p-10 bg-white rounded-3xl border-2 border-accent/20 shadow-2xl space-y-8 relative overflow-hidden">
                  <div className="absolute top-0 right-0 p-8">
                     <button onClick={() => setIsAddingExp(false)} className="text-muted-foreground hover:text-foreground"><X/></button>
                  </div>
@@ -405,9 +405,9 @@ export default function CounsellorPage() {
                  </div>
                  <div className="space-y-2">
                     <Label className="text-[10px] font-black uppercase tracking-widest opacity-60">Role Description</Label>
-                    <Textarea value={newExp.description} onChange={(e) => setNewExp({...newExp, description: e.target.value})} className="rounded-[2rem] bg-accent/30 border-none p-6 min-h-[150px]" placeholder="Briefly describe your responsibilities and achievements in this role..."/>
+                    <Textarea value={newExp.description} onChange={(e) => setNewExp({...newExp, description: e.target.value})} className="rounded-2xl bg-accent/30 border-none p-6 min-h-[150px]" placeholder="Briefly describe your responsibilities and achievements in this role..."/>
                  </div>
-                 <Button className="w-full h-14 rounded-2xl bg-brand-secondary text-white font-black uppercase text-xs tracking-[0.2em] shadow-xl shadow-brand-secondary/20" onClick={handleAddExperience}>
+                 <Button className="w-full h-14 rounded-2xl bg-accent text-white font-black uppercase text-xs tracking-[0.2em] shadow-xl shadow-accent/20" onClick={handleAddExperience}>
                     Publish to Trajectory
                  </Button>
               </motion.div>
@@ -416,16 +416,16 @@ export default function CounsellorPage() {
 
          <div className="grid gap-6">
             {experiences.map((exp) => (
-              <Card key={exp.id} className="rounded-[2.5rem] border-none shadow-xl overflow-hidden group">
+              <Card key={exp.id} className="rounded-2xl border-none shadow-xl overflow-hidden group">
                  <CardContent className="p-8 flex items-center justify-between bg-white/70 group-hover:bg-white transition-all">
                     <div className="flex gap-6 items-start">
                        <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center text-muted-foreground shrink-0 mt-1">
                           <History size={24} />
                        </div>
                        <div className="space-y-1">
-                          <Badge variant="outline" className="rounded-full border-brand-secondary/20 text-brand-secondary font-black text-[9px] mb-2">{exp.years}</Badge>
-                          <h4 className="text-xl font-black text-[#1c2e5a] tracking-tight">{exp.role}</h4>
-                          <p className="text-sm font-bold uppercase tracking-widest text-[#0b807b]">{exp.company}</p>
+                          <Badge variant="outline" className="rounded-full border-accent/20 text-accent font-black text-[9px] mb-2">{exp.years}</Badge>
+                          <h4 className="text-xl font-black text-primary tracking-tight">{exp.role}</h4>
+                          <p className="text-sm font-bold uppercase tracking-widest text-accent">{exp.company}</p>
                           <p className="text-gray-500 mt-4 text-sm leading-relaxed max-w-2xl font-medium">{exp.description}</p>
                        </div>
                     </div>
@@ -434,7 +434,7 @@ export default function CounsellorPage() {
               </Card>
             ))}
             {experiences.length === 0 && !isAddingExp && (
-              <div className="py-20 text-center bg-accent/30 rounded-[3rem] italic text-muted-foreground border-2 border-dashed border-accent/50">
+              <div className="py-20 text-center bg-accent/30 rounded-3xl italic text-muted-foreground border-2 border-dashed border-accent/50">
                  No experience records have been added to your professional trajectory yet.
               </div>
             )}
@@ -445,31 +445,31 @@ export default function CounsellorPage() {
       <AnimatePresence>
         {showPreview && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[2000] flex items-center justify-center p-4 md:p-12">
-            <div className="absolute inset-0 bg-[#0a1a3b]/90 backdrop-blur-xl" onClick={() => setShowPreview(false)} />
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="relative w-full max-w-5xl h-full max-h-[85vh] bg-white rounded-[3rem] shadow-2xl overflow-hidden flex flex-col">
+            <div className="absolute inset-0 bg-primary/90 backdrop-blur-xl" onClick={() => setShowPreview(false)} />
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="relative w-full max-w-5xl h-full max-h-[85vh] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col">
                <div className="flex flex-col md:flex-row w-full h-full overflow-hidden">
                   <div className="w-full md:w-[40%] bg-[#fcfcfc] p-10 flex flex-col items-center border-r border-gray-100">
-                     <div className="w-40 h-48 rounded-[2.5rem] bg-white flex items-center justify-center shadow-xl border-8 border-white mb-6 overflow-hidden">
+                     <div className="w-40 h-48 rounded-2xl bg-white flex items-center justify-center shadow-xl border-8 border-white mb-6 overflow-hidden">
                         {image_url ? <img src={image_url} alt="Profile" className="w-full h-full object-cover"/> : <UserCircle className="w-20 h-20 text-muted-foreground/20" />}
                      </div>
-                     <h2 className="text-2xl font-serif font-black text-[#1c2e5a] uppercase italic text-center leading-tight">{name}</h2>
-                     <p className="text-teal-600 font-black text-[10px] uppercase tracking-widest mt-2 px-3 py-1 bg-teal-50 rounded-lg">Faculty Member</p>
+                     <h2 className="text-2xl  font-black text-primary uppercase italic text-center leading-tight">{name}</h2>
+                     <p className="text-accent font-black text-[10px] uppercase tracking-widest mt-2 px-3 py-1 bg-accent/10 rounded-lg">Faculty Member</p>
                      
                      <div className="w-full mt-10 space-y-4">
                         <div className="p-5 bg-white rounded-2xl shadow-sm border border-gray-100">
                            <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 shadow-sm">Degrees</p>
-                           <p className="text-[11px] font-bold text-[#1c2e5a] leading-tight">{qualifications || "Not specified"}</p>
+                           <p className="text-[11px] font-bold text-primary leading-tight">{qualifications || "Not specified"}</p>
                         </div>
                         <div className="p-5 bg-white rounded-2xl shadow-sm border border-gray-100">
                            <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 shadow-sm">Specialization</p>
-                           <p className="text-[11px] font-bold text-[#1c2e5a] leading-tight">{area || "Not specified"}</p>
+                           <p className="text-[11px] font-bold text-primary leading-tight">{area || "Not specified"}</p>
                         </div>
                      </div>
                   </div>
                   <div className="flex-1 p-10 md:p-14 overflow-y-auto relative no-scrollbar">
                      <button onClick={() => setShowPreview(false)} className="absolute top-8 right-8 text-gray-400 hover:text-foreground"><X/></button>
                      <div className="mb-12">
-                        <h3 className="text-4xl font-serif font-black text-[#1c2e5a] italic underline decoration-teal-500/20 underline-offset-8">Academic <span className="text-teal-600">Trajectory</span>.</h3>
+                        <h3 className="text-4xl  font-black text-primary italic underline decoration-accent/20 underline-offset-8">Academic <span className="text-accent">Trajectory</span>.</h3>
                         <p className="text-gray-400 font-black text-[10px] mt-4 uppercase tracking-[0.2em]">Institutional Contributions & Research Portfolio</p>
                      </div>
                      <div className="space-y-12">
@@ -478,14 +478,14 @@ export default function CounsellorPage() {
                           if (items.length === 0) return null;
                           return (
                             <div key={type.id} className="space-y-6">
-                               <h4 className="text-[11px] font-black text-teal-600 uppercase tracking-[0.3em] flex items-center gap-3">
+                               <h4 className="text-[11px] font-black text-accent uppercase tracking-[0.3em] flex items-center gap-3">
                                   {type.icon} {type.id}
                                </h4>
                                <div className="grid gap-4">
                                   {items.map(i => (
                                     <div key={i.id} className="p-5 bg-gray-50/50 rounded-3xl border border-gray-100">
-                                       <div className="text-[9px] font-black text-teal-600 uppercase mb-1">{i.achievement_year}</div>
-                                       <div className="text-sm font-bold text-[#1c2e5a] mb-1">{i.title}</div>
+                                       <div className="text-[9px] font-black text-accent uppercase mb-1">{i.achievement_year}</div>
+                                       <div className="text-sm font-bold text-primary mb-1">{i.title}</div>
                                        <div className="text-xs text-muted-foreground font-medium">{i.details}</div>
                                     </div>
                                   ))}

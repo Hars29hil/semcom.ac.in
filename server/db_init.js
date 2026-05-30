@@ -45,6 +45,12 @@ async function initializeTables() {
         location VARCHAR(255),
         description TEXT,
         image_url TEXT,
+        end_date DATE,
+        departments TEXT,
+        level VARCHAR(50),
+        type VARCHAR(50),
+        registration_link VARCHAR(255),
+        status VARCHAR(50) DEFAULT 'Upcoming',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
@@ -481,6 +487,31 @@ async function initializeTables() {
       await db.execute('INSERT INTO site_config (config_key, config_value) VALUES ("activity_honors", "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop")');
 
       console.log('Seeded site config (chairman, about, institutional, and activity images).');
+    }
+
+    // Council Table
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS council (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        role VARCHAR(255) NOT NULL,
+        year VARCHAR(50) NOT NULL,
+        image_url TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    // SEED DATA: Council
+    const [councilRows] = await db.execute('SELECT COUNT(*) as count FROM council');
+    if (councilRows[0].count === 0) {
+      const councilSeeds = [
+        ['John Doe', 'President', '2025-2026', ''],
+        ['Jane Smith', 'Vice President', '2025-2026', '']
+      ];
+      for (const seed of councilSeeds) {
+        await db.execute('INSERT INTO council (name, role, year, image_url) VALUES (?, ?, ?, ?)', seed);
+      }
+      console.log('Seeded council members.');
     }
 
     console.log('Database tables initialized or already exist.');

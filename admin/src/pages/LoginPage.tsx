@@ -24,6 +24,14 @@ export default function LoginPage() {
         setAuthUser({ username: "admin@semcom.ac.in", role: 'admin', name: 'SEMCOM Admin' });
         toast.success("Welcome, Administrator");
         navigate("/");
+      } else if (email === "librarian@semcom.com" && password === "Librarian#2026") {
+        setAuthUser({ username: "librarian@semcom.com", role: 'librarian', name: 'Librarian' });
+        toast.success("Welcome, Librarian");
+        navigate("/announcements");
+      } else if (email === "VP@semcom.com" && password === "VP#2026") {
+        setAuthUser({ username: "VP@semcom.com", role: 'vp', name: 'Vice Principal' });
+        toast.success("Welcome, Vice Principal");
+        navigate("/faculty");
       } else if ((email === "dhruv.patel@cvmu.edu.in" || email === "mr..dhruv.patel@cvmu.edu.in") && password === "Dhruv@semcom") {
         setAuthUser({ username: "mr..dhruv.patel@cvmu.edu.in", role: 'counsellor', name: 'Dhruv Patel' });
         toast.success("Welcome, Counsellor");
@@ -75,7 +83,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-[#f8fafc] overflow-hidden relative">
       {/* Background Orbs */}
       <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[120px] animate-pulse" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-secondary/5 rounded-full blur-[120px] animate-pulse" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/5 rounded-full blur-[120px] animate-pulse" />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -91,7 +99,7 @@ export default function LoginPage() {
             <p className="text-muted-foreground text-sm font-medium">Access your institutional workspace</p>
         </div>
 
-        <Card className="border-none shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] rounded-[2.5rem] overflow-hidden bg-white/70 backdrop-blur-xl">
+        <Card className="border-none shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] rounded-2xl overflow-hidden bg-white/70 backdrop-blur-xl">
           <CardHeader className="pt-10 pb-4 text-center">
             <CardTitle className="text-xl font-bold">Sign In</CardTitle>
             <CardDescription>Enter your credentials to continue</CardDescription>

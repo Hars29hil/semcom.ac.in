@@ -84,7 +84,7 @@ export default function SettingsPage() {
   };
 
   const ConfigImageSection = ({ title, configKey, currentUrl, icon: Icon }: any) => (
-    <div className="neu rounded-2xl p-6">
+    <div className="border border-border bg-white shadow-sm rounded-2xl p-6">
       <div className="flex items-center gap-2 mb-5">
         <Icon className="h-5 w-5 text-primary" />
         <h3 className="text-base font-bold text-foreground">{title}</h3>
@@ -115,7 +115,7 @@ export default function SettingsPage() {
                 className="hidden" 
                 id={`upload-${configKey}`}
               />
-              <Button asChild variant="outline" className="neu-inset-hover">
+              <Button asChild variant="outline" className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20-hover">
                 <label htmlFor={`upload-${configKey}`} className="cursor-pointer">
                   <Upload className="h-4 w-4 mr-2" />
                   {currentUrl ? "Change Photo" : "Upload Photo"}
@@ -127,7 +127,7 @@ export default function SettingsPage() {
           {currentUrl && (
             <div className="space-y-2">
               <Label>Current URL</Label>
-              <Input readOnly value={currentUrl} className="neu-inset text-[10px] h-8 border-none" />
+              <Input readOnly value={currentUrl} className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 text-[10px] h-8 border-none" />
             </div>
           )}
         </div>
@@ -220,16 +220,16 @@ export default function SettingsPage() {
           icon={Trophy} 
         />
       </div>
-      <div className="neu rounded-2xl p-6">
+      <div className="border border-border bg-white shadow-sm rounded-2xl p-6">
         <h3 className="text-base font-bold text-foreground mb-5">Website Settings</h3>
         <div className="space-y-5">
           <div className="space-y-2">
             <Label>Site Title</Label>
-            <Input className="neu-inset rounded-xl border-none" defaultValue="SEMCOM - College of Commerce & Management" />
+            <Input className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="SEMCOM - College of Commerce & Management" />
           </div>
           <div className="space-y-2">
             <Label>Meta Description</Label>
-            <Input className="neu-inset rounded-xl border-none" defaultValue="SEMCOM, a college of CVM University, offering BBA, BCA, BCom, MBA, MCom and Ph.D. programs." />
+            <Input className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" defaultValue="SEMCOM, a college of CVM University, offering BBA, BCA, BCom, MBA, MCom and Ph.D. programs." />
           </div>
           <Separator />
           {[

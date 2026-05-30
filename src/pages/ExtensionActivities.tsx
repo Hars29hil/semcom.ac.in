@@ -22,8 +22,8 @@ const extensionActivities = [
     name: 'World Environment Day',
     icon: Leaf,
     title: 'Plant for Planet Campaign',
-    tagline: 'SEMCOM\'s Green Initiative 2025',
-    description: 'On the occasion of World Environment Day 2025, SEMCOM launched its annual green initiative with a renewed focus on sustainability and community welfare. The campaign emphasizes the plantation of food-bearing saplings aimed at supporting local food resources and enhancing green cover.',
+    tagline: 'SEMCOM\'s Green Initiative',
+    description: 'On the occasion of World Environment Day, SEMCOM launched its annual green initiative with a renewed focus on sustainability and community welfare. The campaign emphasizes the plantation of food-bearing saplings aimed at supporting local food resources and enhancing green cover.',
     highlights: [
       'Focus on food-bearing & nutritional saplings',
       'Community-centric afforestation approach',
@@ -43,29 +43,21 @@ export default function ExtensionActivities() {
   const [activeTab, setActiveTab] = useState(extensionActivities[0]);
 
   return (
-    <div className="pt-20 bg-white min-h-screen">
+    <div className="pt-20 bg-background min-h-screen">
       {/* Dynamic Hero Section */}
-      <section className="relative py-32 px-6 overflow-hidden bg-[#0a3d62]">
-        <div className="absolute inset-0 z-0 opacity-20">
-          <img 
-            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2070" 
-            className="w-full h-full object-cover" 
-            alt="Nature backdrop"
-          />
-        </div>
-        <div className="container mx-auto px-6 relative z-10 text-center">
+      <section className="section-padding bg-surface border-b border-border">
+        <div className="section-container text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl mx-auto space-y-6"
           >
-            <div className="flex items-center gap-3 bg-secondary/20 w-fit px-6 py-2 rounded-full backdrop-blur-md mx-auto mb-8 border border-secondary/30">
-              <Globe size={18} className="text-secondary animate-spin-slow" />
-              <span className="text-secondary font-black text-xs uppercase tracking-[0.4em]">Service Above Self</span>
+            <div className="flex items-center gap-2 justify-center mb-2">
+              <Globe size={18} className="text-secondary" />
+              <span className="section-label !mb-0">Service Above Self</span>
             </div>
-            <h1 className="text-6xl md:text-8xl font-serif font-black text-white mb-6 italic">
-              Extension <span className="text-secondary">Activities</span>
-            </h1>
-            <p className="text-xl text-gray-300 font-light max-w-2xl mx-auto border-t border-white/10 pt-8">
+            <h2>Extension <span className="text-secondary">Activities</span></h2>
+            <p className="text-muted text-lg max-w-2xl mx-auto">
               Fostering a culture of social responsibility, environmental stewardship, and community welfare through student-led initiatives.
             </p>
           </motion.div>
@@ -73,21 +65,21 @@ export default function ExtensionActivities() {
       </section>
 
       {/* Modern Navigation Grid */}
-      <div className="bg-gray-50 border-b border-gray-100 px-6 py-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+      <div className="bg-background border-b border-border py-8">
+        <div className="section-container">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {extensionActivities.map((activity) => (
               <button
                 key={activity.id}
                 onClick={() => setActiveTab(activity)}
-                className={`p-6 rounded-[2.5rem] flex flex-col items-center gap-4 transition-all group ${
+                className={`p-4 rounded-xl flex flex-col items-center gap-3 transition-all border ${
                   activeTab.id === activity.id 
-                  ? 'bg-primary text-white shadow-2xl scale-105' 
-                  : 'bg-white text-gray-400 hover:text-primary hover:shadow-xl'
+                  ? 'bg-primary border-primary text-white shadow-md' 
+                  : 'bg-surface border-border text-muted hover:border-secondary/50 hover:text-text'
                 }`}
               >
-                <activity.icon size={24} className={activeTab.id === activity.id ? 'text-secondary' : 'group-hover:text-secondary'} />
-                <span className="text-[10px] font-black uppercase tracking-widest text-center leading-tight">
+                <activity.icon size={20} className={activeTab.id === activity.id ? 'text-white' : 'text-secondary'} />
+                <span className="text-xs font-bold text-center">
                   {activity.name}
                 </span>
               </button>
@@ -97,19 +89,19 @@ export default function ExtensionActivities() {
       </div>
 
       {/* Content Area */}
-      <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto">
+      <section className="section-padding bg-background">
+        <div className="section-container">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab.id}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.02 }}
-              className="grid lg:grid-cols-5 gap-20 items-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="grid lg:grid-cols-5 gap-12 items-center"
             >
               {/* Left Side: Visual & Stats */}
-              <div className="lg:col-span-2 space-y-12">
-                <div className="rounded-[4rem] overflow-hidden shadow-2xl border-8 border-gray-50 h-[500px]">
+              <div className="lg:col-span-2 space-y-8">
+                <div className="rounded-2xl overflow-hidden shadow-card border border-border h-[400px]">
                   <img 
                     src={activeTab.id === 'environment' ? 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=1913' : 'https://images.unsplash.com/photo-1559027615-cd162c974340?q=80&w=2070'} 
                     alt="Activity visual"
@@ -117,57 +109,55 @@ export default function ExtensionActivities() {
                   />
                 </div>
                 {activeTab.stats && (
-                  <div className="bg-secondary p-10 rounded-[3rem] text-primary flex items-center justify-between">
+                  <div className="bg-surface p-6 rounded-2xl border border-border flex items-center justify-between">
                     <div>
-                      <h4 className="font-black text-4xl">{activeTab.stats.value}</h4>
-                      <p className="font-bold uppercase tracking-widest text-[10px] opacity-70">{activeTab.stats.label}</p>
+                      <h4 className="font-bold text-3xl text-text">{activeTab.stats.value}</h4>
+                      <p className="text-sm font-medium text-muted mt-1">{activeTab.stats.label}</p>
                     </div>
-                    <CalendarCheck size={40} className="opacity-20" />
+                    <CalendarCheck size={32} className="text-secondary opacity-50" />
                   </div>
                 )}
               </div>
 
               {/* Right Side: Narrative */}
-              <div className="lg:col-span-3 space-y-10">
+              <div className="lg:col-span-3 space-y-8">
                 <div>
-                  <div className="flex items-center gap-3 text-secondary mb-4">
-                    <Sprout size={20} />
-                    <span className="font-black uppercase tracking-widest text-xs">{activeTab.tagline || 'Community Outreach'}</span>
+                  <div className="flex items-center gap-2 text-secondary mb-2">
+                    <Sprout size={18} />
+                    <span className="font-bold text-sm uppercase tracking-wider">{activeTab.tagline || 'Community Outreach'}</span>
                   </div>
-                  <h2 className="text-5xl md:text-6xl font-serif font-black text-primary leading-tight italic">
+                  <h2 className="text-3xl md:text-4xl font-bold text-text">
                     {activeTab.title}
                   </h2>
                 </div>
 
-                <p className="text-xl text-gray-600 leading-relaxed font-light">
+                <p className="text-lg text-muted leading-relaxed">
                   {activeTab.description || "Our extension activities are designed to integrate social awareness with academic learning, encouraging students to actively contribute to the betterment of society."}
                 </p>
 
                 {activeTab.highlights ? (
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid sm:grid-cols-2 gap-4">
                     {activeTab.highlights.map((item, i) => (
-                      <div key={i} className="flex gap-4 items-start bg-gray-50 p-6 rounded-2xl border border-transparent hover:border-secondary transition-all group">
-                        <div className="bg-white p-3 rounded-xl shadow-sm text-secondary">
-                          <Wind size={18} />
-                        </div>
-                        <span className="font-bold text-gray-700 text-sm">{item}</span>
+                      <div key={i} className="flex gap-3 items-center bg-surface p-4 rounded-xl border border-border">
+                        <Wind size={16} className="text-secondary shrink-0" />
+                        <span className="font-medium text-text text-sm">{item}</span>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="flex flex-wrap gap-4">
-                    <div className="px-6 py-3 bg-gray-50 rounded-full text-xs font-black uppercase tracking-widest text-primary border border-gray-100">Social Justice</div>
-                    <div className="px-6 py-3 bg-gray-50 rounded-full text-xs font-black uppercase tracking-widest text-primary border border-gray-100">Environmental Awareness</div>
-                    <div className="px-6 py-3 bg-gray-50 rounded-full text-xs font-black uppercase tracking-widest text-primary border border-gray-100">Humanitarian Aid</div>
+                  <div className="flex flex-wrap gap-3">
+                    <div className="px-4 py-2 bg-surface rounded-lg text-sm font-medium text-text border border-border">Social Justice</div>
+                    <div className="px-4 py-2 bg-surface rounded-lg text-sm font-medium text-text border border-border">Environmental Awareness</div>
+                    <div className="px-4 py-2 bg-surface rounded-lg text-sm font-medium text-text border border-border">Humanitarian Aid</div>
                   </div>
                 )}
 
-                <div className="pt-8 flex flex-wrap gap-6">
-                  <button className="bg-primary text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:gap-6 transition-all flex items-center gap-3 shadow-xl">
-                    View Project Gallery <ChevronRight size={18} />
+                <div className="pt-4 flex flex-wrap gap-4 items-center">
+                  <button className="btn-primary flex items-center gap-2">
+                    View Project Gallery <ChevronRight size={16} />
                   </button>
-                  <button className="text-primary font-black uppercase tracking-widest text-xs border-b-2 border-secondary pb-1 flex items-center gap-2 group">
-                    Collaborate with us <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+                  <button className="text-primary font-bold text-sm flex items-center gap-2 hover:text-secondary transition-colors group">
+                    Collaborate with us <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>
               </div>
@@ -177,22 +167,24 @@ export default function ExtensionActivities() {
       </section>
 
       {/* Sustainable Impact Callout */}
-      <section className="py-24 bg-[#f1f2f6] px-6">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-12">
-          <div className="bg-white p-12 rounded-[4rem] shadow-sm transform -rotate-2">
-            <Users size={48} className="text-secondary mb-8" />
-            <h4 className="text-2xl font-serif font-black mb-4 italic">Student Led</h4>
-            <p className="text-gray-500 font-medium">Empowering the next generation to be socially conscious leaders and empathetic citizens.</p>
-          </div>
-          <div className="bg-primary p-12 rounded-[4rem] shadow-2xl text-white transform scale-110 relative z-10">
-            <ShieldCheck size={48} className="text-secondary mb-8" />
-            <h4 className="text-2xl font-serif font-black mb-4 italic">Lasting Impact</h4>
-            <p className="text-gray-300 font-medium font-light">Focusing on food security, afforestation, and long-term community benefits for the local population.</p>
-          </div>
-          <div className="bg-white p-12 rounded-[4rem] shadow-sm transform rotate-2">
-            <Globe size={48} className="text-secondary mb-8" />
-            <h4 className="text-2xl font-serif font-black mb-4 italic">Global Goals</h4>
-            <h4 className="text-gray-500 font-medium">Aligning with UNEP and NSS objectives to combat global climate change from a local level.</h4>
+      <section className="section-padding bg-surface border-t border-border">
+        <div className="section-container">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-background p-8 rounded-2xl border border-border">
+              <Users size={32} className="text-secondary mb-4" />
+              <h4 className="text-xl font-bold text-text mb-2">Student Led</h4>
+              <p className="text-muted text-sm leading-relaxed">Empowering the next generation to be socially conscious leaders and empathetic citizens.</p>
+            </div>
+            <div className="bg-primary p-8 rounded-2xl shadow-card text-white">
+              <ShieldCheck size={32} className="text-secondary mb-4" />
+              <h4 className="text-xl font-bold mb-2">Lasting Impact</h4>
+              <p className="text-white/80 text-sm leading-relaxed">Focusing on food security, afforestation, and long-term community benefits for the local population.</p>
+            </div>
+            <div className="bg-background p-8 rounded-2xl border border-border">
+              <Globe size={32} className="text-secondary mb-4" />
+              <h4 className="text-xl font-bold text-text mb-2">Global Goals</h4>
+              <p className="text-muted text-sm leading-relaxed">Aligning with UNEP and NSS objectives to combat global climate change from a local level.</p>
+            </div>
           </div>
         </div>
       </section>

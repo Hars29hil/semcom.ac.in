@@ -190,7 +190,7 @@ export default function MCom() {
               
               <div className="relative z-10 space-y-4">
                 <GraduationCap size={32} className="text-accent mb-4" />
-                <h3 className="text-lg font-bold">Eligibility Criteria</h3>
+                <h3 className="text-lg font-bold text-white">Eligibility Criteria</h3>
                 <p className="text-white/70 text-xs sm:text-sm leading-relaxed font-semibold">
                   Bachelor's degree in Commerce / Management / Equivalent under 10+2+3 from a recognized university.
                 </p>

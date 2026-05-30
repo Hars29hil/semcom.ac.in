@@ -18,10 +18,16 @@ export default function EventsPage() {
   // Form State
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [highlights, setHighlights] = useState("");
   const [schedule, setSchedule] = useState("");
+  const [departments, setDepartments] = useState("");
+  const [level, setLevel] = useState("");
+  const [type, setType] = useState("");
+  const [registrationLink, setRegistrationLink] = useState("");
+  const [status, setStatus] = useState("Upcoming");
   const [committee, setCommittee] = useState<any[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
@@ -61,10 +67,16 @@ export default function EventsPage() {
     setSearch("");
     setTitle("");
     setDate("");
+    setEndDate("");
     setLocation("");
     setDescription("");
     setHighlights("");
     setSchedule("");
+    setDepartments("");
+    setLevel("");
+    setType("");
+    setRegistrationLink("");
+    setStatus("Upcoming");
     setCommittee([]);
     setSelectedImage(null);
     setEditingId(null);
@@ -74,10 +86,23 @@ export default function EventsPage() {
     setEditingId(event.id);
     setTitle(event.title || event.name);
     setDate(event.date ? new Date(event.date).toISOString().split('T')[0] : "");
+    setEndDate(event.end_date ? new Date(event.end_date).toISOString().split('T')[0] : "");
     setLocation(event.location || "");
     setDescription(event.description || "");
     setHighlights(event.highlights || "");
     setSchedule(event.schedule || "");
+
+    // Convert JSON array back to comma-separated string for editing
+    try {
+      setDepartments(event.departments ? JSON.parse(event.departments).join(', ') : "");
+    } catch {
+      setDepartments(event.departments || "");
+    }
+
+    setLevel(event.level || "");
+    setType(event.type || "");
+    setRegistrationLink(event.registration_link || "");
+    setStatus(event.status || "Upcoming");
     try {
       setCommittee(typeof event.committee === 'string' ? JSON.parse(event.committee) : (event.committee || []));
     } catch (e) {
@@ -108,7 +133,7 @@ export default function EventsPage() {
   return (
     <div className="space-y-6">
       <Dialog open={openDialog} onOpenChange={(open) => !open && resetForm()}>
-        <DialogContent className="rounded-3xl clay border-none max-w-4xl">
+        <DialogContent className="rounded-3xl bg-white border border-border shadow-sm max-w-4xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black">{editingId ? "Edit Event" : "Create New Event"}</DialogTitle>
             <DialogDescription>
@@ -119,9 +144,12 @@ export default function EventsPage() {
             <div className="space-y-6">
               <div className="space-y-4">
                 <h3 className="text-sm font-black uppercase tracking-widest text-primary italic">Basic Info</h3>
-                <div className="space-y-2"><Label>Event Title</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" className="rounded-xl border-none neu-inset h-12" /></div>
-                <div className="space-y-2"><Label>Date</Label><Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="rounded-xl border-none neu-inset h-12" /></div>
-                <div className="space-y-2"><Label>Location</Label><Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Venue" className="rounded-xl border-none neu-inset h-12" /></div>
+                <div className="space-y-2"><Label>Event Title</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2"><Label>Start Date</Label><Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
+                  <div className="space-y-2"><Label>End Date</Label><Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
+                </div>
+                <div className="space-y-2"><Label>Location</Label><Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Venue" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
                 <div className="space-y-2">
                   <Label>Event Poster</Label>
                   <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-primary/20 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-primary/5 transition-all h-32">
@@ -136,16 +164,36 @@ export default function EventsPage() {
                 <h3 className="text-sm font-black uppercase tracking-widest text-primary italic">Detailed Content</h3>
                 <div className="space-y-2">
                   <Label>About Event</Label>
-                  <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Detailed about section" className="rounded-xl border-none neu-inset min-h-[100px] resize-none" />
+                  <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Detailed about section" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 min-h-[100px] resize-none" />
                 </div>
                 <div className="space-y-2">
                   <Label>Highlights</Label>
-                  <Textarea value={highlights} onChange={(e) => setHighlights(e.target.value)} placeholder="Bullet points" className="rounded-xl border-none neu-inset min-h-[100px] resize-none" />
+                  <Textarea value={highlights} onChange={(e) => setHighlights(e.target.value)} placeholder="Bullet points" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 min-h-[100px] resize-none" />
                 </div>
                 <div className="space-y-2">
-                  <Label>Schedule / At a Glance</Label>
-                  <Textarea value={schedule} onChange={(e) => setSchedule(e.target.value)} placeholder="Time slots" className="rounded-xl border-none neu-inset min-h-[100px] resize-none" />
+                  <Label>Objectives of the Event</Label>
+                  <Textarea value={schedule} onChange={(e) => setSchedule(e.target.value)} placeholder="Event objectives..." className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 min-h-[100px] resize-none" />
                 </div>
+
+                <h3 className="text-sm font-black uppercase tracking-widest text-primary italic pt-4">Event Metadata</h3>
+                <div className="space-y-2"><Label>Departments (comma separated)</Label><Input value={departments} onChange={(e) => setDepartments(e.target.value)} placeholder="Automobile Engineering, Computer Engineering" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2"><Label>Level</Label><Input value={level} onChange={(e) => setLevel(e.target.value)} placeholder="International Level" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
+                  <div className="space-y-2"><Label>Type</Label><Input value={type} onChange={(e) => setType(e.target.value)} placeholder="Conference" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
+                </div>
+                <div className="space-y-2">
+                  <Label>Status</Label>
+                  <select
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                    className="w-full rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12 px-3 text-sm"
+                  >
+                    <option value="Upcoming">Upcoming</option>
+                    <option value="Ongoing">Ongoing</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </div>
+                <div className="space-y-2"><Label>Registration Link</Label><Input value={registrationLink} onChange={(e) => setRegistrationLink(e.target.value)} placeholder="https://forms.gle/..." className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
               </div>
             </div>
 
@@ -154,13 +202,13 @@ export default function EventsPage() {
                 <h3 className="text-sm font-black uppercase tracking-widest text-success italic">Committee Members</h3>
                 <Button variant="outline" size="sm" onClick={addCommitteeMember} className="rounded-lg h-8 px-3 text-[10px] font-bold"><Plus size={14} className="mr-1" /> Add Member</Button>
               </div>
-              
+
               <div className="space-y-4">
                 {committee.map((member, idx) => (
-                  <div key={idx} className="p-4 rounded-2xl neu-inset space-y-3 relative group">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
+                  <div key={idx} className="p-4 rounded-2xl border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 space-y-3 relative group">
+                    <Button
+                      variant="ghost"
+                      size="icon"
                       className="absolute top-2 right-2 h-7 w-7 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
                       onClick={() => removeMember(idx)}
                     >
@@ -198,7 +246,15 @@ export default function EventsPage() {
           </div>
           <DialogFooter>
             <Button variant="ghost" onClick={resetForm}>Cancel</Button>
-            <Button disabled={isSaving} onClick={() => saveEvent({ title, date, location, description, highlights, schedule, committee })} className="rounded-xl px-10 shadow-lg">
+            <Button disabled={isSaving} onClick={() => {
+              const depsArray = departments ? departments.split(',').map(d => d.trim()).filter(Boolean) : [];
+              saveEvent({
+                title, date, location, description, highlights, schedule, committee,
+                end_date: endDate,
+                departments: JSON.stringify(depsArray),
+                level, type, registration_link: registrationLink, status
+              });
+            }} className="rounded-xl px-10 shadow-lg">
               {isSaving ? <Loader2 className="animate-spin" /> : (editingId ? "Save Changes" : "Save Event")}
             </Button>
           </DialogFooter>
@@ -215,7 +271,7 @@ export default function EventsPage() {
 
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input placeholder="Search events..." className="pl-9 neu-inset rounded-xl border-none" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Input placeholder="Search events..." className="pl-9 border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" value={search} onChange={(e) => setSearch(e.target.value)} />
       </div>
 
       {isLoading ? (
@@ -223,7 +279,7 @@ export default function EventsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((event: any, i: number) => (
-            <div key={event.id || i} className="clay p-5 group flex flex-col justify-between h-full">
+            <div key={event.id || i} className="bg-white border border-border shadow-sm p-5 group flex flex-col justify-between h-full">
               <div>
                 <div className="flex items-start justify-between mb-3"><Badge variant="outline" className="rounded-lg">{event.location || 'College Campus'}</Badge></div>
                 <h3 className="font-bold text-foreground text-sm min-h-[2.5rem] line-clamp-2">{event.title || event.name}</h3>

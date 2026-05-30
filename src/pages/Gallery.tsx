@@ -54,92 +54,83 @@ export default function Gallery() {
     }
   };
 
-  const gradients = [
-    "from-blue-500/20 to-teal-500/20",
-    "from-orange-500/20 to-amber-500/20",
-    "from-purple-500/20 to-pink-500/20",
-    "from-emerald-500/20 to-green-500/20",
-  ];
-
   return (
-    <div className="min-h-screen bg-brand-bg pt-32 pb-24 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20 space-y-4">
+    <div className="pt-20 bg-background min-h-screen">
+      {/* Hero Section */}
+      <section className="section-padding bg-surface border-b border-border">
+        <div className="section-container text-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-brand-secondary"
-          >
-            Visual Chronicles
-          </motion.div>
-          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-7xl font-heading font-black text-brand-text italic tracking-tighter"
+            className="max-w-4xl mx-auto space-y-6"
           >
-            Our <span className="text-brand-primary">Gallery</span>.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-brand-subtext max-w-2xl mx-auto font-medium"
-          >
-            Explore the vibrant moments, academic achievements, and cultural heritage of SEMCOM through our digital memory lane.
-          </motion.p>
+            <span className="section-label">Visual Chronicles</span>
+            <h2>Our <span className="text-secondary">Gallery</span></h2>
+            <p className="text-muted text-lg max-w-2xl mx-auto">
+              Explore the vibrant moments, academic achievements, and cultural heritage of SEMCOM through our digital memory lane.
+            </p>
+          </motion.div>
         </div>
+      </section>
 
-        {loading ? (
-          <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-10 w-10 animate-spin text-brand-primary" />
-          </div>
-        ) : albums.length === 0 ? (
-          <div className="text-center py-20 opacity-40 italic">No albums found in our archive.</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {albums.map((album, idx) => (
-              <motion.div
-                key={album.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                onClick={() => handleOpenAlbum(album)}
-                className="group cursor-pointer"
-              >
-                <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border-8 border-white bg-white shadow-2xl skew-y-1 group-hover:skew-y-0 transition-all duration-700">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${gradients[idx % gradients.length]} group-hover:scale-110 transition-transform duration-1000`} />
-                  <div className="absolute inset-0 flex items-center justify-center text-7xl select-none group-hover:scale-125 transition-transform duration-700">
-                    {album.cover_emoji}
-                  </div>
-                  
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-brand-primary/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-2xl scale-0 group-hover:scale-100 transition-transform duration-500">
-                      <ArrowRight className="text-brand-primary" size={32} />
+      {/* Album Grid */}
+      <section className="section-padding">
+        <div className="section-container">
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="h-10 w-10 animate-spin text-secondary" />
+            </div>
+          ) : albums.length === 0 ? (
+            <div className="text-center py-20 bg-surface rounded-2xl border border-border">
+              <ImageIcon size={48} className="mx-auto text-muted mb-4 opacity-50" />
+              <h3 className="text-xl font-bold text-text mb-2">No Albums Available</h3>
+              <p className="text-muted max-w-md mx-auto">Our gallery is currently being updated. Check back soon for new photos.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {albums.map((album, idx) => (
+                <motion.div
+                  key={album.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  onClick={() => handleOpenAlbum(album)}
+                  className="group cursor-pointer bg-surface rounded-2xl overflow-hidden border border-border hover:border-secondary/50 transition-all shadow-sm hover:shadow-card"
+                >
+                  <div className="relative aspect-video bg-primary/5 border-b border-border">
+                    <div className="absolute inset-0 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform duration-500">
+                      {album.cover_emoji}
+                    </div>
+                    
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg scale-0 group-hover:scale-100 transition-transform duration-300">
+                        <ArrowRight className="text-primary" size={24} />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="mt-8 space-y-1 px-4">
-                  <h3 className="text-2xl font-heading font-black text-brand-text group-hover:text-brand-primary transition-colors">{album.name}</h3>
-                  <div className="flex items-center gap-4 text-brand-subtext font-bold text-[10px] uppercase tracking-widest">
-                    <div className="flex items-center gap-1">
-                      <ImageIcon size={12} className="text-brand-secondary" />
-                      {album.count} Photos
-                    </div>
-                    <span>•</span>
-                    <div className="flex items-center gap-1">
-                      <Calendar size={12} className="text-brand-secondary" />
-                      {new Date(album.album_date).toLocaleDateString()}
+                  <div className="p-6 space-y-3">
+                    <h3 className="text-xl font-bold text-text group-hover:text-primary transition-colors">{album.name}</h3>
+                    <div className="flex items-center gap-4 text-muted text-sm font-medium">
+                      <div className="flex items-center gap-1.5">
+                        <ImageIcon size={14} className="text-secondary" />
+                        {album.count} Photos
+                      </div>
+                      <span>•</span>
+                      <div className="flex items-center gap-1.5">
+                        <Calendar size={14} className="text-secondary" />
+                        {new Date(album.album_date).toLocaleDateString()}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* Lightbox / Overlay */}
       <AnimatePresence>
@@ -148,62 +139,56 @@ export default function Gallery() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-brand-text/95 backdrop-blur-xl flex items-center justify-center p-6 md:p-12"
+            className="fixed inset-0 z-50 bg-background/95 backdrop-blur-md flex flex-col items-center p-4 md:p-8"
           >
-            <button
-              onClick={() => setSelectedAlbum(null)}
-              className="absolute top-8 right-8 w-14 h-14 rounded-2xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors group"
-            >
-              <X size={28} className="group-hover:rotate-90 transition-transform duration-500" />
-            </button>
-
-            <div className="w-full max-w-7xl h-full flex flex-col pt-16">
-              <div className="mb-12">
-                <h2 className="text-4xl md:text-6xl font-heading font-black text-white italic tracking-tighter">
+            <div className="w-full max-w-7xl flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold text-text">
                   {selectedAlbum.cover_emoji} {selectedAlbum.name}
                 </h2>
-                <p className="text-white/60 font-bold uppercase tracking-widest text-[10px] mt-4">
-                   Capture Highlights • Archive of {new Date(selectedAlbum.album_date).getFullYear()}
+                <p className="text-muted text-sm font-medium mt-1">
+                   {selectedAlbum.count} Photos • Archive of {new Date(selectedAlbum.album_date).getFullYear()}
                 </p>
               </div>
+              <button
+                onClick={() => setSelectedAlbum(null)}
+                className="w-12 h-12 rounded-xl bg-surface border border-border hover:bg-background text-text flex items-center justify-center transition-colors group shadow-sm"
+              >
+                <X size={24} className="group-hover:rotate-90 transition-transform duration-300" />
+              </button>
+            </div>
 
-              <div className="flex-grow overflow-y-auto custom-scrollbar pr-4 pb-12">
-                {loadingPhotos ? (
-                  <div className="h-full flex items-center justify-center">
-                    <Loader2 className="h-10 w-10 animate-spin text-brand-secondary" />
-                  </div>
-                ) : photos.length === 0 ? (
-                   <div className="h-full flex items-center justify-center text-white/20 italic text-xl">
-                      No memories recorded in this album yet.
-                   </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {photos.map((photo, idx) => (
-                      <motion.div
-                        key={photo.id}
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.05 }}
-                        className="group relative"
-                      >
-                         <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden border-8 border-white/10 bg-white/5 transition-transform duration-700 hover:scale-[1.02]">
-                            <img 
-                              src={photo.url} 
-                              alt="Gallery" 
-                              className="w-full h-full object-cover transition-all duration-1000"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <div className="absolute bottom-8 left-8 right-8 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                               <div className="w-10 h-10 rounded-xl bg-brand-secondary flex items-center justify-center text-white">
-                                  <ImageIcon size={20} />
-                               </div>
-                            </div>
-                         </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                )}
-              </div>
+            <div className="flex-grow overflow-y-auto w-full max-w-7xl custom-scrollbar pr-2 pb-12">
+              {loadingPhotos ? (
+                <div className="h-full flex items-center justify-center min-h-[400px]">
+                  <Loader2 className="h-10 w-10 animate-spin text-secondary" />
+                </div>
+              ) : photos.length === 0 ? (
+                 <div className="h-full flex flex-col items-center justify-center min-h-[400px] text-muted space-y-4">
+                    <ImageIcon size={48} className="opacity-50" />
+                    <p className="font-medium">No photos found in this album yet.</p>
+                 </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {photos.map((photo, idx) => (
+                    <motion.div
+                      key={photo.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                      className="group relative"
+                    >
+                       <div className="relative aspect-square rounded-2xl overflow-hidden border border-border bg-surface hover:shadow-card transition-all duration-300">
+                          <img 
+                            src={photo.url} 
+                            alt="Gallery Photo" 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                       </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
             </div>
           </motion.div>
         )}

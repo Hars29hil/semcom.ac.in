@@ -118,7 +118,7 @@ export default function PlacementsPage() {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input 
           placeholder="Search company or student..." 
-          className="pl-9 neu-inset rounded-xl border-none h-11" 
+          className="pl-9 border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none h-11" 
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
         />
@@ -131,7 +131,7 @@ export default function PlacementsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((item) => (
-            <Card key={item.id} className="clay clay-hover group overflow-hidden border-none shadow-xl">
+            <Card key={item.id} className="bg-white border border-border shadow-sm bg-white border border-border shadow-sm-hover group overflow-hidden border-none shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
@@ -175,7 +175,7 @@ export default function PlacementsPage() {
             </Card>
           ))}
           {filtered.length === 0 && (
-            <div className="col-span-full py-20 text-center text-muted-foreground italic border-2 border-dashed border-muted rounded-[2.5rem]">
+            <div className="col-span-full py-20 text-center text-muted-foreground italic border-2 border-dashed border-muted rounded-2xl">
               No placement records found. Click "Add Placement" to start.
             </div>
           )}
@@ -184,7 +184,7 @@ export default function PlacementsPage() {
 
       {/* Add/Edit Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[450px] rounded-[2.5rem] border-none shadow-2xl">
+        <DialogContent className="sm:max-w-[450px] rounded-2xl border-none shadow-2xl">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black italic tracking-tighter">
               {editingPlacement ? "Modify Record" : "New Placement"}
@@ -197,7 +197,7 @@ export default function PlacementsPage() {
             <div className="grid gap-2">
               <Label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-50">Company Name</Label>
               <Input
-                className="neu-inset border-none rounded-2xl h-11 px-4"
+                className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none rounded-2xl h-11 px-4"
                 value={editingPlacement?.company_name || newPlacement.company_name}
                 onChange={(e) => editingPlacement 
                   ? setEditingPlacement({...editingPlacement, company_name: e.target.value})
@@ -208,7 +208,7 @@ export default function PlacementsPage() {
             <div className="grid gap-2">
               <Label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-50">Student Name</Label>
               <Input
-                className="neu-inset border-none rounded-2xl h-11 px-4"
+                className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none rounded-2xl h-11 px-4"
                 value={editingPlacement?.student_name || newPlacement.student_name}
                 onChange={(e) => editingPlacement 
                   ? setEditingPlacement({...editingPlacement, student_name: e.target.value})
@@ -220,7 +220,7 @@ export default function PlacementsPage() {
               <div className="grid gap-2">
                 <Label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-50">Package (e.g. 12 LPA)</Label>
                 <Input
-                  className="neu-inset border-none rounded-2xl h-11 px-4"
+                  className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none rounded-2xl h-11 px-4"
                   value={editingPlacement?.package_detail || newPlacement.package_detail}
                   onChange={(e) => editingPlacement
                     ? setEditingPlacement({...editingPlacement, package_detail: e.target.value})
@@ -231,7 +231,7 @@ export default function PlacementsPage() {
               <div className="grid gap-2">
                 <Label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-50">Year</Label>
                 <Input
-                  className="neu-inset border-none rounded-2xl h-11 px-4"
+                  className="border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 border-none rounded-2xl h-11 px-4"
                   value={editingPlacement?.placement_year || newPlacement.placement_year}
                   onChange={(e) => editingPlacement
                     ? setEditingPlacement({...editingPlacement, placement_year: e.target.value})

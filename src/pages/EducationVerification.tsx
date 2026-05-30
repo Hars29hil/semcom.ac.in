@@ -3,105 +3,85 @@ import { Mail, ShieldCheck, ArrowRight, FileCheck, CheckCircle2 } from 'lucide-r
 
 export default function EducationVerification() {
   return (
-    <div className="pt-32 pb-20 bg-gray-50/50 min-h-screen">
+    <div className="pt-20 bg-background min-h-screen">
       {/* Header Section */}
-      <section className="px-6 md:px-12 lg:px-24 mb-20 text-center">
-        <div className="max-w-4xl mx-auto">
+      <section className="section-padding bg-surface border-b border-border">
+        <div className="section-container text-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center text-primary mx-auto mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-4xl mx-auto space-y-6"
           >
-            <ShieldCheck size={40} />
+            <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center text-primary border border-primary/10 mx-auto mb-6">
+              <ShieldCheck size={32} />
+            </div>
+            <span className="section-label">Institutional Integrity</span>
+            <h2>Education <span className="text-secondary">Verification</span></h2>
+            <p className="text-muted text-lg max-w-2xl mx-auto">
+              Ensuring authentic academic credentials through a streamlined, secure verification protocol for employers and institutions.
+            </p>
           </motion.div>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xs font-sans font-black uppercase tracking-[0.5em] text-secondary mb-4"
-          >
-            Institutional Integrity
-          </motion.p>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl font-serif font-black text-primary leading-tight tracking-tighter mb-8"
-          >
-            Education <span className="italic text-secondary">Verification</span>.
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xl text-gray-500 font-light max-w-2xl mx-auto italic"
-          >
-            Ensuring authentic academic credentials through a streamlined, secure verification protocol for employers and institutions.
-          </motion.p>
         </div>
       </section>
 
       {/* Main Content */}
-      <section className="px-6 md:px-12 lg:px-24">
-        <div className="max-w-5xl mx-auto">
+      <section className="section-padding bg-background">
+        <div className="section-container">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white rounded-[4rem] p-12 md:p-20 shadow-2xl shadow-primary/5 border border-gray-100 relative overflow-hidden"
+            className="bg-surface rounded-2xl p-8 md:p-12 shadow-card border border-border relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/5 rounded-full translate-x-1/3 -translate-y-1/3 blur-3xl text-secondary" />
-            
-            <div className="relative z-10 grid lg:grid-cols-2 gap-16 items-center">
+            <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
               <div>
-                <h2 className="text-3xl font-serif font-black text-primary italic mb-6">Verification Protocol</h2>
-                <p className="text-gray-600 leading-relaxed mb-8">
+                <h3 className="text-2xl font-bold text-text mb-4">Verification Protocol</h3>
+                <p className="text-muted leading-relaxed mb-8">
                   SEMCOM maintains a dedicated desk for verifying the educational credentials of its alumni. We provide rapid responses to background screening agencies, corporate recruiters, and higher education institutions globally.
                 </p>
                 
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {[
                     "Standardized response format",
                     "Direct institutional verification",
                     "Secure digital communication",
                     "Official transcript validation"
                   ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-4 text-primary font-bold italic">
-                      <div className="w-6 h-6 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
-                        <CheckCircle2 size={14} />
-                      </div>
+                    <div key={i} className="flex items-center gap-3 text-text font-medium text-sm">
+                      <CheckCircle2 size={18} className="text-secondary" />
                       {item}
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-primary p-12 rounded-[3.5rem] text-white shadow-2xl shadow-primary/30 group">
-                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500">
-                  <Mail size={32} className="text-secondary" />
+              <div className="bg-primary p-8 md:p-10 rounded-2xl text-white shadow-lg">
+                <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6">
+                  <Mail size={24} className="text-secondary" />
                 </div>
-                <h3 className="text-2xl font-serif font-black italic mb-4 text-secondary">Submit Your Request</h3>
-                <p className="text-white/60 mb-8 leading-relaxed font-medium">
+                <h3 className="text-xl font-bold mb-3 text-white">Submit Your Request</h3>
+                <p className="text-white/80 mb-8 text-sm leading-relaxed">
                   For all Education Verification inquiries, please email your requests with scanned copies of the candidate's Marksheets/Degree Certificate and the requisite authorization.
                 </p>
-                <div className="p-6 bg-white/5 rounded-2xl border border-white/10 break-all">
-                  <span className="text-xs font-black uppercase tracking-widest text-white/40 block mb-2">Dedicated Node</span>
+                <div className="p-4 bg-black/20 rounded-xl border border-white/10 break-all">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/50 block mb-1">Dedicated Node</span>
                   <a 
                     href="mailto:studentssupport.semcom@cvmu.edu.in" 
-                    className="text-lg md:text-xl font-black italic text-white hover:text-secondary transition-colors"
+                    className="text-base sm:text-lg font-bold text-white hover:text-secondary transition-colors"
                   >
                     studentssupport.semcom@cvmu.edu.in
                   </a>
                 </div>
-                <div className="mt-8 flex items-center gap-2 text-secondary font-black uppercase tracking-widest text-[10px]">
+                <div className="mt-6 flex items-center gap-2 text-white/70 font-bold uppercase tracking-wider text-[10px]">
                   <span>Expect response within 3-5 days</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={14} className="text-secondary" />
                 </div>
               </div>
             </div>
           </motion.div>
 
           {/* Guidelines */}
-          <div className="mt-20 grid md:grid-cols-3 gap-8">
+          <div className="mt-16 grid md:grid-cols-3 gap-6">
              {[
                {
                  title: "Authorization",
@@ -125,11 +105,13 @@ export default function EducationVerification() {
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
                  transition={{ delay: i * 0.1 }}
-                 className="p-8 rounded-[2.5rem] bg-white border border-gray-100 shadow-xl"
+                 className="p-6 rounded-2xl bg-surface border border-border shadow-sm hover:shadow-card transition-shadow"
                >
-                 <div className="text-secondary mb-6"><item.icon size={28} /></div>
-                 <h4 className="text-lg font-serif font-black text-primary italic mb-3">{item.title}</h4>
-                 <p className="text-gray-500 text-sm leading-relaxed font-medium">{item.desc}</p>
+                 <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary mb-4">
+                   <item.icon size={24} />
+                 </div>
+                 <h4 className="text-lg font-bold text-text mb-2">{item.title}</h4>
+                 <p className="text-muted text-sm leading-relaxed">{item.desc}</p>
                </motion.div>
              ))}
           </div>

@@ -34,11 +34,11 @@ router.get('/activities', async (req, res, next) => {
 
 // Create event
 router.post('/', async (req, res, next) => {
-  const { title, date, location, description, image_url, highlights, schedule, committee } = req.body;
+  const { title, date, location, description, image_url, highlights, schedule, committee, end_date, departments, level, type, registration_link, status } = req.body;
   try {
     await db.execute(
-      'INSERT INTO events (title, date, location, description, image_url, highlights, schedule, committee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [title, date, location, description, image_url, highlights, schedule, JSON.stringify(committee || [])]
+      'INSERT INTO events (title, date, location, description, image_url, highlights, schedule, committee, end_date, departments, level, type, registration_link, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [title, date, location, description, image_url, highlights, schedule, JSON.stringify(committee || []), end_date || null, departments || null, level || null, type || null, registration_link || null, status || 'Upcoming']
     );
     res.json({ success: true, message: 'Event created' });
   } catch (error) {
@@ -49,11 +49,11 @@ router.post('/', async (req, res, next) => {
 // Update event
 router.put('/:id', async (req, res, next) => {
   const { id } = req.params;
-  const { title, date, location, description, image_url, highlights, schedule, committee } = req.body;
+  const { title, date, location, description, image_url, highlights, schedule, committee, end_date, departments, level, type, registration_link, status } = req.body;
   try {
     await db.execute(
-      'UPDATE events SET title = ?, date = ?, location = ?, description = ?, image_url = ?, highlights = ?, schedule = ?, committee = ? WHERE id = ?',
-      [title, date, location, description, image_url, highlights, schedule, JSON.stringify(committee || []), id]
+      'UPDATE events SET title = ?, date = ?, location = ?, description = ?, image_url = ?, highlights = ?, schedule = ?, committee = ?, end_date = ?, departments = ?, level = ?, type = ?, registration_link = ?, status = ? WHERE id = ?',
+      [title, date, location, description, image_url, highlights, schedule, JSON.stringify(committee || []), end_date || null, departments || null, level || null, type || null, registration_link || null, status || 'Upcoming', id]
     );
     res.json({ success: true, message: 'Event updated' });
   } catch (error) {

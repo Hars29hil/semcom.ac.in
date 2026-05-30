@@ -36,6 +36,7 @@ const programRoutes = require('./routes/programs');
 const researchRoutes = require('./routes/research');
 const placementRoutes = require('./routes/placements');
 const configRoutes = require('./routes/config');
+const councilRoutes = require('./routes/council');
 
 const path = require('path');
 const fs = require('fs');
@@ -75,6 +76,7 @@ app.use('/api/research', require('./routes/research'));
 app.use('/api/smtr', require('./routes/smtr'));
 app.use('/api/placements', placementRoutes);
 app.use('/api/config', configRoutes);
+app.use('/api/council', simpleAuth, councilRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

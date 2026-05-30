@@ -36,7 +36,7 @@ export default function AdmissionsPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {stats.map((stat) => (
-          <div key={stat.label} className="clay clay-hover p-5 flex items-center gap-4">
+          <div key={stat.label} className="bg-white border border-border shadow-sm bg-white border border-border shadow-sm-hover p-5 flex items-center gap-4">
             <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg`}>
               <stat.icon className="h-5 w-5 text-primary-foreground" />
             </div>
@@ -50,10 +50,10 @@ export default function AdmissionsPage() {
 
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input placeholder="Search applications..." className="pl-9 neu-inset rounded-xl border-none" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Input placeholder="Search applications..." className="pl-9 border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" value={search} onChange={(e) => setSearch(e.target.value)} />
       </div>
 
-      <div className="skeu-surface rounded-2xl overflow-hidden">
+      <div className="bg-white border border-border shadow-sm rounded-2xl overflow-hidden">
         <div className="p-5 border-b border-border/50">
           <h3 className="text-base font-bold text-foreground">Recent Applications</h3>
         </div>

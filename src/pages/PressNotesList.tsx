@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, ArrowLeft, Search, Newspaper, ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowLeft, Search, Newspaper, ArrowRight, Loader2 } from 'lucide-react';
 
 const API_BASE_URL = "/api";
 const ADMIN_TOKEN = "mysecret123";
@@ -35,27 +35,25 @@ export default function PressNotesList() {
   );
 
   return (
-    <div className="pt-20 bg-gray-50 min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-primary pt-32 pb-48 px-6 overflow-hidden relative">
-        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
-        
-        <div className="container mx-auto px-6 relative z-10 text-center">
+    <div className="pt-20 bg-background min-h-screen">
+      {/* Header Section */}
+      <section className="section-padding bg-surface border-b border-border">
+        <div className="section-container text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto"
+            className="max-w-4xl mx-auto space-y-6"
           >
             <button 
               onClick={() => navigate('/')} 
-              className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12"
+              className="inline-flex items-center gap-2 text-muted hover:text-primary transition-colors text-xs font-bold uppercase tracking-widest mb-6"
             >
               <ArrowLeft size={14} /> Back to Home
             </button>
-            <h1 className="text-6xl md:text-8xl font-serif font-black text-white italic mb-8 leading-tight">
+            <h2 className="text-4xl md:text-5xl font-bold text-text">
               Media <span className="text-secondary">Archive</span>
-            </h1>
-            <p className="text-xl text-gray-300 font-light max-w-2xl mx-auto leading-relaxed border-t border-white/10 pt-8">
+            </h2>
+            <p className="text-muted text-lg max-w-2xl mx-auto">
               Explore our complete collection of press releases and official media announcements.
             </p>
           </motion.div>
@@ -63,65 +61,66 @@ export default function PressNotesList() {
       </section>
 
       {/* Main Content */}
-      <section className="pb-32 px-6 relative -mt-32">
-        <div className="max-w-5xl mx-auto">
-          <div className="bg-white rounded-[4rem] shadow-2xl p-8 md:p-16 border border-gray-100 min-h-[600px]">
+      <section className="section-padding bg-background">
+        <div className="section-container max-w-4xl">
+          <div className="bg-surface rounded-2xl shadow-card border border-border p-8 md:p-12 min-h-[600px]">
             
             {/* Search Bar */}
-            <div className="relative max-w-md mb-16 mx-auto">
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <div className="relative mb-12">
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-muted" size={20} />
               <input 
                 type="text"
                 placeholder="Search press releases..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-16 pr-8 py-5 bg-gray-50 rounded-2xl border-none focus:ring-2 focus:ring-secondary/50 font-bold text-primary placeholder:text-gray-400 shadow-inner"
+                className="w-full pl-14 pr-6 py-4 bg-background rounded-xl border border-border focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium text-text placeholder:text-muted transition-all outline-none"
               />
             </div>
 
             {loading ? (
-              <div className="flex flex-col items-center justify-center py-24 gap-4 text-gray-300">
-                <Loader2 size={48} className="animate-spin text-secondary" />
-                <span className="font-black uppercase tracking-widest text-xs">Loading Archive...</span>
+              <div className="flex flex-col items-center justify-center py-20 gap-4 text-muted">
+                <Loader2 size={40} className="animate-spin text-secondary" />
+                <span className="font-bold text-sm">Loading Archive...</span>
               </div>
             ) : (
               <div className="space-y-4">
                 {filteredNotes.length > 0 ? (
-                  filteredNotes.map((note, idx) => (
+                  filteredNotes.map((note, idx) => {
+                    const noteYear = note.created_at ? new Date(note.created_at).getFullYear() : new Date().getFullYear();
+                    return (
                     <motion.div 
                       key={note.id || idx}
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 10 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: idx * 0.05, duration: 0.6 }}
+                      transition={{ delay: idx * 0.05 }}
                       onClick={() => navigate(`/news/press-note/${note.id || idx}`)}
-                      className="group relative flex flex-col md:flex-row gap-8 items-start md:items-center p-10 bg-white/40 backdrop-blur-md rounded-[3rem] border border-white/50 hover:bg-white hover:shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-500 cursor-pointer overflow-hidden"
+                      className="group flex flex-col sm:flex-row gap-6 items-start sm:items-center p-6 bg-background rounded-2xl border border-border hover:border-secondary/30 hover:shadow-sm transition-all cursor-pointer"
                     >
-                       <div className="flex-shrink-0 w-20 h-20 bg-primary rounded-[1.5rem] flex flex-col items-center justify-center text-white shadow-2xl shadow-primary/20 group-hover:scale-110 transition-transform duration-500">
-                        <span className="text-3xl font-black leading-none">{note.day}</span>
-                        <span className="text-[10px] font-bold uppercase tracking-widest mt-1 opacity-60">{note.month}</span>
+                       <div className="flex-shrink-0 w-16 h-16 bg-primary/10 rounded-xl flex flex-col items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <span className="text-2xl font-bold leading-none">{note.day}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest mt-0.5">{note.month}</span>
                       </div>
                       
-                      <div className="flex-grow space-y-4">
-                        <div className="flex items-center gap-4">
-                          <span className="bg-secondary/10 text-secondary px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-secondary/20">Official Release</span>
-                          <div className="h-px w-8 bg-gray-200" />
-                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest italic">{note.day} {note.month} 2024</span>
+                      <div className="flex-grow space-y-2">
+                        <div className="flex items-center gap-3">
+                          <span className="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Official Release</span>
+                          <span className="text-xs font-medium text-muted">{note.day} {note.month} {noteYear}</span>
                         </div>
-                        <h3 className="text-2xl md:text-3xl font-serif font-black text-primary leading-tight group-hover:text-secondary transition-colors italic">
+                        <h3 className="text-lg font-bold text-text group-hover:text-primary transition-colors leading-snug line-clamp-2">
                           {note.title}
                         </h3>
                       </div>
 
-                      <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-2xl bg-gray-50 text-secondary opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
-                         <ArrowRight size={24} />
+                      <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-lg bg-surface text-muted group-hover:text-secondary group-hover:bg-secondary/10 transition-colors shrink-0">
+                         <ArrowRight size={20} />
                       </div>
                     </motion.div>
-                  ))
+                  )})
                 ) : (
-                  <div className="text-center py-24">
-                     <Newspaper size={64} className="mx-auto text-gray-100 mb-6" />
-                     <p className="text-gray-400 font-bold italic">No results found for "{search}"</p>
+                  <div className="text-center py-20">
+                     <Newspaper size={48} className="mx-auto text-muted mb-4 opacity-50" />
+                     <p className="text-muted font-medium">No results found for "{search}"</p>
                   </div>
                 )}
               </div>

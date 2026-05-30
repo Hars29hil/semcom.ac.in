@@ -104,7 +104,7 @@ export default function FacultyPage() {
   return (
     <div className="space-y-6">
       <Dialog open={openDialog} onOpenChange={(open) => !open && resetForm()}>
-        <DialogContent className="rounded-3xl clay border-none max-w-lg">
+        <DialogContent className="rounded-3xl bg-white border border-border shadow-sm max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-2xl font-black">{editingId ? "Edit Faculty Profile" : "Add Faculty"}</DialogTitle>
             <DialogDescription>
@@ -115,7 +115,7 @@ export default function FacultyPage() {
              <div className="flex justify-center mb-4">
                 <div 
                   onClick={() => fileInputRef.current?.click()}
-                  className="relative h-24 w-24 rounded-3xl neu-inset overflow-hidden cursor-pointer group"
+                  className="relative h-24 w-24 rounded-3xl border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 overflow-hidden cursor-pointer group"
                 >
                    {selectedImage ? (
                       <img src={URL.createObjectURL(selectedImage)} className="h-full w-full object-cover" />
@@ -132,19 +132,19 @@ export default function FacultyPage() {
              </div>
              
              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2"><Label>Full Name</Label><Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" className="rounded-xl border-none neu-inset h-12" /></div>
-                <div className="space-y-2"><Label>Email</Label><Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="rounded-xl border-none neu-inset h-12" /></div>
+                <div className="space-y-2"><Label>Full Name</Label><Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
+                <div className="space-y-2"><Label>Email</Label><Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
              </div>
 
              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2"><Label>Designation</Label><Input value={designation} onChange={(e) => setDesignation(e.target.value)} placeholder="e.g. Professor" className="rounded-xl border-none neu-inset h-12" /></div>
-                <div className="space-y-2"><Label>Department</Label><Input value={dept} onChange={(e) => setDept(e.target.value)} placeholder="e.g. BBA" className="rounded-xl border-none neu-inset h-12" /></div>
+                <div className="space-y-2"><Label>Designation</Label><Input value={designation} onChange={(e) => setDesignation(e.target.value)} placeholder="e.g. Professor" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
+                <div className="space-y-2"><Label>Department</Label><Input value={dept} onChange={(e) => setDept(e.target.value)} placeholder="e.g. BBA" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
              </div>
 
              <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Staff Category</Label>
-                  <select value={staffType} onChange={(e) => setStaffType(e.target.value)} className="w-full rounded-xl border-none neu-inset h-12 px-3 focus:outline-none text-sm font-medium">
+                  <select value={staffType} onChange={(e) => setStaffType(e.target.value)} className="w-full rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12 px-3 focus:outline-none text-sm font-medium">
                      <option value="Teaching">Teaching Faculty</option>
                      <option value="Technical">Technical Staff</option>
                      <option value="Admin">Administrative Staff</option>
@@ -163,8 +163,8 @@ export default function FacultyPage() {
                 </div>
              </div>
 
-             <div className="space-y-2"><Label>Qualification</Label><Input value={qualification} onChange={(e) => setQualification(e.target.value)} placeholder="e.g. M.Com, PhD" className="rounded-xl border-none neu-inset h-12" /></div>
-             <div className="space-y-2"><Label>Expertise Area</Label><Input value={area} onChange={(e) => setArea(e.target.value)} placeholder="e.g. Computer Science" className="rounded-xl border-none neu-inset h-12" /></div>
+             <div className="space-y-2"><Label>Qualification</Label><Input value={qualification} onChange={(e) => setQualification(e.target.value)} placeholder="e.g. M.Com, PhD" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
+             <div className="space-y-2"><Label>Expertise Area</Label><Input value={area} onChange={(e) => setArea(e.target.value)} placeholder="e.g. Computer Science" className="rounded-xl border-none border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 h-12" /></div>
              
           </div>
           <DialogFooter>
@@ -205,7 +205,7 @@ export default function FacultyPage() {
       <div className="flex flex-wrap items-center gap-4">
         <div className="relative max-w-xs flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search name..." className="pl-9 neu-inset rounded-xl border-none h-11" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <Input placeholder="Search name..." className="pl-9 border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none h-11" value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
         
         <div className="flex items-center gap-2">
@@ -240,7 +240,7 @@ export default function FacultyPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((f: any, i: number) => (
-            <div key={f.id} className="clay p-5 group flex flex-col justify-between relative overflow-hidden">
+            <div key={f.id} className="bg-white border border-border shadow-sm p-5 group flex flex-col justify-between relative overflow-hidden">
               {f.is_vp === 1 && (
                 <div className="absolute top-0 right-0 bg-yellow-400 text-black text-[8px] font-black px-3 py-1 rounded-bl-xl shadow-sm uppercase tracking-widest z-10">
                   VP

@@ -12,10 +12,11 @@ export default function PressNoteDetail() {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const res = await fetch(`/api/news/press-notes`);
+        const headers = { "Authorization": "mysecret123" };
+        const res = await fetch(`/api/news/press-notes`, { headers });
         const data = await res.json();
         if (data.success) {
-          const found = data.data.find((n: any) => n.id.toString() === id);
+          const found = data.data.find((n: any) => n.id?.toString() === id || (!n.id && data.data.indexOf(n).toString() === id));
           setNote(found);
         }
       } catch (error) {
@@ -28,86 +29,88 @@ export default function PressNoteDetail() {
   }, [id]);
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-primary">
-       <Loader2 className="animate-spin text-white w-12 h-12" />
+    <div className="min-h-screen flex items-center justify-center bg-background">
+       <Loader2 className="animate-spin text-secondary w-12 h-12" />
     </div>
   );
 
   if (!note) return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6">
-       <FileText size={64} className="text-gray-200 mb-4" />
-       <h2 className="text-2xl font-black text-primary italic">Press Note Not Found</h2>
-       <Link to="/news/press-notes" className="mt-4 text-secondary font-bold uppercase tracking-widest text-xs flex items-center gap-2">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-6">
+       <FileText size={64} className="text-muted mb-4 opacity-50" />
+       <h2 className="text-2xl font-bold text-text">Press Note Not Found</h2>
+       <Link to="/news/press-notes" className="mt-6 btn-outline flex items-center gap-2">
           <ArrowLeft size={16} /> Back to Archive
        </Link>
     </div>
   );
 
-  const displayDate = `${note.day} ${note.month}, ${new Date(note.created_at).getFullYear()}`;
-
+  const displayDate = note.created_at ? new Date(note.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : `${note.day} ${note.month}`;
+  const refNo = note.reference_no || `SEM/PR/${note.created_at ? new Date(note.created_at).getFullYear() : new Date().getFullYear()}/${note.id || 'XXX'}`;
 
   return (
-    <div className="pt-20 bg-gray-50 min-h-screen">
-      {/* Header */}
-      <section className="bg-primary pt-32 pb-48 px-6 overflow-hidden relative">
-        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
-        
-        <div className="container mx-auto px-6 relative z-10 text-center">
+    <div className="pt-20 bg-background min-h-screen">
+      {/* Header Section */}
+      <section className="section-padding bg-surface border-b border-border">
+        <div className="section-container text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto"
+            className="max-w-4xl mx-auto space-y-6"
           >
-            <Link to="/" className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12">
+            <Link to="/news/press-notes" className="inline-flex items-center gap-2 text-muted hover:text-primary transition-colors text-xs font-bold uppercase tracking-widest mb-4">
               <ArrowLeft size={14} /> Back to News
             </Link>
-            <div className="flex justify-center gap-6 mb-8">
-              <span className="bg-secondary/20 text-secondary px-6 py-2 rounded-full border border-secondary/30 text-[10px] font-black uppercase tracking-widest">
+            
+            <div className="flex justify-center gap-4 mb-4">
+              <span className="bg-secondary/10 text-secondary px-4 py-1.5 rounded-full border border-secondary/20 text-[10px] font-bold uppercase tracking-widest">
                 Press Release
               </span>
-              <span className="text-white/40 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest">
+              <span className="text-muted flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
                 <Calendar size={14} /> {displayDate}
               </span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-serif font-black text-white italic leading-tight mb-8">
+            
+            <h2 className="text-3xl md:text-5xl font-bold text-text">
               {note.title}
-            </h1>
+            </h2>
           </motion.div>
         </div>
       </section>
 
       {/* Main Content */}
-      <section className="pb-32 px-6 relative -mt-32">
-        <div className="max-w-5xl mx-auto">
+      <section className="section-padding bg-background">
+        <div className="section-container max-w-4xl">
           <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-[4rem] shadow-2xl overflow-hidden border border-gray-100"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-surface rounded-2xl shadow-card overflow-hidden border border-border"
           >
-            <div className="aspect-[21/9] overflow-hidden bg-gray-100 flex items-center justify-center">
-              {note.image_url ? (
+            {note.image_url ? (
+              <div className="aspect-video w-full overflow-hidden bg-primary/5">
                 <img src={note.image_url} className="w-full h-full object-cover" alt="Press release cover" />
-              ) : (
-                <ImageIcon size={64} className="text-gray-300" />
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="aspect-[21/9] w-full overflow-hidden bg-primary/5 flex items-center justify-center">
+                <ImageIcon size={48} className="text-muted opacity-30" />
+              </div>
+            )}
 
-            <div className="p-8 md:p-20 space-y-12">
-              <div className="prose prose-xl max-w-none">
-                <p className="text-gray-600 leading-[2] text-xl font-light whitespace-pre-line italic">
+            <div className="p-8 md:p-12 space-y-10">
+              <div className="prose max-w-none">
+                <p className="text-text leading-relaxed text-lg whitespace-pre-line">
                   {note.content || "No detailed content available for this press release."}
                 </p>
               </div>
 
               {note.relatedImages && note.relatedImages.length > 0 && (
-                <div className="space-y-8">
-                  <h4 className="text-2xl font-black text-primary italic flex items-center gap-4">
-                    <ImageIcon className="text-secondary" /> Media Highlights
+                <div className="space-y-6">
+                  <h4 className="text-xl font-bold text-text flex items-center gap-3">
+                    <ImageIcon className="text-secondary" size={20} /> Media Highlights
                   </h4>
-                  <div className="grid md:grid-cols-2 gap-8">
+                  <div className="grid sm:grid-cols-2 gap-4">
                     {note.relatedImages.map((img: string, i: number) => (
-                      <div key={i} className="rounded-[3rem] overflow-hidden aspect-video shadow-xl border-4 border-gray-50 group">
-                        <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="News visual" />
+                      <div key={i} className="rounded-xl overflow-hidden aspect-video border border-border bg-background group">
+                        <img src={img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="News visual" />
                       </div>
                     ))}
                   </div>
@@ -115,17 +118,17 @@ export default function PressNoteDetail() {
               )}
 
               {/* Actions */}
-              <div className="flex flex-wrap items-center justify-between gap-8 pt-12 border-t border-gray-50">
-                <div className="flex gap-4">
-                  <button className="flex items-center gap-3 bg-gray-50 text-primary px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-secondary transition-colors">
-                    <Download size={18} /> Download PDF
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-border">
+                <div className="flex gap-4 w-full sm:w-auto">
+                  <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 btn-outline !py-3">
+                    <Download size={16} /> Download PDF
                   </button>
-                  <button className="flex items-center gap-3 bg-gray-50 text-primary px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-secondary transition-colors">
-                    <Share2 size={18} /> Share Release
+                  <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 btn-outline !py-3">
+                    <Share2 size={16} /> Share Release
                   </button>
                 </div>
-                <div className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] italic">
-                  Ref No: SEM/PR/2024/042
+                <div className="text-[10px] font-bold text-muted uppercase tracking-widest">
+                  Ref No: {refNo}
                 </div>
               </div>
             </div>
