@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { ArrowRight, Clock, Users, BookOpen, Award } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const courses = [
   {
@@ -42,6 +42,8 @@ const courses = [
 ];
 
 export default function Courses() {
+  const navigate = useNavigate();
+
   return (
     <section className="section-padding bg-surface">
       <div className="section-container">
@@ -68,7 +70,8 @@ export default function Courses() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="group bg-surface rounded-2xl overflow-hidden border border-border hover:shadow-soft hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row"
+              onClick={() => navigate(course.link)}
+              className="group bg-surface rounded-2xl overflow-hidden border border-border hover:shadow-soft hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row cursor-pointer"
             >
               {/* Image */}
               <div className="relative w-full md:w-[42%] h-48 md:h-auto overflow-hidden shrink-0">
@@ -115,6 +118,7 @@ export default function Courses() {
                 <div className="flex items-center justify-between pt-5 border-t border-border/60">
                   <Link
                     to={course.link}
+                    onClick={(e) => e.stopPropagation()}
                     className="flex items-center gap-2 text-xs font-semibold text-secondary group/link"
                   >
                     View Details
