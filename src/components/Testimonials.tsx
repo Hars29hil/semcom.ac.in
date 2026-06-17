@@ -57,7 +57,7 @@ export default function Testimonials() {
         <div className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
           <span className="section-label justify-center">Student Voices</span>
           <h2>
-            Alumni <span className="text-secondary">Stories</span>
+            Alumni <span className="text-secondary">Success Stories ✨</span>
           </h2>
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Hear from graduates who are now leading across various industries worldwide.
