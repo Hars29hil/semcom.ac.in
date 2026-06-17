@@ -52,7 +52,7 @@ export default function Footer() {
               </div>
             </Link>
 
-            <p className="text-white/50 text-sm leading-relaxed">
+            <p className="text-white/80 text-sm leading-relaxed">
               Pioneering commerce and management education since 1997. A premier institution of Charutar Vidya Mandal University.
             </p>
 
@@ -64,7 +64,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-secondary hover:border-secondary text-white/70 hover:text-white transition-all duration-300"
+                  className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-secondary hover:border-secondary text-white/90 hover:text-white transition-all duration-300"
                   aria-label={social.label}
                 >
                   <social.icon size={16} />
@@ -74,12 +74,12 @@ export default function Footer() {
 
             {/* Newsletter */}
             <div className="pt-5 border-t border-white/10">
-              <p className="text-[11px] font-medium text-white/40 uppercase tracking-wider mb-3">Stay Connected</p>
+              <p className="text-[11px] font-medium text-white/80 uppercase tracking-wider mb-3">Stay Connected</p>
               <div className="flex gap-2">
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder:text-white/25 focus:outline-none focus:border-secondary/50 transition-colors"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm text-white placeholder:text-white/60 focus:outline-none focus:border-secondary/50 transition-colors"
                 />
                 <button className="px-3 py-2.5 bg-secondary rounded-lg text-white hover:bg-secondary-hover transition-colors">
                   <ArrowUpRight size={16} />
@@ -99,7 +99,7 @@ export default function Footer() {
                   <li key={link.name}>
                     <Link
                       to={link.href}
-                      className="text-white/50 text-sm font-medium hover:text-white transition-colors flex items-center gap-2"
+                      className="text-white/80 text-sm font-medium hover:text-white transition-colors flex items-center gap-2"
                     >
                       <div className="w-1 h-1 rounded-full bg-secondary/50" />
                       {link.name}
@@ -121,8 +121,8 @@ export default function Footer() {
                   <MapPin size={16} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-medium text-white/30 uppercase tracking-wider mb-0.5">Address</p>
-                  <p className="text-white/70 text-sm leading-relaxed">
+                  <p className="text-[10px] font-medium text-white/70 uppercase tracking-wider mb-0.5">Address</p>
+                  <p className="text-white/90 text-sm leading-relaxed">
                     Opp. Shastri Ground, V.V. Nagar - 388120, Gujarat, India.
                   </p>
                 </div>
@@ -132,8 +132,8 @@ export default function Footer() {
                   <Mail size={16} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-medium text-white/30 uppercase tracking-wider mb-0.5">Email</p>
-                  <a href="mailto:principal.semcom@cvmu.edu.in" className="text-white/70 text-sm hover:text-white transition-colors">
+                  <p className="text-[10px] font-medium text-white/70 uppercase tracking-wider mb-0.5">Email</p>
+                  <a href="mailto:principal.semcom@cvmu.edu.in" className="text-white/90 text-sm hover:text-white transition-colors">
                     principal.semcom@cvmu.edu.in
                   </a>
                 </div>
@@ -143,8 +143,8 @@ export default function Footer() {
                   <Phone size={16} />
                 </div>
                 <div>
-                  <p className="text-[10px] font-medium text-white/30 uppercase tracking-wider mb-0.5">Phone</p>
-                  <a href="tel:+91-2692-230331" className="text-white/70 text-sm hover:text-white transition-colors">
+                  <p className="text-[10px] font-medium text-white/70 uppercase tracking-wider mb-0.5">Phone</p>
+                  <a href="tel:+91-2692-230331" className="text-white/90 text-sm hover:text-white transition-colors">
                     +91-2692-230331
                   </a>
                 </div>
@@ -156,10 +156,10 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/5">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-            <p className="text-white/25 text-xs font-medium">
+            <p className="text-white/60 text-xs font-medium">
               © 2026 SEMCOM — A CVM University Institution. All rights reserved.
             </p>
-            <div className="flex flex-wrap justify-center gap-5 text-white/25 text-[11px] font-medium items-center">
+            <div className="flex flex-wrap justify-center gap-5 text-white/60 text-[11px] font-medium items-center">
               <Link to="/about/aicte" className="hover:text-white/60 transition-colors flex items-center gap-1.5">
                 <Shield size={12} />
                 AICTE Approved

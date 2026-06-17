@@ -53,7 +53,7 @@ export default function GrievanceCell() {
                 
                 <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
                   <div className="space-y-2">
-                    <h3 className="text-base font-bold">Formal Resolution Process</h3>
+                    <h3 className="text-base font-bold text-white">Formal Resolution Process</h3>
                     <p className="text-white/60 text-xs font-semibold uppercase tracking-wider">Submit your grievance via official Google Form</p>
                   </div>
                   <a 

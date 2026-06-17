@@ -1,0 +1,261 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Search, Edit, Trash2, Users, Loader2, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
+import { getToken } from "@/lib/auth";
+
+interface Program {
+  id: number;
+  name: string;
+  type: string;
+  students: number;
+  status: 'active' | 'new' | 'archived';
+  description?: string;
+}
+
+const API_BASE = "/api/programs";
+
+export default function ProgramsPage() {
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  
+  // Dialog states
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingProgram, setEditingProgram] = useState<Program | null>(null);
+  const [newProgram, setNewProgram] = useState<Partial<Program>>({
+    name: "",
+    type: "UG",
+    students: 0,
+    status: "active",
+    description: ""
+  });
+
+  const fetchPrograms = async () => {
+    try {
+      const res = await fetch(API_BASE);
+      const data = await res.json();
+      setPrograms(data);
+    } catch (error) {
+      toast.error("Failed to fetch programs");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPrograms();
+  }, []);
+
+  const handleSave = async () => {
+    const programData = editingProgram || newProgram;
+    
+    if (!programData.name) {
+      toast.error("Program name is required");
+      return;
+    }
+
+    try {
+      const method = editingProgram ? "PUT" : "POST";
+      const url = editingProgram ? `${API_BASE}/${editingProgram.id}` : API_BASE;
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${getToken()}`
+        },
+        body: JSON.stringify(programData),
+      });
+
+      if (res.ok) {
+        toast.success(`Program ${editingProgram ? "updated" : "added"} successfully`);
+        setIsDialogOpen(false);
+        setEditingProgram(null);
+        setNewProgram({ name: "", type: "UG", students: 0, status: "active" });
+        fetchPrograms();
+      }
+    } catch (error) {
+      toast.error("Failed to save program");
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this program?")) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/${id}`, { 
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${getToken()}` }
+      });
+      if (res.ok) {
+        toast.success("Program deleted successfully");
+        fetchPrograms();
+      }
+    } catch (error) {
+      toast.error("Failed to delete program");
+    }
+  };
+
+  const filtered = programs.filter((p) => 
+    p.name.toLowerCase().includes(search.toLowerCase()) ||
+    p.type.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className="space-y-6 text-slate-900 pb-20">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-extrabold text-slate-900">Programs</h2>
+          <p className="text-slate-500 text-sm mt-1">Manage academic programs offered by SEMCOM</p>
+        </div>
+        <Button onClick={() => {
+          setEditingProgram(null);
+          setIsDialogOpen(true);
+        }} className="rounded-xl shadow-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all hover:bg-accent/90">
+          <Plus className="h-4 w-4 mr-2" />Add Program
+        </Button>
+      </div>
+
+      <div className="relative max-w-sm">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+        <Input 
+          placeholder="Search programs..." 
+          className="pl-9 border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400" 
+          value={search} 
+          onChange={(e) => setSearch(e.target.value)} 
+        />
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-accent" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {filtered.map((prog) => (
+            <div key={prog.id} className="admin-glass-card hover:-translate-y-1 transition-all p-5 group">
+              <div className="flex items-start justify-between mb-3">
+                <Badge variant="outline" className="border-white text-slate-900 bg-white/80 backdrop-blur-md">{prog.type}</Badge>
+                <Badge className={prog.status === "new" ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all" : "bg-white/80 text-slate-900 hover:bg-slate-100"}>{prog.status}</Badge>
+              </div>
+              <h3 className="font-bold text-slate-900 group-hover:text-accent transition-colors">{prog.name}</h3>
+
+              <div className="flex gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="flex-1 border-white text-slate-900 hover:bg-white/80 hover:text-slate-900 bg-transparent"
+                  onClick={() => {
+                    setEditingProgram(prog);
+                    setIsDialogOpen(true);
+                  }}
+                >
+                  <Edit className="h-3 w-3 mr-1" />Edit
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-9 w-9 text-red-400 hover:text-red-300 hover:bg-red-400/20"
+                  onClick={() => handleDelete(prog.id)}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Add/Edit Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="admin-glass-panel border-none sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="text-slate-900">{editingProgram ? "Edit Program" : "Add New Program"}</DialogTitle>
+            <DialogDescription className="text-slate-500">
+              Enter the program details below.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name" className="text-slate-700">Program Name</Label>
+              <Input
+                id="name"
+                value={editingProgram?.name || newProgram.name}
+                onChange={(e) => editingProgram 
+                  ? setEditingProgram({...editingProgram, name: e.target.value})
+                  : setNewProgram({...newProgram, name: e.target.value})
+                }
+                className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900"
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="type" className="text-slate-700">Program Type</Label>
+              <Select 
+                value={editingProgram?.type || newProgram.type}
+                onValueChange={(val) => editingProgram
+                  ? setEditingProgram({...editingProgram, type: val})
+                  : setNewProgram({...newProgram, type: val})
+                }
+              >
+                <SelectTrigger className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900">
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] text-slate-900">
+                  <SelectItem value="UG" className="focus:bg-white/80 focus:text-slate-900">Undergraduate (UG)</SelectItem>
+                  <SelectItem value="PG" className="focus:bg-white/80 focus:text-slate-900">Postgraduate (PG)</SelectItem>
+                  <SelectItem value="Doctoral" className="focus:bg-white/80 focus:text-slate-900">Doctoral</SelectItem>
+                  <SelectItem value="Certificate" className="focus:bg-white/80 focus:text-slate-900">Certificate</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="status" className="text-slate-700">Status</Label>
+              <Select 
+                value={editingProgram?.status || newProgram.status}
+                onValueChange={(val: any) => editingProgram
+                  ? setEditingProgram({...editingProgram, status: val})
+                  : setNewProgram({...newProgram, status: val})
+                }
+              >
+                <SelectTrigger className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900">
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent className="bg-white border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] text-slate-900">
+                  <SelectItem value="active" className="focus:bg-white/80 focus:text-slate-900">Active</SelectItem>
+                  <SelectItem value="new" className="focus:bg-white/80 focus:text-slate-900">New</SelectItem>
+                  <SelectItem value="archived" className="focus:bg-white/80 focus:text-slate-900">Archived</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="description" className="text-slate-700">Program Details / Description</Label>
+              <textarea
+                id="description"
+                rows={4}
+                className="flex w-full rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 disabled:cursor-not-allowed disabled:opacity-50"
+                value={editingProgram?.description || newProgram.description}
+                onChange={(e) => editingProgram
+                  ? setEditingProgram({...editingProgram, description: e.target.value})
+                  : setNewProgram({...newProgram, description: e.target.value})
+                }
+                placeholder="Enter detailed program information, curriculum summary, etc."
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="text-slate-900 hover:bg-white/80 hover:text-slate-900 border-white bg-transparent">Cancel</Button>
+            <Button onClick={handleSave} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all hover:bg-accent/90 rounded-xl px-8 shadow-lg">Save Program</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

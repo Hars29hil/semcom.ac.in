@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { cn } from '@/src/lib/utils';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -60,7 +61,6 @@ const navLinks = [
     name: 'Student Corner',
     href: '/student-corner',
     submenu: [
-      { name: 'Students Council 2024-25', href: '/student/council' },
       { name: 'Facilities', href: '/student/facilities' },
       { name: 'Mega Events', href: '/student/events' },
       { name: 'Extension Activities', href: '/student/activities' },
@@ -226,14 +226,18 @@ export default function Navbar() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
-          <a
-            href="https://admissions.cvmu.edu.in/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary !py-2.5 !px-5 !text-xs hidden md:flex whitespace-nowrap"
+          <Button
+            asChild
+            className="hidden md:flex bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg shadow-md hover:shadow-lg transition-all px-6"
           >
-            Apply Now
-          </a>
+            <a
+              href="https://admissions.cvmu.edu.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Apply Now
+            </a>
+          </Button>
 
           {/* Mobile Toggle */}
           <button

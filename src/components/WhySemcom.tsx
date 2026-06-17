@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { CheckCircle2, Award, Zap, Target, ArrowRight, TrendingUp, Shield, Globe, Users } from 'lucide-react';
-import { cn } from '@/src/lib/utils';
+import { cn } from '@/lib/utils';
 
 const reasons = [
   {

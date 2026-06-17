@@ -11,8 +11,8 @@ export default function EventDetail() {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const headers = { "Authorization": "mysecret123" };
-        const res = await fetch(`/api/events/${id}`, { headers });
+        // Fetch event using standard API path relative to origin
+        const res = await fetch(`/api/events/${id}`);
         const data = await res.json();
         if (data.success) {
           setEvent(data.data);

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Outlet } from 'react-router-dom';
 import { AnimatePresence, motion } from 'motion/react';
 import Navbar from './components/Navbar';
 import TopHeader from './components/TopHeader';
@@ -51,6 +51,10 @@ import EventDetail from './pages/EventDetail';
 import PressNoteDetail from './pages/PressNoteDetail';
 import PressNotesList from './pages/PressNotesList';
 
+import LoginPage from '@/pages/admin/LoginPage';
+import AdminRoutes from './admin/AdminRoutes';
+import ErrorBoundary from './components/ErrorBoundary';
+
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -66,8 +70,26 @@ const PageWrapper = ({ children }: { children: React.ReactNode }) => (
     exit={{ opacity: 0, y: -20 }}
     transition={{ duration: 0.4, ease: 'easeOut' }}
   >
-    {children}
+    <ErrorBoundary>
+      {children}
+    </ErrorBoundary>
   </motion.div>
+);
+
+const MainLayout = () => (
+  <>
+    {/* Skip Link for Accessibility */}
+    <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:bg-white focus:text-brand-primary focus:px-6 focus:py-3 focus:rounded-xl focus:font-bold focus:shadow-2xl">
+      Skip to main content
+    </a>
+    <TopHeader />
+    <Navbar />
+    <FloatingActions />
+    <main id="main-content" className="flex-grow">
+      <Outlet />
+    </main>
+    <Footer />
+  </>
 );
 
 export default function App() {
@@ -75,17 +97,15 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Skip Link for Accessibility */}
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:bg-white focus:text-brand-primary focus:px-6 focus:py-3 focus:rounded-xl focus:font-bold focus:shadow-2xl">
-        Skip to main content
-      </a>
       <ScrollToTop />
-      <TopHeader />
-      <Navbar />
-      <FloatingActions />
-      <main id="main-content" className="flex-grow">
-        <AnimatePresence mode="wait">
-          <Routes location={location}>
+      <AnimatePresence mode="wait">
+        <Routes location={location}>
+          {/* Admin Routes */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/admin/*" element={<AdminRoutes />} />
+          
+          {/* Main Website Routes */}
+          <Route element={<MainLayout />}>
             <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
             <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
             <Route path="/about/semcom" element={<PageWrapper><AboutSemcom /></PageWrapper>} />
@@ -135,10 +155,9 @@ export default function App() {
             <Route path="/events/:id" element={<PageWrapper><EventDetail /></PageWrapper>} />
             <Route path="/news/press-note/:id" element={<PageWrapper><PressNoteDetail /></PageWrapper>} />
             <Route path="/news/press-notes" element={<PageWrapper><PressNotesList /></PageWrapper>} />
-          </Routes>
-        </AnimatePresence>
-      </main>
-      <Footer />
+          </Route>
+        </Routes>
+      </AnimatePresence>
     </div>
   );
 }

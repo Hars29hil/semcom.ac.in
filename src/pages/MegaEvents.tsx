@@ -9,8 +9,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
-const API_BASE_URL = "/api";
+import { eventApi } from '@/lib/api';
 
 export default function MegaEvents() {
   const [events, setEvents] = useState<any[]>([]);
@@ -21,9 +20,7 @@ export default function MegaEvents() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const headers = { "Authorization": "mysecret123" };
-        const res = await fetch(`${API_BASE_URL}/events`, { headers });
-        const data = await res.json();
+        const data = await eventApi.getAll();
         if (data.success && data.data && data.data.length > 0) {
           setEvents(data.data);
           setActiveEvent(data.data[0]);

@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, Newspaper, ArrowRight, Loader2 } from 'lucide-react';
 
-const API_BASE_URL = "/api";
-const ADMIN_TOKEN = "mysecret123";
+import { newsApi } from '@/lib/api';
 
 export default function PressNotesList() {
   const [pressNotes, setPressNotes] = useState<any[]>([]);
@@ -15,9 +14,7 @@ export default function PressNotesList() {
   useEffect(() => {
     const fetchPressNotes = async () => {
       try {
-        const headers = { "Authorization": ADMIN_TOKEN };
-        const res = await fetch(`${API_BASE_URL}/news/press-notes`, { headers });
-        const data = await res.json();
+        const data = await newsApi.getPressNotes();
         if (data.success) {
           setPressNotes(data.data);
         }

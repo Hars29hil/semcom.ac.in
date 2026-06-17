@@ -164,9 +164,11 @@ export default function Faculty() {
                       <span className="text-[10px] font-semibold text-secondary uppercase tracking-wider block mb-1">
                         {member.type}
                       </span>
-                      <span className="inline-block px-2.5 py-1 bg-background rounded-lg text-primary text-[10px] font-bold border border-border uppercase">
-                        {member.designation}
-                      </span>
+                      {member.designation && member.designation.toLowerCase() !== 'admin' && (
+                        <span className="inline-block px-2.5 py-1 bg-background rounded-lg text-primary text-[10px] font-bold border border-border uppercase">
+                          {member.designation}
+                        </span>
+                      )}
                     </div>
                   </div>
 

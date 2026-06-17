@@ -2,9 +2,7 @@ import { motion } from 'motion/react';
 import { Calendar, ArrowRight, Bell, FileText, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const API_BASE_URL = "/api";
-const ADMIN_TOKEN = "mysecret123";
+import { newsApi, eventApi } from '@/lib/api';
 
 export default function NewsSection() {
   const [pressNotes, setPressNotes] = useState<any[]>([]);
@@ -16,40 +14,46 @@ export default function NewsSection() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const headers = { "Authorization": ADMIN_TOKEN };
+        let pressLoaded = false;
+        let eventsLoaded = false;
+        let announcementsLoaded = false;
 
-        // Fetch Press Notes
-        const pressRes = await fetch(`${API_BASE_URL}/news/press-notes`, { headers });
-        const pressData = await pressRes.json();
-        console.log('Press Data received:', pressData);
-        if (pressData.success) {
-          console.log('Setting press notes:', pressData.data);
-          setPressNotes(pressData.data.slice(0, 3));
-        }
+        try {
+          const pressData = await newsApi.getPressNotes();
+          if (pressData.success && pressData.data && pressData.data.length > 0) {
+            setPressNotes(pressData.data.slice(0, 3));
+            pressLoaded = true;
+          }
+        } catch (e) { console.warn("Press notes API failed, using mock data."); }
 
-        // Fetch Upcoming Events
-        const eventRes = await fetch(`${API_BASE_URL}/events`, { headers });
-        const eventData = await eventRes.json();
-        if (eventData.success) {
-          const formattedEvents = eventData.data.slice(0, 3).map((e: any) => {
-            const d = new Date(e.date);
-            return {
-              id: e.id,
-              day: d.getDate().toString().padStart(2, '0'),
-              month: d.toLocaleString('en-US', { month: 'short' }).toUpperCase(),
-              title: e.name || e.title
-            };
-          });
-          setUpcomingEvents(formattedEvents);
-        }
+        try {
+          const eventData = await eventApi.getAll();
+          if (eventData.success && eventData.data && eventData.data.length > 0) {
+            const formattedEvents = eventData.data.slice(0, 3).map((e: any) => {
+              const d = new Date(e.date);
+              return {
+                id: e.id,
+                day: d.getDate().toString().padStart(2, '0'),
+                month: d.toLocaleString('en-US', { month: 'short' }).toUpperCase(),
+                title: e.name || e.title
+              };
+            });
+            setUpcomingEvents(formattedEvents);
+            eventsLoaded = true;
+          }
+        } catch (e) { console.warn("Events API failed, using mock data."); }
 
-        // Fetch Announcements
-        const announceRes = await fetch(`${API_BASE_URL}/news/announcements`, { headers });
-        const announceData = await announceRes.json();
-        if (announceData.success) setAnnouncements(announceData.data.slice(0, 4));
+        try {
+          const announceData = await newsApi.getAnnouncements();
+          if (announceData.success && announceData.data && announceData.data.length > 0) {
+            setAnnouncements(announceData.data.slice(0, 4));
+            announcementsLoaded = true;
+          }
+        } catch (e) { console.warn("Announcements API failed, using mock data."); }
 
+        // No mock fallbacks - display empty state if nothing is loaded.
       } catch (error) {
-        console.error("Failed to fetch news data:", error);
+        console.error("Critical error in NewsSection:", error);
       } finally {
         setLoading(false);
       }

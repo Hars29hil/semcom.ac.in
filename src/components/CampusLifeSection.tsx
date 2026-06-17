@@ -58,15 +58,21 @@ export default function CampusLifeSection() {
 
   useEffect(() => {
     fetch('/api/config')
-      .then(res => res.json())
-      .then(data => {
+      .then(async (res) => {
+        if (!res.ok) throw new Error('API Error: ' + res.status);
+        const data = await res.json();
+        if (!data) return;
         const updated = activities.map(act => ({
           ...act,
           image: data[act.key] || act.image
         }));
         setDisplayActivities(updated);
       })
-      .catch(err => console.error('Error fetching activity config:', err));
+      .catch(err => {
+        console.warn('Using default activity images (Config API offline):', err.message);
+        // Fallback to default activities defined above
+        setDisplayActivities(activities);
+      });
   }, []);
 
   return (

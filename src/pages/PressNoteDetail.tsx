@@ -2,6 +2,8 @@ import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, ArrowLeft, Download, Share2, FileText, ImageIcon, Loader2 } from 'lucide-react';
+import { newsApi } from '@/lib/api';
+import html2pdf from 'html2pdf.js';
 
 export default function PressNoteDetail() {
   const { id } = useParams();
@@ -12,9 +14,7 @@ export default function PressNoteDetail() {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const headers = { "Authorization": "mysecret123" };
-        const res = await fetch(`/api/news/press-notes`, { headers });
-        const data = await res.json();
+        const data = await newsApi.getPressNotes();
         if (data.success) {
           const found = data.data.find((n: any) => n.id?.toString() === id || (!n.id && data.data.indexOf(n).toString() === id));
           setNote(found);
@@ -47,8 +47,67 @@ export default function PressNoteDetail() {
   const displayDate = note.created_at ? new Date(note.created_at).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : `${note.day} ${note.month}`;
   const refNo = note.reference_no || `SEM/PR/${note.created_at ? new Date(note.created_at).getFullYear() : new Date().getFullYear()}/${note.id || 'XXX'}`;
 
+  const handleDownloadPDF = () => {
+    // Create an off-screen container for the PDF content
+    const container = document.createElement('div');
+    container.style.position = 'absolute';
+    container.style.left = '-9999px';
+    container.style.top = '-9999px';
+    
+    // Create the clean PDF template using exact HEX colors to avoid html2canvas oklab crashes
+    const element = document.createElement('div');
+    element.style.width = '800px';
+    element.style.padding = '40px';
+    element.style.fontFamily = 'Arial, sans-serif';
+    element.style.color = '#000000';
+    element.style.backgroundColor = '#ffffff';
+
+    let html = `
+      <div style="border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 20px;">
+        <h1 style="font-size: 28px; font-weight: bold; margin-bottom: 10px; color: #1e3a8a;">${note.title}</h1>
+        <p style="font-size: 12px; color: #64748b; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
+          Ref No: ${refNo} &nbsp;|&nbsp; Date: ${displayDate}
+        </p>
+      </div>
+    `;
+
+    if (note.image_url) {
+      html += `<img src="${note.image_url}" style="max-width: 100%; max-height: 400px; object-fit: contain; margin-bottom: 30px; border-radius: 8px;" crossorigin="anonymous" />`;
+    }
+
+    // Safely append content
+    const contentP = document.createElement('p');
+    contentP.style.fontSize = '16px';
+    contentP.style.lineHeight = '1.8';
+    contentP.style.whiteSpace = 'pre-wrap';
+    contentP.style.color = '#334155';
+    contentP.textContent = note.content || "No detailed content available for this press release.";
+
+    element.innerHTML = html;
+    element.appendChild(contentP);
+    
+    container.appendChild(element);
+    document.body.appendChild(container);
+
+    const opt = {
+      margin:       0.5,
+      filename:     `Press-Release-${note.title.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`,
+      image:        { type: 'jpeg' as const, quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, logging: false },
+      jsPDF:        { unit: 'in' as const, format: 'letter' as const, orientation: 'portrait' as const }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+      document.body.removeChild(container);
+    }).catch((err: any) => {
+      console.error('PDF generation failed:', err);
+      document.body.removeChild(container);
+    });
+  };
+
   return (
     <div className="pt-20 bg-background min-h-screen">
+      <div id="press-release-content">
       {/* Header Section */}
       <section className="section-padding bg-surface border-b border-border">
         <div className="section-container text-center">
@@ -86,8 +145,8 @@ export default function PressNoteDetail() {
             className="bg-surface rounded-2xl shadow-card overflow-hidden border border-border"
           >
             {note.image_url ? (
-              <div className="aspect-video w-full overflow-hidden bg-primary/5">
-                <img src={note.image_url} className="w-full h-full object-cover" alt="Press release cover" />
+              <div className="w-full bg-primary/5 flex items-center justify-center p-6 border-b border-border">
+                <img src={note.image_url} className="max-h-[500px] max-w-full object-contain rounded-xl shadow-sm" alt="Press release cover" />
               </div>
             ) : (
               <div className="aspect-[21/9] w-full overflow-hidden bg-primary/5 flex items-center justify-center">
@@ -120,10 +179,23 @@ export default function PressNoteDetail() {
               {/* Actions */}
               <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-border">
                 <div className="flex gap-4 w-full sm:w-auto">
-                  <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 btn-outline !py-3">
+                  <button 
+                    onClick={handleDownloadPDF} 
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 btn-outline !py-3"
+                  >
                     <Download size={16} /> Download PDF
                   </button>
-                  <button className="flex-1 sm:flex-none flex items-center justify-center gap-2 btn-outline !py-3">
+                  <button 
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({ title: note.title, url: window.location.href }).catch(() => {});
+                      } else {
+                        navigator.clipboard.writeText(window.location.href);
+                        alert("Link copied to clipboard!");
+                      }
+                    }}
+                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 btn-outline !py-3"
+                  >
                     <Share2 size={16} /> Share Release
                   </button>
                 </div>
@@ -135,6 +207,7 @@ export default function PressNoteDetail() {
           </motion.div>
         </div>
       </section>
+      </div>
     </div>
   );
 }

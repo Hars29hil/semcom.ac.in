@@ -1,7 +1,9 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Play, GraduationCap, Star } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { cn } from '@/src/lib/utils';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 export default function Hero() {
   const [photos, setPhotos] = useState<string[]>([
@@ -14,11 +16,14 @@ export default function Hero() {
 
   useEffect(() => {
     fetch('/api/gallery/highlights')
-      .then(res => res.json())
-      .then(data => {
-        if (data.length > 0) setPhotos(data.map((p: any) => p.url));
+      .then(async res => {
+        if (!res.ok) throw new Error("API Error");
+        const data = await res.json();
+        if (data && data.length > 0) setPhotos(data.map((p: any) => p.url));
       })
-      .catch(() => {});
+      .catch(err => {
+        console.warn('Using default hero images (Gallery API offline):', err.message);
+      });
   }, []);
 
   useEffect(() => {
@@ -59,18 +64,13 @@ export default function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20"
           >
-            <div className="flex -space-x-2">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="w-7 h-7 rounded-full border-2 border-white/30 bg-white/20 overflow-hidden">
-                  <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 20}`} alt="Student" />
-                </div>
-              ))}
-            </div>
-            <span className="text-xs font-medium text-white/80">
-              Trusted by <span className="text-accent font-semibold">25,000+</span> Alumni
-            </span>
+            <Badge variant="outline" className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border-white/20 text-white/90 hover:bg-white/20 transition-all font-medium">
+              <span className="flex items-center gap-2">
+                <Star className="h-3.5 w-3.5 fill-accent text-accent" />
+                Trusted by <span className="text-accent font-bold">25,000+</span> Alumni Worldwide
+              </span>
+            </Badge>
           </motion.div>
 
           {/* Heading */}
@@ -102,19 +102,22 @@ export default function Hero() {
             transition={{ delay: 0.6 }}
             className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4"
           >
-            <a
-              href="https://admissions.cvmu.edu.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-accent group w-full sm:w-auto justify-center !py-3.5 !px-8 !text-sm"
+            <Button 
+              size="lg" 
+              className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground font-bold rounded-xl shadow-lg shadow-accent/20 group"
+              onClick={() => window.open('https://admissions.cvmu.edu.in/', '_blank')}
             >
               Start Your Journey
-              <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
-            </a>
-            <button className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl border border-white/20 text-white text-sm font-medium hover:bg-white/10 transition-colors">
-              <Play size={16} className="fill-white" />
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10 hover:text-white rounded-xl backdrop-blur-sm bg-white/5"
+            >
+              <Play className="mr-2 h-4 w-4 fill-white" />
               Explore Campus
-            </button>
+            </Button>
           </motion.div>
 
           {/* Quick Stats */}
@@ -160,8 +163,8 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent" />
 
             {/* Bottom overlay content */}
-            <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white">
-              <div>
+            <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white z-10">
+              <div className="ml-20">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-accent">Highlight</span>
                 <h3 className="text-xl font-bold text-white leading-tight mt-1">Global Learning<br />Environment</h3>
               </div>

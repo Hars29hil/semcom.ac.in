@@ -64,81 +64,50 @@ export default function Testimonials() {
           </p>
         </div>
 
-        {/* Testimonials Grid — Simple Slider */}
-        <div
-          className="relative overflow-hidden"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <div
-            className="flex transition-transform duration-500 ease-out gap-6"
-            style={{ transform: `translateX(-${currentIndex * 420}px)` }}
-          >
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={`${testimonial.name}-${index}`}
-                className="min-w-[380px] max-w-[380px] flex-shrink-0"
-              >
-                <div className="card group !p-7 h-full relative">
-                  {/* Quote Mark */}
-                  <div className="absolute top-5 right-5 text-border">
-                    <Quote size={32} className="rotate-180" />
-                  </div>
+        {/* Testimonials Grid */}
+        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {testimonials.map((testimonial, index) => (
+            <div
+              key={`${testimonial.name}-${index}`}
+              className="card group !p-7 relative"
+            >
+              {/* Quote Mark */}
+              <div className="absolute top-5 right-5 text-border">
+                <Quote size={32} className="rotate-180" />
+              </div>
 
-                  {/* Rating */}
-                  <div className="flex gap-1 mb-5">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} size={14} className="fill-accent text-accent" />
-                    ))}
-                  </div>
+              {/* Rating */}
+              <div className="flex gap-1 mb-5">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} size={14} className="fill-accent text-accent" />
+                ))}
+              </div>
 
-                  {/* Text */}
-                  <p className="text-[15px] text-text leading-relaxed mb-6 line-clamp-4">
-                    "{testimonial.text}"
-                  </p>
+              {/* Text */}
+              <p className="text-[15px] text-text leading-relaxed mb-6 line-clamp-4">
+                "{testimonial.text}"
+              </p>
 
-                  {/* Company Badge */}
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-background rounded-lg border border-border mb-6">
-                    <TrendingUp size={12} className="text-secondary" />
-                    <span className="text-[11px] font-semibold text-primary">{testimonial.company}</span>
-                  </div>
+              {/* Company Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-background rounded-lg border border-border mb-6">
+                <TrendingUp size={12} className="text-secondary" />
+                <span className="text-[11px] font-semibold text-primary">{testimonial.company}</span>
+              </div>
 
-                  {/* Author */}
-                  <div className="flex items-center gap-4 pt-5 border-t border-border">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-border"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div>
-                      <h4 className="text-sm font-semibold text-primary">{testimonial.name}</h4>
-                      <p className="text-[11px] text-muted font-medium">{testimonial.role}</p>
-                    </div>
-                  </div>
+              {/* Author */}
+              <div className="flex items-center gap-4 pt-5 border-t border-border mt-auto">
+                <img
+                  src={testimonial.image}
+                  alt={testimonial.name}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-border"
+                  referrerPolicy="no-referrer"
+                />
+                <div>
+                  <h4 className="text-sm font-semibold text-primary">{testimonial.name}</h4>
+                  <p className="text-[11px] text-muted font-medium">{testimonial.role}</p>
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Fade Edges */}
-          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-        </div>
-
-        {/* Pagination Dots */}
-        <div className="flex justify-center gap-2 mt-8">
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentIndex(i)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                currentIndex === i
-                  ? 'w-8 bg-secondary'
-                  : 'w-2 bg-border hover:bg-muted/50'
-              }`}
-              aria-label={`Go to testimonial ${i + 1}`}
-            />
+            </div>
           ))}
         </div>
 

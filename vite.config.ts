@@ -7,28 +7,46 @@ export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
     plugins: [react(), tailwindcss()],
-    define: {
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-    },
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(__dirname, './src'),
       },
+      dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime", "@tanstack/react-query", "@tanstack/query-core"],
     },
     server: {
       port: 3000,
+      allowedHosts: true,
       proxy: {
         '/api': {
           target: 'http://127.0.0.1:5000',
           changeOrigin: true,
           secure: false,
+          configure: (proxy, _options) => {
+            proxy.on('proxyReq', (proxyReq, req, _res) => {
+              proxyReq.removeHeader('Origin');
+            });
+          }
         },
         '/uploads': {
           target: 'http://127.0.0.1:5000',
           changeOrigin: true,
           secure: false,
+          configure: (proxy, _options) => {
+            proxy.on('proxyReq', (proxyReq, req, _res) => {
+              proxyReq.removeHeader('Origin');
+            });
+          }
         }
       }
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom', 'react-router-dom', 'motion', 'lucide-react'],
+          }
+        }
+      }
+    }
   };
 });
