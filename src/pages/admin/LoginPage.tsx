@@ -180,7 +180,7 @@ export default function LoginPage() {
               <div className="pt-2">
                 <Button 
                   type="submit" 
-                  className="w-full h-12 rounded-xl font-bold bg-white hover:bg-white/90 text-primary-foreground shadow-lg shadow-primary/20 transition-all active:scale-[0.98]" 
+                  className="w-full h-12 rounded-xl font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 transition-all active:scale-[0.98]" 
                   disabled={loading}
                 >
                   {loading ? (
