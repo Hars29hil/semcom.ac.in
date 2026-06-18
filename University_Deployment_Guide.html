@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Server Auto-Deployment Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #fff;
+        }
+        h1, h2, h3 { color: #2c3e50; }
+        h1 { border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .note {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .flowchart {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre;
+            border: 1px solid #dee2e6;
+            margin-bottom: 30px;
+        }
+        @media print {
+            body { padding: 0; }
+            .no-print { display: none; }
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        button:hover { background-color: #2980b9; }
+    </style>
+</head>
+<body>
+    <div class="no-print text-center">
+        <button onclick="window.print()">Save as PDF / Print</button>
+    </div>
+
+    <h1>University Server Auto-Deployment Guide</h1>
+    <p>This document outlines the exact architecture and step-by-step process required to connect your <strong>Home Laptop</strong> directly to the <strong>University IIS Server</strong>. Once this is set up, you will be able to code at home and update the live university website with a single double-click.</p>
+
+    <h2>🏗️ Architecture Flowchart</h2>
+    <div class="flowchart">
+[Laptop]  ---(1. git push)---> [GitHub]
+   |
+(2. secret curl webhook)
+   |
+   v
+[University IIS Server]
+   |
+   +---> (3. Executes server-update.bat)
+   +---> (4. git pull from GitHub)
+   +---> (5. npm run build)
+   +---> (6. Restart Website)
+    </div>
+
+    <h2>💻 1. What to do on your Home Laptop</h2>
+    <p>Your laptop is already fully configured! You only need to do two things before you deploy to the real university server:</p>
+    <ol>
+        <li><strong>Open</strong> <code>H:\project\backend\server_semcom.ac.in\deploy-to-university.bat</code></li>
+        <li><strong>Comment out</strong> the local testing URL, and <strong>Uncomment</strong> the live university URL:</li>
+    </ol>
+    <pre><code>- curl -X POST "http://localhost:5000/api/config/deploy-server" ...
++ :: curl -X POST "http://localhost:5000/api/config/deploy-server" ...
+
+- :: curl -X POST "http://semcom.ac.in/api/config/deploy-server" ...
++ curl -X POST "http://semcom.ac.in/api/config/deploy-server" ...</code></pre>
+    
+    <div class="note">
+        <strong>💡 Daily Workflow:</strong> Write your code, save your files, and just double-click the <code>.bat</code> file to push your updates live!
+    </div>
+
+    <h2>🏢 2. What to do on the University Server</h2>
+    <p>When you go to the university, you are setting up a "Receiver" for your code. You only have to do this <strong>ONCE</strong>.</p>
+
+    <h3>Phase A: Install Prerequisites</h3>
+    <p>Install the exact same tools you have on your laptop:</p>
+    <ul>
+        <li><strong>Node.js</strong> (LTS Version)</li>
+        <li><strong>Git</strong> (for Windows)</li>
+        <li><strong>IIS Web Server</strong> (Enabled via Windows Features)</li>
+        <li><strong>IIS URL Rewrite Module 2</strong></li>
+        <li><strong>iisnode</strong> (Run the <code>.msi</code> as Administrator)</li>
+    </ul>
+
+    <h3>Phase B: Clone Your Code</h3>
+    <ol>
+        <li>Open Command Prompt on the university server.</li>
+        <li>Navigate to where they want to store the website (e.g., <code>C:\inetpub\wwwroot</code>).</li>
+        <li>Clone your repository from GitHub so the server has the base code:
+            <pre><code>git clone &lt;your-github-repo-url&gt;</code></pre>
+        </li>
+    </ol>
+
+    <h3>Phase C: Setup IIS Websites</h3>
+    <p>Just like your home PC, create the two sites in the IIS Manager:</p>
+    <ul>
+        <li><strong>SEMCOM Backend</strong>
+            <ul>
+                <li><strong>Port:</strong> <code>5000</code></li>
+                <li><strong>Physical Path:</strong> The <code>backend\server_semcom.ac.in</code> folder you just cloned.</li>
+            </ul>
+        </li>
+        <li><strong>SEMCOM Frontend</strong>
+            <ul>
+                <li><strong>Port:</strong> <code>80</code></li>
+                <li><strong>Physical Path:</strong> The <code>SEMCOM\semcom-modernized\dist</code> folder.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Phase D: Grant Folder Permissions</h3>
+    <p>The auto-updater script needs permission to write log files and install node modules.</p>
+    <ol>
+        <li>Right click the main <code>semcom-modernized</code> folder -> <strong>Properties</strong> -> <strong>Security</strong> -> <strong>Edit</strong> -> <strong>Add</strong>.</li>
+        <li>Type <code>IIS_IUSRS</code> -> Check Names -> OK.</li>
+        <li>Check the box for <strong>Full Control</strong> -> Apply.</li>
+        <li>Repeat this exact same permission step for the <code>server_semcom.ac.in</code> backend folder.</li>
+    </ol>
+
+    <div class="warning">
+        <strong>⚠️ CRITICAL:</strong> Because you are using <code>server-update.bat</code> to automate <code>npm install</code> and <code>git pull</code>, the <code>IIS_IUSRS</code> group MUST have full control over those folders, otherwise the university server will block the update!
+    </div>
+
+    <h3>Phase E: Database Setup & SQL Queries</h3>
+    <p>Your backend is programmed to <strong>automatically generate</strong> its own database tables the first time it starts. All you have to do is:</p>
+    <ol>
+        <li>Open XAMPP / phpMyAdmin on the server.</li>
+        <li>Create an empty database named <code>semcom_db</code>.</li>
+        <li>Update the <code>.env</code> file in your backend folder with the MySQL credentials.</li>
+    </ol>
+
+    <p>However, if you ever need to manually create the tables yourself, here is the full SQL query to run in phpMyAdmin:</p>
+    <pre><code>-- Users & Authentication
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  short_name VARCHAR(50),
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(50) DEFAULT 'user',
+  image_url TEXT,
+  qualification VARCHAR(255),
+  area VARCHAR(255),
+  staff_type VARCHAR(50) DEFAULT 'Teaching',
+  phone_number VARCHAR(20),
+  is_vp BOOLEAN DEFAULT FALSE,
+  bio TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Events & Announcements
+CREATE TABLE IF NOT EXISTS events (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  date DATE,
+  location VARCHAR(255),
+  description TEXT,
+  image_url TEXT,
+  end_date DATE,
+  departments TEXT,
+  level VARCHAR(50),
+  type VARCHAR(50),
+  registration_link VARCHAR(255),
+  status VARCHAR(50) DEFAULT 'Upcoming',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS announcements (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title TEXT NOT NULL,
+  date VARCHAR(20) NOT NULL,
+  type ENUM('bell', 'file') DEFAULT 'bell',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS press_notes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  day VARCHAR(2) NOT NULL,
+  month VARCHAR(3) NOT NULL,
+  title TEXT NOT NULL,
+  image_url TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Gallery
+CREATE TABLE IF NOT EXISTS gallery_albums (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  cover_emoji VARCHAR(10) DEFAULT '📸',
+  album_date DATE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS gallery_photos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  album_id INT,
+  url TEXT NOT NULL,
+  FOREIGN KEY (album_id) REFERENCES gallery_albums(id) ON DELETE CASCADE
+);
+
+-- Students & Academics
+CREATE TABLE IF NOT EXISTS programs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  program_id INT UNIQUE,
+  name VARCHAR(255) NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  students INT DEFAULT 0,
+  status ENUM('active', 'new', 'archived') DEFAULT 'active',
+  description TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS student_classes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  sem INT DEFAULT 1,
+  stream INT,
+  name VARCHAR(100),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS students (
+  student_id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  enrollment_number VARCHAR(50) UNIQUE,
+  email VARCHAR(255) UNIQUE,
+  class_id INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (class_id) REFERENCES student_classes(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS subjects (
+  subject_id INT AUTO_INCREMENT PRIMARY KEY,
+  class_id INT,
+  name VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (class_id) REFERENCES student_classes(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS teaching_staffs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  staff_id INT,
+  subject_id INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (staff_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
+);
+
+-- Faculty Research & Details
+CREATE TABLE IF NOT EXISTS research (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title TEXT NOT NULL,
+  faculty VARCHAR(255) NOT NULL,
+  type VARCHAR(50) NOT NULL,
+  status ENUM('ongoing', 'completed', 'proposed') DEFAULT 'ongoing',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS faculty_experience (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  faculty_email VARCHAR(255) NOT NULL,
+  company VARCHAR(255) NOT NULL,
+  role VARCHAR(255) NOT NULL,
+  years VARCHAR(50) NOT NULL,
+  description TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS faculty_achievements (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  faculty_email VARCHAR(255) NOT NULL,
+  achievement_type ENUM(
+    'PhD Supervisors', 'Research Papers Published', 'Research Papers Presented', 
+    'Seminars / FDP', 'Awards', 'Expert Lectures', 'Books', 'Book Chapters', 'Patents'
+  ) NOT NULL,
+  title TEXT NOT NULL,
+  details TEXT,
+  achievement_year VARCHAR(50),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Placements & Others
+CREATE TABLE IF NOT EXISTS placements (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  company_name VARCHAR(255) NOT NULL,
+  student_name VARCHAR(255) NOT NULL,
+  package_detail VARCHAR(100),
+  placement_year VARCHAR(10),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS smtr_submissions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title TEXT NOT NULL,
+  authors TEXT NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  abstract TEXT,
+  file_url TEXT,
+  status ENUM('pending', 'under_review', 'accepted', 'rejected') DEFAULT 'pending',
+  submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS site_config (
+  config_key VARCHAR(255) PRIMARY KEY,
+  config_value TEXT
+);
+
+CREATE TABLE IF NOT EXISTS council (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  role VARCHAR(255) NOT NULL,
+  year VARCHAR(50) NOT NULL,
+  image_url TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+
+    <p style="margin-top: 40px; text-align: center; font-weight: bold; color: #27ae60;">
+        That's it! Once the server is set up, you can go home and instantly deploy code to the university just by running your .bat file.
+    </p>
+</body>
+</html>
