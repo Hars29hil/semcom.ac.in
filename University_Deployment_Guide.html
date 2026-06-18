@@ -114,8 +114,18 @@
         <li><strong>Git</strong> (for Windows)</li>
         <li><strong>IIS Web Server</strong> (Enabled via Windows Features)</li>
         <li><strong>IIS URL Rewrite Module 2</strong></li>
+        <li><strong>Application Request Routing (ARR) 3.0</strong> (Required for API proxy)</li>
         <li><strong>iisnode</strong> (Run the <code>.msi</code> as Administrator)</li>
     </ul>
+
+    <h3>Phase A.5: Enable IIS Proxy (CRITICAL)</h3>
+    <ol>
+        <li>Open <strong>Internet Information Services (IIS) Manager</strong>.</li>
+        <li>Click on your server name (the very top level on the left).</li>
+        <li>Double-click <strong>Application Request Routing Cache</strong>.</li>
+        <li>On the right side panel, click <strong>Server Proxy Settings...</strong></li>
+        <li>Check the box for <strong>Enable proxy</strong> and click <strong>Apply</strong>.</li>
+    </ol>
 
     <h3>Phase B: Clone Your Code</h3>
     <ol>
