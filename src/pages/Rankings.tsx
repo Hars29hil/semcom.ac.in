@@ -9,7 +9,7 @@ const rankingData = {
     { name: 'NIRF Ranking 2024', status: 'Submitted / Published', url: 'https://semcom.ac.in/pdf/2025/NIRF/nirf24.pdf' },
   ],
   GSIRF: [
-    { name: 'GSIRF 5-Star Rating', status: 'Awarded: 2nd Dec 2024', url: '#' },
+    { name: 'GSIRF 5-Star Rating', status: 'Awarded: 2nd Dec 2024', url: '/SEMCOM_GSIRF_2024.jpg' },
     { name: 'GSIRF Rating 2023', status: 'Published', url: '#' },
   ],
   Other: [

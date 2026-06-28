@@ -3,6 +3,7 @@ import { Users, GraduationCap, Briefcase, Calendar, TrendingUp, FileText, Image,
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { statsApi } from "@/lib/api";
+import { Link } from "react-router-dom";
 
 const recentActivities = [
   { action: "New admission application received", time: "2 min ago", type: "admission" },
@@ -12,10 +13,10 @@ const recentActivities = [
 ];
 
 const quickActions = [
-  { label: "Add Announcement", icon: Bell, desc: "Post new notice" },
-  { label: "New Event", icon: Calendar, desc: "Schedule activity" },
-  { label: "Upload Photos", icon: Image, desc: "Gallery update" },
-  { label: "View Applications", icon: FileText, desc: "Review pending" },
+  { label: "Add Announcement", icon: Bell, desc: "Post new notice", path: "/admin/announcements" },
+  { label: "New Event", icon: Calendar, desc: "Schedule activity", path: "/admin/events" },
+  { label: "Upload Photos", icon: Image, desc: "Gallery update", path: "/admin/gallery" },
+  { label: "View Applications", icon: FileText, desc: "Review pending", path: "/admin/admissions" },
 ];
 
 export default function DashboardPage() {
@@ -51,10 +52,10 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="space-y-8 text-slate-900">
+    <div className="space-y-8 text-primary">
       <div>
-        <h2 className="text-3xl font-extrabold text-slate-900">Dashboard</h2>
-        <p className="text-slate-500 text-sm mt-1">Welcome back! Here's an overview of SEMCOM.</p>
+        <h2 className="text-3xl font-extrabold text-primary">Dashboard</h2>
+        <p className="text-muted text-sm mt-1">Welcome back! Here's an overview of SEMCOM.</p>
       </div>
 
       {/* Stats - Glass cards */}
@@ -63,15 +64,15 @@ export default function DashboardPage() {
           <div key={stat.label} className="admin-glass-card hover:-translate-y-1 transition-all p-5 group">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[11px] text-slate-500 font-semibold uppercase tracking-wide">{stat.label}</p>
+                <p className="text-[11px] text-muted font-semibold uppercase tracking-wide">{stat.label}</p>
                 {isLoading ? (
-                  <Loader2 className="h-6 w-6 animate-spin mt-1.5 text-slate-500" />
+                  <Loader2 className="h-6 w-6 animate-spin mt-1.5 text-muted" />
                 ) : (
-                  <p className="text-3xl font-extrabold text-slate-900 mt-1.5">{stat.value}</p>
+                  <p className="text-3xl font-extrabold text-primary mt-1.5">{stat.value}</p>
                 )}
               </div>
               <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
-                <stat.icon className="h-5 w-5 text-slate-900" />
+                <stat.icon className="h-5 w-5 text-primary" />
               </div>
             </div>
             <div className="mt-3 flex items-center gap-1.5">
@@ -85,21 +86,22 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Quick Actions - Glass buttons */}
         <div className="admin-glass-card p-6">
-          <h3 className="text-base font-bold text-slate-900 mb-4">Quick Actions</h3>
+          <h3 className="text-base font-bold text-primary mb-4">Quick Actions</h3>
           <div className="space-y-3">
             {quickActions.map((action) => (
-              <button
+              <Link
                 key={action.label}
-                className="w-full flex items-center gap-3.5 p-3.5 rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md hover:bg-white/80 transition-all text-left group"
+                to={action.path}
+                className="w-full flex items-center gap-3.5 p-3.5 rounded-xl border border-border shadow-sm bg-surface hover:bg-white/95 hover:-translate-y-0.5 transition-all text-left group cursor-pointer"
               >
                 <div className="h-9 w-9 rounded-xl bg-accent shadow-lg shadow-accent/30 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <action.icon className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <span className="text-sm font-semibold text-slate-900">{action.label}</span>
-                  <p className="text-[10px] text-slate-500">{action.desc}</p>
+                  <span className="text-sm font-semibold text-primary group-hover:text-accent transition-colors">{action.label}</span>
+                  <p className="text-[10px] text-muted">{action.desc}</p>
                 </div>
-              </button>
+              </Link>
             ))}
           </div>
         </div>
@@ -107,18 +109,18 @@ export default function DashboardPage() {
         {/* Recent Activity - Glass card */}
         <div className="admin-glass-card p-6 lg:col-span-2">
           <div className="flex flex-row items-center justify-between mb-4">
-            <h3 className="text-base font-bold text-slate-900">Recent Activity</h3>
-            <span className="text-[10px] font-bold uppercase tracking-wider bg-white/80 px-2 py-1 rounded-md text-slate-900 border border-white">Live Updates</span>
+            <h3 className="text-base font-bold text-primary">Recent Activity</h3>
+            <span className="text-[10px] font-bold uppercase tracking-wider bg-surface px-2 py-1 rounded-md text-primary border border-border">Live Updates</span>
           </div>
           <div>
             <div className="space-y-1">
-              {recentActivities.slice(0, 5).map((activity, i) => (
-                <div key={i} className="flex items-start justify-between gap-3 py-3 border-b border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] last:border-0 group hover:bg-white/80 backdrop-blur-md rounded-lg px-2 -mx-2 transition-colors">
+              {(apiStats?.recentActivities || recentActivities).slice(0, 5).map((activity: any, i: number) => (
+                <div key={i} className="flex items-start justify-between gap-3 py-3 border-b border-border shadow-sm last:border-0 group hover:bg-surface rounded-lg px-2 -mx-2 transition-colors">
                   <div>
-                    <p className="text-sm text-slate-900 group-hover:text-accent transition-colors font-medium">{activity.action}</p>
-                    <p className="text-[11px] text-slate-500 mt-0.5">{activity.time}</p>
+                    <p className="text-sm text-primary group-hover:text-accent transition-colors font-medium">{activity.action}</p>
+                    <p className="text-[11px] text-muted mt-0.5">{activity.time}</p>
                   </div>
-                  <span className="text-[9px] font-black uppercase tracking-tighter shrink-0 h-5 bg-white/80 px-2 rounded flex items-center justify-center text-slate-700">{activity.type}</span>
+                  <span className="text-[9px] font-black uppercase tracking-tighter shrink-0 h-5 bg-surface px-2 rounded flex items-center justify-center text-primary-light">{activity.type}</span>
                 </div>
               ))}
             </div>
@@ -131,20 +133,20 @@ export default function DashboardPage() {
 
       {/* Programs Overview */}
       <div className="admin-glass-card p-6">
-        <h3 className="text-base font-bold text-slate-900 mb-4">Institutional Programs</h3>
+        <h3 className="text-base font-bold text-primary mb-4">Institutional Programs</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             { name: "BBA (Hons.)" },
             { name: "BCA" },
             { name: "BCom (Hons.)" },
             { name: "BBA (ITM)" },
-            { name: "MCom" },
             { name: "MBA" },
-            { name: "BBA - Analytics" },
+            { name: "BBA-BA" },
+            { name: "BBA-DM & AI" },
             { name: "Ph.D." },
           ].map((prog) => (
-            <div key={prog.name} className="bg-white/80 backdrop-blur-md border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] rounded-xl p-3.5 group cursor-pointer hover:bg-white/80 transition-all">
-              <p className="text-sm font-semibold text-slate-900">{prog.name}</p>
+            <div key={prog.name} className="bg-surface border border-border shadow-sm rounded-xl p-3.5 group cursor-pointer hover:bg-surface transition-all">
+              <p className="text-sm font-semibold text-primary">{prog.name}</p>
               <p className="text-xs text-accent mt-1">View Details</p>
             </div>
           ))}

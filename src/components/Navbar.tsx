@@ -31,9 +31,11 @@ const navLinks = [
     submenu: [
       { name: 'BBA (ITM) (Hons.)', href: '/academics/bba-itm' },
       { name: 'BBA (Hons.)', href: '/academics/bba' },
+      { name: 'BBA-BA', href: '/academics/bba-ba' },
+      { name: 'BBA-DM & AI', href: '/academics/bba-dm' },
       { name: 'BCom (Hons.)', href: '/academics/bcom' },
       { name: 'BCA (Hons.)', href: '/academics/bca' },
-      { name: 'MCom', href: '/academics/mcom' },
+      { name: 'MBA', href: '/academics/mba' },
       { name: 'PhD', href: '/academics/phd' },
     ],
   },
@@ -53,7 +55,6 @@ const navLinks = [
     href: '/research',
     submenu: [
       { name: 'SMTR Peer Reviewed International Journal', href: '/research/journal' },
-      { name: 'SEMCOM E-Newsletter SEMSpire', href: '/research/newsletter' },
       { name: 'PhD Research Supervisors', href: 'https://semcom.ac.in/PDF/Research/Research%20Supervisor%20Details_12-JAN-2022.pdf', isExternal: true },
     ],
   },
@@ -62,7 +63,7 @@ const navLinks = [
     href: '/student-corner',
     submenu: [
       { name: 'Facilities', href: '/student/facilities' },
-      { name: 'Mega Events', href: '/student/events' },
+      { name: 'Mega Events', href: '/events' },
       { name: 'Extension Activities', href: '/student/activities' },
       { name: 'Important Links', href: '/student/links' },
       { name: 'Downloadable Forms', href: '/student/forms' },
@@ -74,7 +75,7 @@ const navLinks = [
     submenu: [
       { name: 'Internship & Placement Cell', href: '/placement' },
       { name: 'Company Partners', href: '/placement/companies' },
-      { name: 'MOU', href: '/placement/mou' },
+      { name: 'MOU', href: '/pdf/MOU25.pdf', isExternal: true },
       { name: 'Contact Placement Office', href: '/placement/contact' },
     ],
   },
@@ -95,11 +96,9 @@ const navLinks = [
     href: '/contact',
     submenu: [
       { name: 'Contact', href: '/contact' },
-      { name: 'Education Verification', href: '/education-verification' },
       { name: 'Connect With Us On Facebook', href: 'https://www.facebook.com/SEMCOMIndia/', isExternal: true },
       { name: 'Connect With Us On Alumni Page', href: 'https://www.facebook.com/Semcomalumni/', isExternal: true },
       { name: 'Connect With Us On Instagram', href: 'https://www.instagram.com/semcomindia/', isExternal: true },
-      { name: 'Career', href: 'https://www.cvmu.edu.in/career', isExternal: true },
     ],
   },
 ];
@@ -141,17 +140,16 @@ export default function Navbar() {
           : 'bg-surface py-4 border-b border-border'
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Logo — visible on mobile */}
-        <div className="flex items-center gap-3 xl:hidden">
+      <div className="w-full px-4 sm:px-8 lg:px-12 flex items-center justify-between">
+        {/* Logo */}
+        <div className="flex items-center gap-3 shrink-0">
           <Link to="/" className="flex items-center gap-2">
-            <img src="/images/Picsart_26-04-28_09-18-02-251.png" alt="SEMCOM" className="h-10 w-auto object-contain" />
-            <span className="text-lg font-bold text-primary font-heading">SEMCOM</span>
+            <img src="/images/Picsart_26-04-28_09-18-02-251.png" alt="SEMCOM" className="h-14 lg:h-16 w-auto object-contain" />
           </Link>
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden xl:flex items-center gap-1 w-full justify-center">
+        <div className="hidden xl:flex items-center gap-1 flex-1 justify-center px-4">
           {navLinks.map((link, idx) => (
             <div
               key={link.name}
@@ -225,10 +223,10 @@ export default function Navbar() {
         </div>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <Button
             asChild
-            className="hidden md:flex bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg shadow-md hover:shadow-lg transition-all px-6"
+            className="hidden md:flex bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-lg shadow-md hover:shadow-lg transition-all px-6 whitespace-nowrap"
           >
             <a
               href="https://admissions.cvmu.edu.in/"
@@ -238,6 +236,13 @@ export default function Navbar() {
               Apply Now
             </a>
           </Button>
+
+          {/* CVMU Logo */}
+          <div className="hidden md:flex items-center ml-4 pl-4 border-l border-border shrink-0">
+            <a href="https://www.cvmu.edu.in/" target="_blank" rel="noopener noreferrer">
+              <img src="/images/cvm-logo.png" alt="CVM University" className="h-14 lg:h-16 w-auto object-contain hover:scale-105 transition-transform" />
+            </a>
+          </div>
 
           {/* Mobile Toggle */}
           <button

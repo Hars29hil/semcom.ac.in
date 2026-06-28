@@ -151,7 +151,7 @@ export default function IQAC() {
           <div className="relative z-10 grid lg:grid-cols-3 gap-8 items-center">
             <div className="lg:col-span-1 space-y-4">
               <ShieldCheck size={36} className="text-accent" />
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight">Institutional Benefits</h2>
+              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">Institutional Benefits</h2>
               <p className="text-white/70 text-xs sm:text-sm font-semibold leading-relaxed">
                 Internalizing a culture of quality contributes significantly to the long-term success of every stakeholder.
               </p>

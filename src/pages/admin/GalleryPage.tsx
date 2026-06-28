@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { uploadFile } from "@/lib/api";
+import { uploadFile as apiUploadFile } from "@/lib/api";
 import { getToken } from "@/lib/auth";
 
 interface Album {
@@ -19,7 +19,9 @@ interface Album {
   album_date: string;
 }
 
-const API_BASE = "/api/gallery";
+import { API_BASE as GLOBAL_API_BASE } from "@/lib/api";
+
+const API_BASE = `${GLOBAL_API_BASE}/gallery`;
 
 const gradients = [
   "from-primary/20 to-info/20",
@@ -162,7 +164,7 @@ export default function GalleryPage() {
 
     try {
       // 1. Upload photo to server
-      const uploadData = await uploadFile(uploadFile);
+      const uploadData = await apiUploadFile(uploadFile);
 
       if (uploadData.success) {
         // 2. Link photo to album
@@ -201,35 +203,35 @@ export default function GalleryPage() {
   }
 
   return (
-    <div className="space-y-6 text-slate-900 pb-20">
+    <div className="space-y-6 text-primary pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900">Gallery</h2>
-          <p className="text-slate-500 text-sm mt-1">Manage photo albums and media</p>
+          <h2 className="text-3xl font-extrabold text-primary">Gallery</h2>
+          <p className="text-muted text-sm mt-1">Manage photo albums and media</p>
         </div>
         <div className="flex gap-2">
           {/* Upload Photos Dialog */}
           <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="border-white text-slate-900 hover:bg-white/80 hover:text-slate-900 bg-white/80 backdrop-blur-md"><Upload className="h-4 w-4 mr-2" />Upload Photos</Button>
+              <Button variant="outline" className="border-border text-primary hover:bg-surface hover:text-primary bg-surface"><Upload className="h-4 w-4 mr-2" />Upload Photos</Button>
             </DialogTrigger>
             <DialogContent className="admin-glass-panel border-none sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle className="text-slate-900">Upload Photos</DialogTitle>
-                <DialogDescription className="text-slate-500">
+                <DialogTitle className="text-primary">Upload Photos</DialogTitle>
+                <DialogDescription className="text-muted">
                   Select an album and upload a photo.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
-                  <Label className="text-slate-700">Select Album</Label>
+                  <Label className="text-primary-light">Select Album</Label>
                   <Select value={uploadAlbumId} onValueChange={setUploadAlbumId}>
-                    <SelectTrigger className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900">
+                    <SelectTrigger className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 text-primary">
                       <SelectValue placeholder="Pick an album..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-white border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] text-slate-900">
+                    <SelectContent className="bg-white border-border shadow-sm text-primary">
                       {albums.map(album => (
-                        <SelectItem key={album.id} value={album.id.toString()} className="focus:bg-white/80 focus:text-slate-900">
+                        <SelectItem key={album.id} value={album.id.toString()} className="focus:bg-surface focus:text-primary">
                           {album.cover_emoji} {album.name}
                         </SelectItem>
                       ))}
@@ -237,12 +239,32 @@ export default function GalleryPage() {
                   </Select>
                 </div>
                 <div className="grid gap-2">
-                  <Label className="text-slate-700">File</Label>
-                  <Input type="file" accept="image/*" onChange={(e) => setUploadFile(e.target.files?.[0] || null)} className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900 file:text-slate-900 file:bg-white/80 file:border-0 file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-slate-100" />
+                  <Label className="text-primary-light">File</Label>
+                  <p className="text-red-500 text-xs font-semibold mb-2">*Only image with 100 or lessthan 100 kb allowed..</p>
+                  <Input type="file" accept="image/*" onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      if (!file.type.startsWith('image/')) {
+                        alert("Only image files are allowed");
+                        e.target.value = '';
+                        setUploadFile(null);
+                        return;
+                      }
+                      if (file.size > 100 * 1024) {
+                        alert("do not allow the images more than 100 kb because the app pool crash");
+                        e.target.value = '';
+                        setUploadFile(null);
+                        return;
+                      }
+                      setUploadFile(file);
+                    } else {
+                      setUploadFile(null);
+                    }
+                  }} className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 text-primary file:text-primary file:bg-surface file:border-0 file:rounded-lg file:mr-4 file:px-4 file:py-1 hover:file:bg-background" />
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setIsUploadDialogOpen(false)} disabled={isUploading} className="text-slate-900 hover:bg-white/80 hover:text-slate-900 border-white bg-transparent">Cancel</Button>
+                <Button variant="outline" onClick={() => setIsUploadDialogOpen(false)} disabled={isUploading} className="text-primary hover:bg-surface hover:text-primary border-border bg-transparent">Cancel</Button>
                 <Button onClick={handleUploadPhotos} disabled={isUploading || !uploadFile} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all hover:bg-accent/90 rounded-xl px-8 shadow-lg">
                   {isUploading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
                   {isUploading ? "Uploading..." : "Upload"}
@@ -257,24 +279,24 @@ export default function GalleryPage() {
             </DialogTrigger>
             <DialogContent className="admin-glass-panel border-none sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle className="text-slate-900">Create New Album</DialogTitle>
-                <DialogDescription className="text-slate-500">
+                <DialogTitle className="text-primary">Create New Album</DialogTitle>
+                <DialogDescription className="text-muted">
                   Enter a name and pick an icon for your new photo album.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="name" className="text-slate-700">Album Name</Label>
+                  <Label htmlFor="name" className="text-primary-light">Album Name</Label>
                   <Input
                     id="name"
                     value={newAlbumName}
                     onChange={(e) => setNewAlbumName(e.target.value)}
                     placeholder="e.g. Annual Day 2026"
-                    className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900 placeholder:text-slate-400"
+                    className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 text-primary placeholder:text-muted-foreground"
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label className="text-slate-700">Pick an Icon</Label>
+                  <Label className="text-primary-light">Pick an Icon</Label>
                   <div className="grid grid-cols-5 gap-2">
                     {emojis.map((emoji) => (
                       <button
@@ -282,7 +304,7 @@ export default function GalleryPage() {
                          type="button"
                          onClick={() => setSelectedEmoji(emoji)}
                          className={`h-12 w-12 flex items-center justify-center text-2xl rounded-lg border-2 transition-all ${
-                           selectedEmoji === emoji ? "border-accent bg-accent/20 scale-110" : "border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md hover:bg-white/80"
+                           selectedEmoji === emoji ? "border-accent bg-accent/20 scale-110" : "border-border shadow-sm bg-surface hover:bg-surface"
                          }`}
                        >
                          {emoji}
@@ -292,7 +314,7 @@ export default function GalleryPage() {
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)} className="text-slate-900 hover:bg-white/80 hover:text-slate-900 border-white bg-transparent">Cancel</Button>
+                <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)} className="text-primary hover:bg-surface hover:text-primary border-border bg-transparent">Cancel</Button>
                 <Button onClick={handleCreateAlbum} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all hover:bg-accent/90 rounded-xl px-8 shadow-lg">Create Album</Button>
               </DialogFooter>
             </DialogContent>
@@ -304,10 +326,10 @@ export default function GalleryPage() {
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
         <DialogContent className="admin-glass-panel border-none sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-slate-900">
+            <DialogTitle className="flex items-center gap-2 text-primary">
               {currentAlbum?.cover_emoji} {currentAlbum?.name}
             </DialogTitle>
-            <DialogDescription className="text-slate-500">
+            <DialogDescription className="text-muted">
               {albumPhotos.length} photos in this album
             </DialogDescription>
           </DialogHeader>
@@ -315,7 +337,7 @@ export default function GalleryPage() {
             {loadingPhotos ? (
               <div className="py-20 flex justify-center"><Loader2 className="animate-spin text-accent" /></div>
             ) : albumPhotos.length === 0 ? (
-              <div className="py-10 text-center text-slate-500 italic">No photos in this album yet.</div>
+              <div className="py-10 text-center text-muted italic">No photos in this album yet.</div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {albumPhotos.map((photo) => (
@@ -325,7 +347,7 @@ export default function GalleryPage() {
                       <Button 
                         variant="destructive" 
                         size="icon" 
-                        className="h-8 w-8 bg-red-500/80 hover:bg-red-500 text-slate-900"
+                        className="h-8 w-8 bg-red-500/80 hover:bg-red-500 text-primary"
                         onClick={() => handleDeletePhoto(photo.id)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -340,9 +362,9 @@ export default function GalleryPage() {
       </Dialog>
 
       {albums.length === 0 ? (
-        <div className="text-center py-20 admin-glass-panel border-dashed border-white rounded-3xl">
-          <ImageIcon className="h-12 w-12 mx-auto text-slate-900/20 mb-4" />
-          <p className="text-slate-500 font-medium">No albums found. Create your first one!</p>
+        <div className="text-center py-20 admin-glass-panel border-dashed border-border rounded-3xl">
+          <ImageIcon className="h-12 w-12 mx-auto text-primary/20 mb-4" />
+          <p className="text-muted font-medium">No albums found. Create your first one!</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -351,11 +373,11 @@ export default function GalleryPage() {
               <div className={`h-36 bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center text-5xl group-hover:scale-105 transition-transform`}>
                 {album.cover_emoji}
               </div>
-              <div className="p-4 border-t border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)]">
+              <div className="p-4 border-t border-border shadow-sm">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h3 className="font-bold text-slate-900 text-sm group-hover:text-accent transition-colors">{album.name}</h3>
-                    <div className="flex items-center gap-1.5 mt-1.5 text-slate-500">
+                    <h3 className="font-bold text-primary text-sm group-hover:text-accent transition-colors">{album.name}</h3>
+                    <div className="flex items-center gap-1.5 mt-1.5 text-muted">
                       <ImageIcon className="h-3 w-3" />
                       <span className="text-[11px] font-medium">{album.count} photos • {new Date(album.album_date).toLocaleDateString()}</span>
                     </div>
@@ -364,7 +386,7 @@ export default function GalleryPage() {
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-8 w-8 text-slate-900 hover:bg-white/80"
+                      className="h-8 w-8 text-primary hover:bg-surface"
                       onClick={() => handleViewAlbum(album)}
                     >
                       <Eye className="h-3.5 w-3.5" />

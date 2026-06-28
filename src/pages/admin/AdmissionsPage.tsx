@@ -10,8 +10,8 @@ const applications = [
   { id: 2, name: "Raj Mehta", program: "BBA (Hons.)", date: "2026-03-30", status: "pending" },
   { id: 3, name: "Anita Shah", program: "BCom (Hons.)", date: "2026-03-28", status: "approved" },
   { id: 4, name: "Kiran Desai", program: "MBA", date: "2026-03-27", status: "pending" },
-  { id: 5, name: "Sanjay Joshi", program: "MCom", date: "2026-03-25", status: "rejected" },
-  { id: 6, name: "Neha Trivedi", program: "BBA - Digital Marketing", date: "2026-03-24", status: "approved" },
+  { id: 5, name: "Sanjay Joshi", program: "MBA", date: "2026-03-25", status: "rejected" },
+  { id: 6, name: "Neha Trivedi", program: "BBA-DM & AI", date: "2026-03-24", status: "approved" },
 ];
 
 const stats = [
@@ -36,7 +36,7 @@ export default function AdmissionsPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {stats.map((stat) => (
-          <div key={stat.label} className="bg-white/70 backdrop-blur-xl border border-white/40 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all rounded-3xl p-5 flex items-center gap-4">
+          <div key={stat.label} className="bg-surface border border-border shadow-sm hover:shadow-card hover:-translate-y-1 transition-all rounded-3xl p-5 flex items-center gap-4">
             <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${stat.color} flex items-center justify-center shadow-lg`}>
               <stat.icon className="h-5 w-5 text-primary-foreground" />
             </div>
@@ -50,10 +50,10 @@ export default function AdmissionsPage() {
 
       <div className="relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input placeholder="Search applications..." className="pl-9 border border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Input placeholder="Search applications..." className="pl-9 border border-border bg-background focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 rounded-xl border-none" value={search} onChange={(e) => setSearch(e.target.value)} />
       </div>
 
-      <div className="bg-white/70 backdrop-blur-xl border border-white/40 shadow-lg rounded-3xl rounded-2xl overflow-hidden">
+      <div className="bg-surface border border-border shadow-sm rounded-3xl overflow-hidden">
         <div className="p-5 border-b border-border/50">
           <h3 className="text-base font-bold text-foreground">Recent Applications</h3>
         </div>

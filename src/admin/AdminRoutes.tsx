@@ -18,7 +18,12 @@ import GalleryPage from "@/pages/admin/GalleryPage";
 import AccreditationsPage from "@/pages/admin/AccreditationsPage";
 import ContactPage from "@/pages/admin/ContactPage";
 import SettingsPage from "@/pages/admin/SettingsPage";
+import FixedImagesPage from "@/pages/admin/FixedImagesPage";
+import InquiriesPage from "@/pages/admin/InquiriesPage";
 import CounsellorPage from "@/pages/admin/CounsellorPage";
+import FacultyEventsPage from "@/pages/admin/FacultyEventsPage";
+import FacultyPressNotesPage from "@/pages/admin/FacultyPressNotesPage";
+import FacultyAnnouncementsPage from "@/pages/admin/FacultyAnnouncementsPage";
 import NotFound from "@/pages/admin/NotFound";
 
 // Auth Guard Component
@@ -29,7 +34,8 @@ const AuthGuard = ({ children, allowedRoles }: { children: React.ReactNode, allo
     if (user.role === 'admin') return <Navigate to="/admin" replace />;
     if (user.role === 'librarian') return <Navigate to="/admin/announcements" replace />;
     if (user.role === 'vp') return <Navigate to="/admin/faculty" replace />;
-    return <Navigate to="/admin/counsellor" replace />;
+    if (['faculty', 'counselor', 'counsellor'].includes(user.role)) return <Navigate to="/admin/faculty/event" replace />;
+    return <Navigate to="/admin/events" replace />;
   }
   return (
     <ErrorBoundary>
@@ -42,6 +48,9 @@ export const AdminRoutes = () => (
   <Routes>
     {/* Admin Routes */}
     <Route path="/" element={<AuthGuard allowedRoles={['admin']}><DashboardPage /></AuthGuard>} />
+    <Route path="/faculty/event" element={<AuthGuard allowedRoles={['faculty', 'counselor', 'counsellor']}><FacultyEventsPage /></AuthGuard>} />
+    <Route path="/faculty-press-notes" element={<AuthGuard allowedRoles={['faculty', 'counselor', 'counsellor']}><FacultyPressNotesPage /></AuthGuard>} />
+    <Route path="/faculty-announcements" element={<AuthGuard allowedRoles={['faculty', 'counselor', 'counsellor']}><FacultyAnnouncementsPage /></AuthGuard>} />
     <Route path="/announcements" element={<AuthGuard allowedRoles={['admin', 'librarian']}><AnnouncementsPage /></AuthGuard>} />
     <Route path="/events" element={<AuthGuard allowedRoles={['admin', 'librarian']}><EventsPage /></AuthGuard>} />
     <Route path="/press-notes" element={<AuthGuard allowedRoles={['admin', 'librarian']}><PressNotesPage /></AuthGuard>} />
@@ -53,10 +62,12 @@ export const AdminRoutes = () => (
     <Route path="/gallery" element={<AuthGuard allowedRoles={['admin']}><GalleryPage /></AuthGuard>} />
     <Route path="/accreditations" element={<AuthGuard allowedRoles={['admin']}><AccreditationsPage /></AuthGuard>} />
     <Route path="/contact" element={<AuthGuard allowedRoles={['admin']}><ContactPage /></AuthGuard>} />
+    <Route path="/inquiries" element={<AuthGuard allowedRoles={['admin', 'counselor', 'counsellor']}><InquiriesPage /></AuthGuard>} />
     <Route path="/settings" element={<AuthGuard allowedRoles={['admin']}><SettingsPage /></AuthGuard>} />
+    <Route path="/fixed-images" element={<AuthGuard allowedRoles={['admin']}><FixedImagesPage /></AuthGuard>} />
 
-    {/* Counsellor Route */}
-    <Route path="/counsellor" element={<AuthGuard allowedRoles={['counsellor', 'counselor']}><CounsellorPage /></AuthGuard>} />
+    {/* Counsellor Route / Generic Staff Profile */}
+    <Route path="/counsellor" element={<AuthGuard><CounsellorPage /></AuthGuard>} />
 
     <Route path="*" element={<NotFound />} />
   </Routes>

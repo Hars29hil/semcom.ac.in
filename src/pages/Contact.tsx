@@ -17,6 +17,7 @@ import {
   BookOpen
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const importantContacts = [
   {
@@ -54,6 +55,23 @@ const importantContacts = [
 ];
 
 export default function Contact() {
+  const [formData, setFormData] = useState({ name: '', email: '', department: 'General Support Desk', message: '' });
+  const [phone, setPhone] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    if (phone.length < 10) {
+      alert("Mobile number must be at least 10 digits.");
+      return;
+    }
+    alert("Message transmitted successfully!");
+  };
+
   return (
     <div className="bg-background min-h-screen">
       {/* Hero Banner — Clean Dark Primary Theme matching Hero */}
@@ -184,12 +202,15 @@ export default function Contact() {
               </div>
             </div>
 
-            <form className="space-y-6 relative z-10">
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-[9px] font-bold uppercase tracking-wider text-muted ml-1">Full Name</label>
                   <input
                     type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
                     placeholder="Enter your name"
                     className="w-full px-4 py-3 rounded-xl bg-surface border border-border focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all font-semibold text-xs text-primary shadow-sm"
                   />
@@ -198,6 +219,9 @@ export default function Contact() {
                   <label className="text-[9px] font-bold uppercase tracking-wider text-muted ml-1">Email Address</label>
                   <input
                     type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
                     placeholder="name@email.com"
                     className="w-full px-4 py-3 rounded-xl bg-surface border border-border focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all font-semibold text-xs text-primary shadow-sm"
                   />
@@ -205,8 +229,24 @@ export default function Contact() {
               </div>
 
               <div className="space-y-2">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-muted ml-1">Mobile Number</label>
+                <input
+                  type="tel"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+                  placeholder="Enter 10-digit number"
+                  className="w-full px-4 py-3 rounded-xl bg-surface border border-border focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all font-semibold text-xs text-primary shadow-sm"
+                />
+              </div>
+
+              <div className="space-y-2">
                 <label className="text-[9px] font-bold uppercase tracking-wider text-muted ml-1">Department Desk</label>
-                <select className="w-full px-4 py-3 rounded-xl bg-surface border border-border focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all font-semibold text-xs text-primary shadow-sm cursor-pointer">
+                <select 
+                  value={formData.department}
+                  onChange={(e) => setFormData({...formData, department: e.target.value})}
+                  className="w-full px-4 py-3 rounded-xl bg-surface border border-border focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all font-semibold text-xs text-primary shadow-sm cursor-pointer"
+                >
                   <option>General Support Desk</option>
                   <option>Admissions Portal</option>
                   <option>Academic Documentation</option>
@@ -219,6 +259,9 @@ export default function Contact() {
                 <label className="text-[9px] font-bold uppercase tracking-wider text-muted ml-1">Your Message</label>
                 <textarea
                   rows={4}
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({...formData, message: e.target.value})}
                   placeholder="How may we assist you today?"
                   className="w-full px-4 py-4 rounded-xl bg-surface border border-border focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/15 transition-all font-semibold text-xs text-primary shadow-sm resize-none"
                 />

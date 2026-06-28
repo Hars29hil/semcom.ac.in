@@ -3,7 +3,6 @@ import {
   BookOpen, 
   Search, 
   Users, 
-  GraduationCap, 
   ArrowRight,
   Globe,
   Milestone,
@@ -11,8 +10,10 @@ import {
   Scale,
   Award,
   Wallet,
-  Building2
+  Building2,
+  ChevronRight
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const researchAreas = [
   { 
@@ -34,181 +35,199 @@ const researchAreas = [
 
 export default function PHD() {
   return (
-    <div className="pt-20">
-      {/* Hero Section */}
-      <section className="relative h-[70vh] flex items-center overflow-hidden bg-[#0a0a0a]">
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=1974&auto=format&fit=crop" 
-            alt="Old library and research"
-            className="w-full h-full object-cover opacity-40 shadow-inner"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/80 to-[#0a0a0a]" />
-        </div>
+    <div className="bg-background min-h-screen">
+      {/* Hero Banner — Clean Dark Primary Theme */}
+      <div className="relative bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white py-16 sm:py-24 overflow-hidden">
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
         
-        <div className="container mx-auto px-6 relative z-10 text-center">
+        <div className="section-container relative z-10">
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-accent mb-4 tracking-widest uppercase">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-white/60">Ph.D.</span>
+          </div>
+
+          <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4">
+            Doctor of <span className="text-accent">Philosophy</span>
+          </h1>
+          <p className="text-white/70 max-w-2xl text-sm sm:text-base leading-relaxed mb-8">
+            The Ph.D. program at SEMCOM allows scholars to push the boundaries of knowledge alongside world-class faculty and facilities.
+          </p>
+          
+          <div className="flex flex-wrap gap-4">
+            <span className="px-4 py-2 border border-white/20 bg-white/5 rounded-xl text-white text-[11px] font-bold tracking-widest uppercase shadow-sm">Commerce</span>
+            <span className="px-4 py-2 border border-white/20 bg-white/5 rounded-xl text-white text-[11px] font-bold tracking-widest uppercase shadow-sm">Management</span>
+            <span className="px-4 py-2 border border-white/20 bg-white/5 rounded-xl text-white text-[11px] font-bold tracking-widest uppercase shadow-sm">Multi-disciplinary</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Research Environment */}
+      <section className="section-container py-12 sm:py-16">
+        <div className="grid lg:grid-cols-2 gap-10 items-center justify-between">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-4xl mx-auto"
+            initial={{ opacity: 0, x: -15 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="space-y-6"
           >
-            <div className="w-20 h-2 bg-secondary mx-auto mb-10 rounded-full" />
-            <h1 className="text-6xl md:text-8xl font-serif font-black text-white mb-8 tracking-tighter uppercase italic">
-              Ph.D.
-            </h1>
-            <p className="text-2xl md:text-3xl text-secondary font-serif font-medium mb-10 tracking-widest uppercase">
-              Doctor of Philosophy
-            </p>
-            <div className="flex flex-wrap justify-center gap-6">
-              <span className="px-6 py-2 border border-white/20 rounded-full text-white/60 text-sm font-bold tracking-widest uppercase">Commerce</span>
-              <span className="px-6 py-2 border border-white/20 rounded-full text-white/60 text-sm font-bold tracking-widest uppercase">Management</span>
-              <span className="px-6 py-2 border border-white/20 rounded-full text-white/60 text-sm font-bold tracking-widest uppercase">Multi-disciplinary</span>
+            <div className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider">
+              <Award size={14} />
+              <span>Academic Distinction</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">
+              An Intellectual Rich Research Ecosystem
+            </h2>
+            <div className="space-y-6 pt-2">
+              <div className="flex items-start gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-background border border-border flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors shadow-sm shrink-0">
+                  <Building2 size={18} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-primary mb-1">World Class Facilities</h4>
+                  <p className="text-xs text-muted leading-relaxed font-medium">Access to elite research labs, extensive digital libraries, and dedicated scholar workrooms.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-background border border-border flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors shadow-sm shrink-0">
+                  <Users size={18} />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-primary mb-1">Senior Faculty Mentorship</h4>
+                  <p className="text-xs text-muted leading-relaxed font-medium">Work directly with recognized authorities in Commerce and Management disciplines.</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 15 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="card !p-8 bg-surface border border-border space-y-6 shadow-sm">
+              <div className="flex items-start gap-4">
+                 <div className="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center text-secondary shrink-0">
+                    <Wallet size={24} />
+                 </div>
+                 <div>
+                   <h3 className="text-lg font-bold text-primary mb-1">SHODH Scheme</h3>
+                   <p className="text-xs text-muted font-medium">Grant of ₹15K offered by GOG for full-time Ph.D. scholars (2 years).</p>
+                 </div>
+              </div>
+              
+              <div className="pt-6 border-t border-border">
+                <h3 className="text-sm font-bold text-primary mb-2">International Scholars</h3>
+                <p className="text-xs text-muted font-medium leading-relaxed mb-6">
+                  SEMCOM welcomes research applications from international and foreign students, fostering a diverse global research perspective.
+                </p>
+                
+                <div className="flex flex-col gap-1">
+                  <span className="text-[10px] font-bold text-secondary uppercase tracking-wider">Contact Admissions</span>
+                  <span className="text-sm font-bold text-primary">02692 238001 | 63588 19009</span>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Research Environment */}
-      <section className="py-24 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-24 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="text-secondary font-black uppercase tracking-[0.3em] text-sm mb-6 block">Academic Distinction</span>
-              <h2 className="text-4xl md:text-6xl font-serif font-black text-primary mb-8 leading-tight">
-                An Intellectual Rich <br />Research Ecosystem
-              </h2>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed font-light italic">
-                "The Ph.D. program at SEMCOM allows scholars to push the boundaries of knowledge alongside world-class faculty and facilities."
-              </p>
-              <div className="space-y-6 mb-10">
-                <div className="flex items-start gap-4">
-                  <div className="mt-1 bg-secondary p-2 rounded-lg text-primary">
-                    <Building2 size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-black text-lg text-primary">World Class Facilities</h4>
-                    <p className="text-gray-500">Access to elite research labs, extensive digital libraries, and dedicated scholar workrooms.</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <div className="mt-1 bg-primary p-2 rounded-lg text-white">
-                    <Users size={24} />
-                  </div>
-                  <div>
-                    <h4 className="font-black text-lg text-primary">Senior Faculty Mentorship</h4>
-                    <p className="text-gray-500">Work directly with recognized authorities in Commerce and Management disciplines.</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="bg-gray-50 p-12 rounded-[4rem] border border-gray-100 shadow-sm relative"
-            >
-              <div className="absolute -top-10 -left-10 bg-primary text-white p-10 rounded-[3rem] shadow-2xl max-w-xs">
-                <Wallet className="text-secondary w-14 h-14 mb-4" />
-                <h3 className="font-black text-2xl mb-2">SHODH Scheme</h3>
-                <p className="text-gray-300">Grant of ₹15K offered by GOG for full-time Ph.D. scholars (2 years).</p>
-              </div>
-              <div className="pt-24 space-y-8">
-                <h3 className="text-3xl font-serif font-black text-primary italic">International Scholars</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  SEMCOM welcomes research applications from international and foreign students, fostering a diverse global research perspective.
-                </p>
-                <div className="pt-6 border-t border-gray-200">
-                  <p className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">Contact Admissions</p>
-                  <p className="text-primary font-black text-xl">02692 238001 | 63588 19009</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Specialization Areas */}
-      <section className="py-24 bg-[#0a192f] text-white px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto text-center mb-20">
-          <h2 className="text-4xl md:text-7xl font-serif font-black mb-6 italic tracking-tighter uppercase">Specializations</h2>
-          <p className="text-secondary font-black tracking-widest uppercase">Focused Research Disciplines</p>
-        </div>
-
-        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12">
-          {researchAreas.map((area, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group p-12 rounded-[3.5rem] border border-white/10 hover:border-secondary transition-all hover:bg-white/[0.02]"
-            >
-              <area.icon size={48} className="text-secondary mb-8 group-hover:scale-110 transition-transform" />
-              <h3 className="text-3xl font-serif font-black mb-6">{area.title}</h3>
-              <p className="text-gray-400 leading-relaxed">{area.description}</p>
-            </motion.div>
-          ))}
+      <section className="bg-surface py-12 sm:py-16 border-y border-border">
+        <div className="section-container">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
+            <div className="flex items-center justify-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider">
+              <Library size={14} />
+              <span>Focused Research Disciplines</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-primary">Specializations</h2>
+          </div>
+          
+          <div className="grid lg:grid-cols-3 gap-6">
+            {researchAreas.map((area, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="card !p-8 border border-border shadow-sm group hover:border-secondary transition-colors"
+              >
+                <div className="w-12 h-12 bg-background border border-border rounded-xl flex items-center justify-center text-secondary mb-6 shadow-sm group-hover:scale-105 transition-transform">
+                  <area.icon size={20} />
+                </div>
+                <h3 className="text-lg font-bold text-primary mb-3 group-hover:text-secondary transition-colors">{area.title}</h3>
+                <p className="text-muted text-xs leading-relaxed font-medium">{area.description}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Supervisors & Eligibility */}
-      <section className="py-24 px-6 md:px-12 lg:px-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16">
-            <div className="flex flex-col">
-              <div className="bg-primary text-white p-12 rounded-[3.5rem] flex-1 shadow-2xl relative overflow-hidden group">
-                <Library size={56} className="text-secondary mb-10" />
-                <h2 className="text-4xl font-serif font-black mb-6">Eligibility & Rules</h2>
-                <div className="space-y-6 mb-12">
-                  <p className="text-xl font-medium text-gray-200 leading-relaxed border-l-4 border-secondary pl-8">
-                    Admissions are governed by the CVM University Ph.D. Rules & Regulations 2020.
-                  </p>
-                </div>
-                <div className="mt-auto">
-                  <button className="flex items-center gap-4 bg-secondary text-primary px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:translate-x-2 transition-transform">
-                    View Regulations <ArrowRight size={22} />
-                  </button>
-                </div>
+      <section className="section-container py-12 sm:py-16">
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+          
+          {/* Rules Banner */}
+          <div className="card !p-8 bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white space-y-6 relative overflow-hidden h-full flex flex-col justify-between">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
+            
+            <div className="relative z-10 space-y-4">
+              <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-accent mb-2">
+                <BookOpen size={20} />
+              </div>
+              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Eligibility & Rules</h2>
+              <div className="flex gap-3">
+                 <div className="w-1 bg-accent rounded-full shrink-0" />
+                 <p className="text-white/80 text-sm leading-relaxed font-semibold">
+                   Admissions are governed by the CVM University Ph.D. Rules & Regulations 2020.
+                 </p>
               </div>
             </div>
-
-            <div className="flex flex-col gap-10">
-              <div className="bg-white border-2 border-primary/10 p-12 rounded-[3.5rem] shadow-xl hover:shadow-2xl transition-shadow group">
-                <div className="flex items-center gap-6 mb-8">
-                  <div className="w-16 h-16 bg-secondary flex items-center justify-center text-primary rounded-3xl">
-                    <Search size={32} />
+            
+            <div className="relative z-10 pt-6">
+              <a 
+                href="#" 
+                className="inline-flex items-center gap-2 bg-accent text-primary px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-wider hover:bg-white hover:text-primary transition-all shadow"
+              >
+                <span>View Regulations</span>
+                <ChevronRight size={13} />
+              </a>
+            </div>
+          </div>
+          
+          <div className="space-y-8 flex flex-col h-full">
+            {/* Research Supervisors */}
+            <div className="card !p-8 bg-surface border border-border shadow-sm flex-grow">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-secondary uppercase tracking-wider">
+                    <Search size={14} />
+                    <span>Expert Mentorship</span>
                   </div>
-                  <div>
-                    <h3 className="text-3xl font-serif font-black text-primary">Research Supervisors</h3>
-                    <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Expert Mentorship</p>
-                  </div>
+                  <h3 className="text-lg font-bold text-primary">Research Supervisors</h3>
+                  <p className="text-xs text-muted font-medium max-w-sm">Browse our directory of recognized Ph.D. Research Supervisors and their areas of specialization.</p>
                 </div>
-                <p className="text-gray-600 mb-10 leading-relaxed">
-                  Browse our directory of recognized Ph.D. Research Supervisors and their areas of specialization.
-                </p>
-                <button className="text-primary font-black uppercase tracking-widest text-sm flex items-center gap-3 hover:gap-5 transition-all">
-                  Directory List <ArrowRight size={20} />
+                <button className="btn-outline shrink-0 whitespace-nowrap !py-2 !px-4">
+                  Directory List
                 </button>
               </div>
-
-              <div className="bg-secondary p-12 rounded-[3.5rem] text-white flex items-center justify-between group overflow-hidden relative shadow-2xl shadow-secondary/20">
-                <div className="relative z-10">
-                  <h4 className="text-2xl font-serif font-black mb-2 italic tracking-tight">Ready to begin your journey?</h4>
-                  <p className="font-bold uppercase tracking-widest text-xs text-white/80">Admission is currently open for eligible candidates</p>
-                </div>
-                <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center -rotate-45 group-hover:rotate-0 transition-transform relative z-10">
-                  <ArrowRight size={32} />
-                </div>
-                <Award className="absolute -right-10 -bottom-10 w-48 h-48 opacity-10 rotate-12" />
+            </div>
+            
+            {/* Admissions Callout */}
+            <div className="card !p-6 bg-secondary/10 border border-secondary/20 shadow-sm flex items-center justify-between group cursor-pointer hover:bg-secondary hover:text-white transition-colors">
+              <div>
+                <h4 className="text-sm font-bold text-primary group-hover:text-white transition-colors mb-1">Ready to begin your journey?</h4>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-secondary group-hover:text-white/80 transition-colors">Admission is currently open for eligible candidates</p>
+              </div>
+              <div className="w-10 h-10 bg-surface group-hover:bg-white/10 rounded-full flex items-center justify-center text-secondary group-hover:text-white transition-colors shrink-0">
+                <ArrowRight size={18} />
               </div>
             </div>
           </div>
+          
         </div>
       </section>
     </div>

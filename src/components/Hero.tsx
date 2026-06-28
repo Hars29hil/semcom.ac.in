@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Play, GraduationCap, Star } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { API_BASE } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -15,14 +16,32 @@ export default function Hero() {
   const [currentPhoto, setCurrentPhoto] = useState(0);
 
   useEffect(() => {
-    fetch('/api/gallery/highlights')
+    fetch(`${API_BASE}/config`)
       .then(async res => {
         if (!res.ok) throw new Error("API Error");
         const data = await res.json();
-        if (data && data.length > 0) setPhotos(data.map((p: any) => p.url));
+        
+        let sliderImages: string[] = [];
+        if (data.hero_slider_images) {
+          try { sliderImages = JSON.parse(data.hero_slider_images); } catch(e) {}
+        }
+        
+        if (sliderImages.length === 0) {
+          if (data.hero_slider_1) sliderImages.push(data.hero_slider_1);
+          if (data.hero_slider_2) sliderImages.push(data.hero_slider_2);
+          if (data.hero_slider_3) sliderImages.push(data.hero_slider_3);
+          if (data.hero_slider_4) sliderImages.push(data.hero_slider_4);
+        }
+
+        if (sliderImages.length > 0) {
+           setPhotos(sliderImages);
+        } else {
+           // Set a default banner if nothing is configured
+           setPhotos(['https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070']);
+        }
       })
       .catch(err => {
-        console.warn('Using default hero images (Gallery API offline):', err.message);
+        console.warn('Using default hero images:', err.message);
       });
   }, []);
 

@@ -18,7 +18,9 @@ interface Project {
   status: 'ongoing' | 'completed' | 'proposed';
 }
 
-const API_BASE = "/api/research";
+import { API_BASE as GLOBAL_API_BASE } from "@/lib/api";
+
+const API_BASE = `${GLOBAL_API_BASE}/research`;
 
 export default function ResearchPage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -107,11 +109,11 @@ export default function ResearchPage() {
   );
 
   return (
-    <div className="space-y-6 text-slate-900 pb-20">
+    <div className="space-y-6 text-primary pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900">Research & Consultancy</h2>
-          <p className="text-slate-500 text-sm mt-1">Manage research projects and consultancy work</p>
+          <h2 className="text-3xl font-extrabold text-primary">Research & Consultancy</h2>
+          <p className="text-muted text-sm mt-1">Manage research projects and consultancy work</p>
         </div>
         <Button onClick={() => {
           setEditingProject(null);
@@ -122,10 +124,10 @@ export default function ResearchPage() {
       </div>
 
       <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
         <Input 
           placeholder="Search projects..." 
-          className="pl-9 border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400" 
+          className="pl-9 border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 rounded-xl text-primary placeholder:text-muted-foreground" 
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
         />
@@ -139,23 +141,23 @@ export default function ResearchPage() {
         <div className="admin-glass-panel overflow-hidden">
           <div className="divide-y divide-white/10">
             {filtered.length === 0 ? (
-              <div className="p-20 text-center text-slate-500 italic">No projects found matching your search.</div>
+              <div className="p-20 text-center text-muted italic">No projects found matching your search.</div>
             ) : (
               filtered.map((proj) => (
-                <div key={proj.id} className="flex items-center justify-between p-6 hover:bg-white/80 backdrop-blur-md transition-all group backdrop-blur-sm">
+                <div key={proj.id} className="flex items-center justify-between p-6 hover:bg-surface transition-all group backdrop-blur-sm">
                   <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-2xl bg-white/80 flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner">
+                    <div className="h-12 w-12 rounded-2xl bg-surface flex items-center justify-center group-hover:scale-110 transition-transform shadow-inner">
                       <FlaskConical className="h-5 w-5 text-accent" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-900 group-hover:text-accent transition-colors">{proj.title}</p>
-                      <p className="text-[11px] font-medium text-slate-500 mt-0.5 tracking-wide">{proj.faculty}</p>
+                      <p className="text-sm font-bold text-primary group-hover:text-accent transition-colors">{proj.title}</p>
+                      <p className="text-[11px] font-medium text-muted mt-0.5 tracking-wide">{proj.faculty}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
-                    <Badge variant="outline" className="rounded-lg bg-white/80 backdrop-blur-md border-white text-slate-900">{proj.type}</Badge>
+                    <Badge variant="outline" className="rounded-lg bg-surface border-border text-primary">{proj.type}</Badge>
                     <Badge 
-                      className={`rounded-lg capitalize shadow-sm ${proj.status === "ongoing" ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all" : proj.status === "completed" ? "bg-emerald-400 text-primary" : "bg-white/80 text-slate-900 hover:bg-slate-100"}`}
+                      className={`rounded-lg capitalize shadow-sm ${proj.status === "ongoing" ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all" : proj.status === "completed" ? "bg-emerald-400 text-primary" : "bg-surface text-primary hover:bg-background"}`}
                     >
                       {proj.status}
                     </Badge>
@@ -163,7 +165,7 @@ export default function ResearchPage() {
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="h-9 w-9 rounded-xl hover:bg-white/80 text-slate-900"
+                        className="h-9 w-9 rounded-xl hover:bg-surface text-primary"
                         onClick={() => {
                           setEditingProject(proj);
                           setIsDialogOpen(true);
@@ -192,19 +194,19 @@ export default function ResearchPage() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="admin-glass-panel border-none sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-black italic tracking-tighter text-slate-900">
+            <DialogTitle className="text-2xl font-black italic tracking-tighter text-primary">
               {editingProject ? "Refine Project" : "Initiate Project"}
             </DialogTitle>
-            <DialogDescription className="font-medium text-slate-500">
+            <DialogDescription className="font-medium text-muted">
               Specify the details of the research or consultancy initiative.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-6 py-6">
             <div className="grid gap-2">
-              <Label htmlFor="title" className="text-[10px] font-black uppercase tracking-widest ml-1 text-slate-700">Project Title</Label>
+              <Label htmlFor="title" className="text-[10px] font-black uppercase tracking-widest ml-1 text-primary-light">Project Title</Label>
               <Input
                 id="title"
-                className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900 h-12 px-5"
+                className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 text-primary h-12 px-5"
                 value={editingProject?.title || newProject.title}
                 onChange={(e) => editingProject 
                   ? setEditingProject({...editingProject, title: e.target.value})
@@ -213,10 +215,10 @@ export default function ResearchPage() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="faculty" className="text-[10px] font-black uppercase tracking-widest ml-1 text-slate-700">Faculty Lead</Label>
+              <Label htmlFor="faculty" className="text-[10px] font-black uppercase tracking-widest ml-1 text-primary-light">Faculty Lead</Label>
               <Input
                 id="faculty"
-                className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900 h-12 px-5"
+                className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 text-primary h-12 px-5"
                 value={editingProject?.faculty || newProject.faculty}
                 onChange={(e) => editingProject 
                   ? setEditingProject({...editingProject, faculty: e.target.value})
@@ -226,7 +228,7 @@ export default function ResearchPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="type" className="text-[10px] font-black uppercase tracking-widest ml-1 text-slate-700">Type</Label>
+                <Label htmlFor="type" className="text-[10px] font-black uppercase tracking-widest ml-1 text-primary-light">Type</Label>
                 <Select 
                   value={editingProject?.type || newProject.type}
                   onValueChange={(val) => editingProject
@@ -234,17 +236,17 @@ export default function ResearchPage() {
                     : setNewProject({...newProject, type: val})
                   }
                 >
-                  <SelectTrigger className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900 h-12 px-5">
+                  <SelectTrigger className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 text-primary h-12 px-5">
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] text-slate-900">
-                    <SelectItem value="Research" className="focus:bg-white/80 focus:text-slate-900">Research</SelectItem>
-                    <SelectItem value="Consultancy" className="focus:bg-white/80 focus:text-slate-900">Consultancy</SelectItem>
+                  <SelectContent className="bg-white border-border shadow-sm text-primary">
+                    <SelectItem value="Research" className="focus:bg-surface focus:text-primary">Research</SelectItem>
+                    <SelectItem value="Consultancy" className="focus:bg-surface focus:text-primary">Consultancy</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="status" className="text-[10px] font-black uppercase tracking-widest ml-1 text-slate-700">Current Status</Label>
+                <Label htmlFor="status" className="text-[10px] font-black uppercase tracking-widest ml-1 text-primary-light">Current Status</Label>
                 <Select 
                   value={editingProject?.status || newProject.status}
                   onValueChange={(val: any) => editingProject
@@ -252,20 +254,20 @@ export default function ResearchPage() {
                     : setNewProject({...newProject, status: val})
                   }
                 >
-                  <SelectTrigger className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900 h-12 px-5">
+                  <SelectTrigger className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 text-primary h-12 px-5">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] text-slate-900">
-                    <SelectItem value="ongoing" className="focus:bg-white/80 focus:text-slate-900">Ongoing</SelectItem>
-                    <SelectItem value="completed" className="focus:bg-white/80 focus:text-slate-900">Completed</SelectItem>
-                    <SelectItem value="proposed" className="focus:bg-white/80 focus:text-slate-900">Proposed</SelectItem>
+                  <SelectContent className="bg-white border-border shadow-sm text-primary">
+                    <SelectItem value="ongoing" className="focus:bg-surface focus:text-primary">Ongoing</SelectItem>
+                    <SelectItem value="completed" className="focus:bg-surface focus:text-primary">Completed</SelectItem>
+                    <SelectItem value="proposed" className="focus:bg-surface focus:text-primary">Proposed</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
           </div>
           <DialogFooter className="gap-2 sm:gap-0">
-            <Button variant="ghost" className="text-slate-900 hover:bg-white/80 hover:text-slate-900 rounded-2xl font-bold" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+            <Button variant="ghost" className="text-primary hover:bg-surface hover:text-primary rounded-2xl font-bold" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
             <Button className="rounded-2xl font-bold px-8 bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all hover:bg-accent/90 shadow-lg" onClick={handleSave}>
               Save Changes
             </Button>

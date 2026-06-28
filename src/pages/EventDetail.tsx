@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, MapPin, ArrowLeft, Share2, Bookmark, Loader2, GraduationCap, Mail, Phone, Building2, Flag, Tag, UserPlus } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { API_BASE } from '@/lib/api';
 
 export default function EventDetail() {
   const { id } = useParams();
@@ -11,8 +12,8 @@ export default function EventDetail() {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        // Fetch event using standard API path relative to origin
-        const res = await fetch(`/api/events/${id}`);
+        // Fetch event using API_BASE
+        const res = await fetch(`${API_BASE}/events/${id}`);
         const data = await res.json();
         if (data.success) {
           setEvent(data.data);
@@ -39,7 +40,7 @@ export default function EventDetail() {
       <div className="min-h-screen flex flex-col items-center justify-center bg-background p-6">
         <Calendar size={64} className="text-muted mb-4 opacity-50" />
         <h2 className="text-2xl font-bold text-text">Event Not Found</h2>
-        <Link to="/student/events" className="mt-6 btn-outline flex items-center gap-2">
+        <Link to="/events" className="mt-6 btn-outline flex items-center gap-2">
            <ArrowLeft size={16} /> Back to Events
         </Link>
       </div>

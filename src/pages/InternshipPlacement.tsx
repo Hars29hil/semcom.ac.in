@@ -104,7 +104,7 @@ export default function InternshipPlacement() {
           <div className="flex flex-col lg:flex-row justify-between lg:items-end mb-12 gap-8">
             <div className="max-w-2xl space-y-4">
               <span className="text-accent font-bold uppercase tracking-wider text-[10px]">Proven Methodology</span>
-              <h2 className="text-2xl sm:text-3xl font-bold">Guided Path to <span className="text-accent">Success</span></h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">Guided Path to <span className="text-accent">Success</span></h2>
               <p className="text-white/70 text-sm leading-relaxed font-semibold">
                 We conduct intensive workshops to mould students into industry-ready professionals, focusing on resume building, interview simulations, and job market analysis.
               </p>

@@ -10,7 +10,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { eventApi, uploadApi, facultyApi } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 
-export default function EventsPage() {
+export default function EventsPage({ isEmbedded = false }: { isEmbedded?: boolean }) {
   const [search, setSearch] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -137,12 +137,12 @@ export default function EventsPage() {
   );
 
   return (
-    <div className="space-y-6 text-slate-900 pb-20">
+    <div className="space-y-6 text-primary pb-20">
       <Dialog open={openDialog} onOpenChange={(open) => !open && resetForm()}>
         <DialogContent className="admin-glass-panel border-none max-w-4xl max-h-[90vh] flex flex-col p-0">
           <DialogHeader className="p-6 pb-2 shrink-0">
-            <DialogTitle className="text-2xl font-black text-slate-900">{editingId ? "Edit Event" : "Create New Event"}</DialogTitle>
-            <DialogDescription className="text-slate-500">
+            <DialogTitle className="text-2xl font-black text-primary">{editingId ? "Edit Event" : "Create New Event"}</DialogTitle>
+            <DialogDescription className="text-muted">
               Set the date, location, and detailed sections including committee members.
             </DialogDescription>
           </DialogHeader>
@@ -150,18 +150,36 @@ export default function EventsPage() {
             <div className="space-y-6">
               <div className="space-y-4">
                 <h3 className="text-sm font-black uppercase tracking-widest text-accent italic">Basic Info</h3>
-                <div className="space-y-2"><Label className="text-slate-700">Event Title</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-slate-900" /></div>
+                <div className="space-y-2"><Label className="text-primary-light">Event Title <span className="text-red-500">*</span></Label><Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-primary" /></div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2"><Label className="text-slate-700">Start Date</Label><Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-slate-900 [color-scheme:light]" /></div>
-                  <div className="space-y-2"><Label className="text-slate-700">End Date</Label><Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-slate-900 [color-scheme:light]" /></div>
+                  <div className="space-y-2"><Label className="text-primary-light">Start Date <span className="text-red-500">*</span></Label><Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-primary [color-scheme:light]" /></div>
+                  <div className="space-y-2"><Label className="text-primary-light">End Date <span className="text-red-500">*</span></Label><Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-primary [color-scheme:light]" /></div>
                 </div>
-                <div className="space-y-2"><Label className="text-slate-700">Location</Label><Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Venue" className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-slate-900" /></div>
+                <div className="space-y-2"><Label className="text-primary-light">Location <span className="text-red-500">*</span></Label><Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Venue" className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-primary" /></div>
                 <div className="space-y-2">
-                  <Label className="text-slate-700">Event Poster</Label>
-                  <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-white rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-white/80 backdrop-blur-md transition-all h-32 bg-white/80 backdrop-blur-md">
-                    <ImageIcon className="h-6 w-6 text-slate-500 mb-2" />
-                    <p className="text-[10px] font-bold text-center px-2 text-slate-500">{selectedImage ? selectedImage.name : "Choose file"}</p>
-                    <input type="file" ref={fileInputRef} className="hidden" onChange={(e) => setSelectedImage(e.target.files?.[0] || null)} />
+                  <Label className="text-primary-light">Event Poster <span className="text-red-500">*</span></Label>
+                  <p className="text-red-500 text-xs font-semibold mb-2">*Only image with 100 or lessthan 100 kb allowed..</p>
+                  <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-border rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-surface transition-all h-32 bg-surface">
+                    <ImageIcon className="h-6 w-6 text-muted mb-2" />
+                    <p className="text-[10px] font-bold text-center px-2 text-muted">{selectedImage ? selectedImage.name : "Choose file"}</p>
+                    <input type="file" ref={fileInputRef} className="hidden" accept="image/*" onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        if (!file.type.startsWith('image/')) {
+                          alert("Only image files are allowed");
+                          e.target.value = '';
+                          return;
+                        }
+                        if (file.size > 100 * 1024) {
+                          alert("do not allow the images more than 100 kb because the app pool crash");
+                          e.target.value = '';
+                          return;
+                        }
+                        setSelectedImage(file);
+                      } else {
+                        setSelectedImage(null);
+                      }
+                    }} />
                   </div>
                 </div>
               </div>
@@ -169,49 +187,83 @@ export default function EventsPage() {
               <div className="space-y-4">
                 <h3 className="text-sm font-black uppercase tracking-widest text-accent italic">Detailed Content</h3>
                 <div className="space-y-2">
-                  <Label className="text-slate-700">About Event</Label>
-                  <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Detailed about section" className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 min-h-[100px] resize-none text-slate-900 placeholder:text-slate-400" />
+                  <Label className="text-primary-light">About Event <span className="text-red-500">*</span></Label>
+                  <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Detailed about section" className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 min-h-[100px] resize-none text-primary placeholder:text-muted-foreground" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-slate-700">Highlights</Label>
-                  <Textarea value={highlights} onChange={(e) => setHighlights(e.target.value)} placeholder="Bullet points" className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 min-h-[100px] resize-none text-slate-900 placeholder:text-slate-400" />
+                  <Label className="text-primary-light">Highlights <span className="text-red-500">*</span></Label>
+                  <Textarea value={highlights} onChange={(e) => setHighlights(e.target.value)} placeholder="Bullet points" className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 min-h-[100px] resize-none text-primary placeholder:text-muted-foreground" />
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-slate-700">Objectives of the Event</Label>
-                  <Textarea value={schedule} onChange={(e) => setSchedule(e.target.value)} placeholder="Event objectives..." className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 min-h-[100px] resize-none text-slate-900 placeholder:text-slate-400" />
+                  <Label className="text-primary-light">Objectives of the Event <span className="text-red-500">*</span></Label>
+                  <Textarea value={schedule} onChange={(e) => setSchedule(e.target.value)} placeholder="Event objectives..." className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 min-h-[100px] resize-none text-primary placeholder:text-muted-foreground" />
                 </div>
 
                 <h3 className="text-sm font-black uppercase tracking-widest text-accent italic pt-4">Event Metadata</h3>
-                <div className="space-y-2"><Label className="text-slate-700">Departments (comma separated)</Label><Input value={departments} onChange={(e) => setDepartments(e.target.value)} placeholder="Automobile Engineering, Computer Engineering" className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-slate-900" /></div>
+                <div className="space-y-2">
+                  <Label className="text-primary-light">Department</Label>
+                  <select value={departments} onChange={(e) => setDepartments(e.target.value)} className="w-full rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 h-12 px-3 text-sm text-primary">
+                    <option value="" className="bg-white">Select Department...</option>
+                    <option value="BCA: Bachelor of Computer Applications" className="bg-white">BCA: Bachelor of Computer Applications</option>
+                    <option value="BBA: Bachelor of Business Administration" className="bg-white">BBA: Bachelor of Business Administration</option>
+                    <option value="BBA-ITM: Bachelor of Business Administration in Information Technology Management" className="bg-white">BBA-ITM: Bachelor of Business Administration in Information Technology Management</option>
+                    <option value="BBA-BA: Bachelor of Business Administration in Business Analytics" className="bg-white">BBA-BA: Bachelor of Business Administration in Business Analytics</option>
+                    <option value="BBA-DM: Bachelor of Business Administration in Digital Marketing" className="bg-white">BBA-DM: Bachelor of Business Administration in Digital Marketing</option>
+                    <option value="BCOM: Bachelor of Commerce" className="bg-white">BCOM: Bachelor of Commerce</option>
+                    <option value="MBA: Master of Business Administration" className="bg-white">MBA: Master of Business Administration</option>
+                    <option value="Training and Placement" className="bg-white">Training and Placement</option>
+                    <option value="Internal Quality Assurance Cell" className="bg-white">Internal Quality Assurance Cell</option>
+                  </select>
+                </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2"><Label className="text-slate-700">Level</Label><Input value={level} onChange={(e) => setLevel(e.target.value)} placeholder="International Level" className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-slate-900" /></div>
-                  <div className="space-y-2"><Label className="text-slate-700">Type</Label><Input value={type} onChange={(e) => setType(e.target.value)} placeholder="Conference" className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-slate-900" /></div>
+                  <div className="space-y-2">
+                    <Label className="text-primary-light">Level <span className="text-red-500">*</span></Label>
+                    <select value={level} onChange={(e) => setLevel(e.target.value)} className="w-full rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 h-12 px-3 text-sm text-primary">
+                      <option value="" className="bg-white">Select Level...</option>
+                      <option value="International Level" className="bg-white">International Level</option>
+                      <option value="National level" className="bg-white">National level</option>
+                      <option value="University level" className="bg-white">University level</option>
+                      <option value="College level" className="bg-white">College level</option>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label className="text-primary-light">Type</Label>
+                    <select value={type} onChange={(e) => setType(e.target.value)} className="w-full rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 h-12 px-3 text-sm text-primary">
+                      <option value="" className="bg-white">Select Type...</option>
+                      <option value="Conference" className="bg-white">Conference</option>
+                      <option value="Faculty Development Programme" className="bg-white">Faculty Development Programme</option>
+                      <option value="Student Development Programme" className="bg-white">Student Development Programme</option>
+                      <option value="Casual Events" className="bg-white">Casual Events</option>
+                      <option value="Sports Event" className="bg-white">Sports Event</option>
+                      <option value="Academic Events" className="bg-white">Academic Events</option>
+                    </select>
+                  </div>
                 </div>
                 <div className="space-y-2">
-                  <Label className="text-slate-700">Status</Label>
+                  <Label className="text-primary-light">Status <span className="text-red-500">*</span></Label>
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
-                    className="w-full rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 h-12 px-3 text-sm text-slate-900"
+                    className="w-full rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 h-12 px-3 text-sm text-primary"
                   >
                     <option value="Upcoming" className="bg-white">Upcoming</option>
                     <option value="Ongoing" className="bg-white">Ongoing</option>
                     <option value="Completed" className="bg-white">Completed</option>
                   </select>
                 </div>
-                <div className="space-y-2"><Label className="text-slate-700">Registration Link</Label><Input value={registrationLink} onChange={(e) => setRegistrationLink(e.target.value)} placeholder="https://forms.gle/..." className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-slate-900" /></div>
+                <div className="space-y-2"><Label className="text-primary-light">Registration Link</Label><Input value={registrationLink} onChange={(e) => setRegistrationLink(e.target.value)} placeholder="https://forms.gle/..." className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 h-12 text-primary" /></div>
               </div>
             </div>
 
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-black uppercase tracking-widest text-accent italic">Committee Members</h3>
-                <Button variant="outline" size="sm" onClick={addCommitteeMember} className="rounded-lg h-8 px-3 text-[10px] font-bold border-white text-slate-900 hover:bg-white/80 hover:text-slate-900 bg-white/80 backdrop-blur-md"><Plus size={14} className="mr-1" /> Add Member</Button>
+                <Button variant="outline" size="sm" onClick={addCommitteeMember} className="rounded-lg h-8 px-3 text-[10px] font-bold border-border text-primary hover:bg-surface hover:text-primary bg-surface"><Plus size={14} className="mr-1" /> Add Member</Button>
               </div>
 
               <div className="space-y-4">
                 {committee.map((member, idx) => (
-                  <div key={idx} className="p-4 rounded-2xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-within:bg-white/80 space-y-3 relative group transition-all">
+                  <div key={idx} className="p-4 rounded-2xl border border-border shadow-sm bg-surface focus-within:bg-surface space-y-3 relative group transition-all">
                     <Button
                       variant="ghost"
                       size="icon"
@@ -222,7 +274,7 @@ export default function EventsPage() {
                     </Button>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1">
-                        <Label className="text-[10px] opacity-60 text-slate-900">Name</Label>
+                        <Label className="text-[10px] opacity-60 text-primary">Name</Label>
                         <select
                           value={member.name}
                           onChange={(e) => {
@@ -245,7 +297,7 @@ export default function EventsPage() {
                               updateMember(idx, 'name', val);
                             }
                           }}
-                          className="w-full h-9 rounded-lg border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md text-slate-900 text-xs font-bold px-2 focus-visible:ring-2 focus-visible:ring-white/20"
+                          className="w-full h-9 rounded-lg border border-border shadow-sm bg-surface text-primary text-xs font-bold px-2 focus-visible:ring-2 focus-visible:ring-white/20"
                         >
                           <option value="" className="bg-white">Select Faculty...</option>
                           {faculties.map((f: any) => (
@@ -257,33 +309,41 @@ export default function EventsPage() {
                         </select>
                       </div>
                       <div className="space-y-1">
-                        <Label className="text-[10px] opacity-60 text-slate-900">Role/Designation</Label>
-                        <Input value={member.role} onChange={(e) => updateMember(idx, 'role', e.target.value)} placeholder="Convenor" className="h-9 rounded-lg border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md text-slate-900 text-xs font-bold placeholder:text-slate-900/30" />
+                        <Label className="text-[10px] opacity-60 text-primary">Role/Designation</Label>
+                        <Input value={member.role} onChange={(e) => updateMember(idx, 'role', e.target.value)} placeholder="Convenor" className="h-9 rounded-lg border border-border shadow-sm bg-surface text-primary text-xs font-bold placeholder:text-primary/30" />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1">
-                        <Label className="text-[10px] opacity-60 text-slate-900">Email</Label>
-                        <Input value={member.email} onChange={(e) => updateMember(idx, 'email', e.target.value)} placeholder="email@semcom.ac.in" className="h-9 rounded-lg border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md text-slate-900 text-xs font-bold placeholder:text-slate-900/30" />
+                        <Label className="text-[10px] opacity-60 text-primary">Email</Label>
+                        <Input value={member.email} onChange={(e) => updateMember(idx, 'email', e.target.value)} placeholder="email@semcom.ac.in" className="h-9 rounded-lg border border-border shadow-sm bg-surface text-primary text-xs font-bold placeholder:text-primary/30" />
                       </div>
                       <div className="space-y-1">
-                        <Label className="text-[10px] opacity-60 text-slate-900">Phone</Label>
-                        <Input value={member.phone} onChange={(e) => updateMember(idx, 'phone', e.target.value)} placeholder="98XXXXXXXX" className="h-9 rounded-lg border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md text-slate-900 text-xs font-bold placeholder:text-slate-900/30" />
+                        <Label className="text-[10px] opacity-60 text-primary">Phone</Label>
+                        <Input value={member.phone} onChange={(e) => updateMember(idx, 'phone', e.target.value)} placeholder="98XXXXXXXX" className="h-9 rounded-lg border border-border shadow-sm bg-surface text-primary text-xs font-bold placeholder:text-primary/30" />
                       </div>
                     </div>
                   </div>
                 ))}
                 {committee.length === 0 && (
-                  <div className="text-center py-10 border-2 border-dashed border-white bg-white/80 backdrop-blur-md rounded-2xl">
-                    <p className="text-xs font-bold text-slate-500 italic">No members added yet.</p>
+                  <div className="text-center py-10 border-2 border-dashed border-border bg-surface rounded-2xl">
+                    <p className="text-xs font-bold text-muted italic">No members added yet.</p>
                   </div>
                 )}
               </div>
             </div>
           </div>
-          <DialogFooter className="p-6 pt-4 border-t border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] shrink-0">
-            <Button variant="ghost" onClick={resetForm} className="text-slate-900 hover:bg-white/80 hover:text-slate-900">Cancel</Button>
+          <DialogFooter className="p-6 pt-4 border-t border-border shadow-sm shrink-0">
+            <Button variant="ghost" onClick={resetForm} className="text-primary hover:bg-surface hover:text-primary">Cancel</Button>
             <Button disabled={isSaving} onClick={() => {
+              if (!title || !date || !endDate || !location || !description || !highlights || !schedule || !level || !status) {
+                toast({ title: "Validation Error", description: "Please fill all required fields.", variant: "destructive" });
+                return;
+              }
+              if (!editingId && !selectedImage) {
+                toast({ title: "Validation Error", description: "Event Poster is required.", variant: "destructive" });
+                return;
+              }
               const depsArray = departments ? departments.split(',').map(d => d.trim()).filter(Boolean) : [];
               saveEvent({
                 title, date, location, description, highlights, schedule, committee,
@@ -298,42 +358,57 @@ export default function EventsPage() {
         </DialogContent>
       </Dialog>
 
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-extrabold text-slate-900">Events</h2>
-          <p className="text-slate-500 text-sm mt-1">Manage institutional activities and workshops</p>
-        </div>
-        <Button onClick={() => setOpenDialog(true)} className="rounded-xl shadow-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all hover:bg-accent/90"><Plus className="h-4 w-4 mr-2" />Add Event</Button>
-      </div>
+      <div className={isEmbedded ? "space-y-6" : "p-6 space-y-6 max-w-7xl mx-auto"}>
+        {!isEmbedded && (
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-3xl font-extrabold text-primary">Events</h2>
+              <p className="text-muted text-sm mt-1">Manage institutional activities and workshops</p>
+            </div>
+            <div className="flex gap-3">
+              <Button onClick={() => { resetForm(); setOpenDialog(true); }} className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg hover:-translate-y-0.5 transition-all"><Plus className="h-4 w-4 mr-2" />Add Event</Button>
+            </div>
+          </div>
+        )}
 
-      <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-        <Input placeholder="Search events..." className="pl-9 border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400" value={search} onChange={(e) => setSearch(e.target.value)} />
-      </div>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="relative max-w-xs flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
+            <Input placeholder="Search events..." className="pl-9 border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 rounded-xl text-primary placeholder:text-muted-foreground h-11" value={search} onChange={(e) => setSearch(e.target.value)} />
+          </div>
+          {isEmbedded && (
+            <Button onClick={() => { resetForm(); setOpenDialog(true); }} className="rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg hover:-translate-y-0.5 transition-all">
+              <Plus className="h-4 w-4 mr-2" />Add Event
+            </Button>
+          )}
+        </div>
 
       {isLoading ? (
         <div className="flex justify-center p-20"><Loader2 className="h-10 w-10 animate-spin text-accent" /></div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="flex flex-col gap-3">
           {filtered.map((event: any, i: number) => (
-            <div key={event.id || i} className="admin-glass-card p-5 group flex flex-col justify-between h-full">
-              <div>
-                <div className="flex items-start justify-between mb-3"><Badge variant="outline" className="rounded-lg border-white text-slate-900 bg-white/80 backdrop-blur-md">{event.location || 'College Campus'}</Badge></div>
-                <h3 className="font-bold text-slate-900 text-sm min-h-[2.5rem] line-clamp-2">{event.title || event.name}</h3>
-                <div className="space-y-1.5 mt-3">
-                  <div className="flex items-center gap-1.5 text-slate-500"><Calendar className="h-3.5 w-3.5 text-accent" /><span className="text-[11px] font-medium">{event.date ? new Date(event.date).toDateString() : 'Date Pending'}</span></div>
-                  <div className="flex items-center gap-1.5 text-slate-500"><MapPin className="h-3.5 w-3.5 text-emerald-400" /><span className="text-[11px] font-medium">{event.location || 'SEMCOM'}</span></div>
+            <div key={event.id || i} className="admin-glass-card hover:bg-surface/50 transition-all p-4 flex flex-col md:flex-row md:items-center justify-between relative overflow-hidden group gap-4 rounded-2xl border border-border">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge variant="outline" className="rounded-lg border-border text-primary bg-surface">{event.location || 'College Campus'}</Badge>
+                </div>
+                <h3 className="font-bold text-primary text-sm truncate">{event.title || event.name}</h3>
+                <div className="flex flex-wrap items-center gap-4 mt-2">
+                  <div className="flex items-center gap-1.5 text-muted"><Calendar className="h-3.5 w-3.5 text-accent shrink-0" /><span className="text-[11px] font-medium truncate">{event.date ? new Date(event.date).toDateString() : 'Date Pending'}</span></div>
+                  <div className="flex items-center gap-1.5 text-muted"><MapPin className="h-3.5 w-3.5 text-emerald-400 shrink-0" /><span className="text-[11px] font-medium truncate">{event.location || 'SEMCOM'}</span></div>
                 </div>
               </div>
-              <div className="flex gap-2 mt-5">
-                <Button variant="outline" size="sm" className="flex-1 rounded-xl h-9 border-white text-slate-900 hover:bg-white/80 hover:text-slate-900 bg-transparent" onClick={() => startEdit(event)}><Edit className="h-3 w-3 mr-1.5" />Edit</Button>
+
+              <div className="flex gap-2 shrink-0 justify-end mt-2 md:mt-0">
+                <Button variant="outline" size="sm" className="rounded-xl h-9 border-border text-primary hover:bg-surface hover:text-primary bg-transparent" onClick={() => startEdit(event)}><Edit className="h-3 w-3 mr-1.5" />Edit</Button>
                 <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-400/20" onClick={() => confirm("Delete this event?") && deleteEvent(event.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
               </div>
             </div>
           ))}
         </div>
       )}
-
+      </div>
     </div>
   );
 }

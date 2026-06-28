@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   Phone, 
@@ -10,8 +11,36 @@ import {
   Sparkles
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { inquiriesApi } from '@/lib/api';
 
 export default function ContactPlacement() {
+  const [formData, setFormData] = useState({ name: '', email: '', program: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const handleInputChange = (e: any) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleQuickInquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const response = await inquiriesApi.submit({
+        type: "Placement_Quick_Inquiry",
+        ...formData
+      });
+      if (response.success) {
+        setIsSuccess(true);
+        setFormData({ name: '', email: '', program: '', message: '' });
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Failed to submit. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className="bg-background min-h-screen">
       {/* Hero Banner — Clean Dark Primary Theme matching Hero */}
@@ -110,46 +139,60 @@ export default function ContactPlacement() {
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none" />
             
-            <div className="relative z-10 space-y-8">
+              <form onSubmit={handleQuickInquirySubmit} className="relative z-10 space-y-8">
               <div>
                 <h2 className="text-2xl font-bold text-white mb-2">Quick Inquiry</h2>
                 <p className="text-white/70 text-xs font-semibold leading-relaxed">Send us a message and we'll get back to you within 24 hours.</p>
               </div>
 
-              <div className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="text-[9px] font-bold uppercase tracking-widest text-white/50 pl-1">Full Name</label>
-                    <input type="text" className="w-full bg-background border-none rounded-xl py-3 px-4 text-primary font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-accent transition-all shadow-inner" placeholder="John Doe" />
+              {isSuccess ? (
+                <div className="bg-white text-primary p-6 rounded-xl text-center">
+                  <h3 className="font-bold mb-2">Message Sent!</h3>
+                  <p className="text-sm">Thank you for reaching out. We will get back to you shortly.</p>
+                  <button type="button" onClick={() => setIsSuccess(false)} className="mt-4 text-xs font-bold underline">Send another</button>
+                </div>
+              ) : (
+                <>
+                  <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] font-bold uppercase tracking-widest text-white/50 pl-1">Full Name</label>
+                        <input name="name" required value={formData.name} onChange={handleInputChange} type="text" className="w-full bg-background border-none rounded-xl py-3 px-4 text-primary font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-accent transition-all shadow-inner" placeholder="John Doe" />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-[9px] font-bold uppercase tracking-widest text-white/50 pl-1">Email Address</label>
+                        <input name="email" required value={formData.email} onChange={handleInputChange} type="email" className="w-full bg-background border-none rounded-xl py-3 px-4 text-primary font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-accent transition-all shadow-inner" placeholder="john@example.com" />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-[9px] font-bold uppercase tracking-widest text-white/50 pl-1">Purpose</label>
+                      <select name="program" required value={formData.program} onChange={handleInputChange} className="w-full bg-background border-none rounded-xl py-3 px-4 text-primary font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-accent transition-all appearance-none cursor-pointer shadow-inner">
+                        <option value="">Select an option</option>
+                        <option value="Recruitment Partnering">Recruitment Partnering</option>
+                        <option value="Student Internship Query">Student Internship Query</option>
+                        <option value="Alumni Relations">Alumni Relations</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-[9px] font-bold uppercase tracking-widest text-white/50 pl-1">Your Message</label>
+                      <textarea name="message" required value={formData.message} onChange={handleInputChange} rows={4} className="w-full bg-background border-none rounded-xl py-3 px-4 text-primary font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-accent transition-all resize-none shadow-inner" placeholder="How can we help you today?"></textarea>
+                    </div>
                   </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[9px] font-bold uppercase tracking-widest text-white/50 pl-1">Email Address</label>
-                    <input type="email" className="w-full bg-background border-none rounded-xl py-3 px-4 text-primary font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-accent transition-all shadow-inner" placeholder="john@example.com" />
-                  </div>
-                </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-[9px] font-bold uppercase tracking-widest text-white/50 pl-1">Purpose</label>
-                  <select className="w-full bg-background border-none rounded-xl py-3 px-4 text-primary font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-accent transition-all appearance-none cursor-pointer shadow-inner">
-                    <option value="">Select an option</option>
-                    <option value="recruitment">Recruitment Partnering</option>
-                    <option value="internship">Student Internship Query</option>
-                    <option value="alumni">Alumni Relations</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-[9px] font-bold uppercase tracking-widest text-white/50 pl-1">Your Message</label>
-                  <textarea rows={4} className="w-full bg-background border-none rounded-xl py-3 px-4 text-primary font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-accent transition-all resize-none shadow-inner" placeholder="How can we help you today?"></textarea>
-                </div>
-              </div>
-
-              <button className="btn-primary w-full !py-3 bg-secondary hover:bg-white hover:text-primary transition-colors flex items-center justify-center gap-2 group shadow">
-                <span>Send Message</span>
-                <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </button>
-            </div>
+                  <button disabled={isSubmitting} type="submit" className="w-full bg-[#FACC15] hover:bg-[#EAB308] text-slate-900 font-bold rounded-xl py-3 transition-colors flex items-center justify-center gap-2 group shadow">
+                    {isSubmitting ? 'Sending...' : (
+                      <>
+                        <span>Send Message</span>
+                        <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      </>
+                    )}
+                  </button>
+                </>
+              )}
+            </form>
           </motion.div>
         </div>
       </section>

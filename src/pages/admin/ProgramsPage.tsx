@@ -19,7 +19,9 @@ interface Program {
   description?: string;
 }
 
-const API_BASE = "/api/programs";
+import { API_BASE as GLOBAL_API_BASE } from "@/lib/api";
+
+const API_BASE = `${GLOBAL_API_BASE}/programs`;
 
 export default function ProgramsPage() {
   const [programs, setPrograms] = useState<Program[]>([]);
@@ -109,11 +111,11 @@ export default function ProgramsPage() {
   );
 
   return (
-    <div className="space-y-6 text-slate-900 pb-20">
+    <div className="space-y-6 text-primary pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900">Programs</h2>
-          <p className="text-slate-500 text-sm mt-1">Manage academic programs offered by SEMCOM</p>
+          <h2 className="text-3xl font-extrabold text-primary">Programs</h2>
+          <p className="text-muted text-sm mt-1">Manage academic programs offered by SEMCOM</p>
         </div>
         <Button onClick={() => {
           setEditingProgram(null);
@@ -124,10 +126,10 @@ export default function ProgramsPage() {
       </div>
 
       <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
         <Input 
           placeholder="Search programs..." 
-          className="pl-9 border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 rounded-xl text-slate-900 placeholder:text-slate-400" 
+          className="pl-9 border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 rounded-xl text-primary placeholder:text-muted-foreground" 
           value={search} 
           onChange={(e) => setSearch(e.target.value)} 
         />
@@ -138,31 +140,33 @@ export default function ProgramsPage() {
           <Loader2 className="h-8 w-8 animate-spin text-accent" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="flex flex-col gap-3">
           {filtered.map((prog) => (
-            <div key={prog.id} className="admin-glass-card hover:-translate-y-1 transition-all p-5 group">
-              <div className="flex items-start justify-between mb-3">
-                <Badge variant="outline" className="border-white text-slate-900 bg-white/80 backdrop-blur-md">{prog.type}</Badge>
-                <Badge className={prog.status === "new" ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all" : "bg-white/80 text-slate-900 hover:bg-slate-100"}>{prog.status}</Badge>
+            <div key={prog.id} className="admin-glass-card hover:bg-surface/50 transition-all p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-2xl border border-border group">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-2">
+                  <Badge variant="outline" className="border-border text-primary bg-surface">{prog.type}</Badge>
+                  <Badge className={prog.status === "new" ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all" : "bg-surface text-primary hover:bg-background"}>{prog.status}</Badge>
+                </div>
+                <h3 className="font-bold text-primary group-hover:text-accent transition-colors truncate">{prog.name}</h3>
               </div>
-              <h3 className="font-bold text-slate-900 group-hover:text-accent transition-colors">{prog.name}</h3>
 
-              <div className="flex gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex gap-2 shrink-0 justify-end mt-2 md:mt-0">
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="flex-1 border-white text-slate-900 hover:bg-white/80 hover:text-slate-900 bg-transparent"
+                  className="rounded-xl h-9 border-border text-primary hover:bg-surface hover:text-primary bg-transparent"
                   onClick={() => {
                     setEditingProgram(prog);
                     setIsDialogOpen(true);
                   }}
                 >
-                  <Edit className="h-3 w-3 mr-1" />Edit
+                  <Edit className="h-3 w-3 mr-1.5" />Edit
                 </Button>
                 <Button 
                   variant="ghost" 
                   size="icon" 
-                  className="h-9 w-9 text-red-400 hover:text-red-300 hover:bg-red-400/20"
+                  className="h-9 w-9 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-400/20"
                   onClick={() => handleDelete(prog.id)}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -177,14 +181,14 @@ export default function ProgramsPage() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="admin-glass-panel border-none sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle className="text-slate-900">{editingProgram ? "Edit Program" : "Add New Program"}</DialogTitle>
-            <DialogDescription className="text-slate-500">
+            <DialogTitle className="text-primary">{editingProgram ? "Edit Program" : "Add New Program"}</DialogTitle>
+            <DialogDescription className="text-muted">
               Enter the program details below.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name" className="text-slate-700">Program Name</Label>
+              <Label htmlFor="name" className="text-primary-light">Program Name</Label>
               <Input
                 id="name"
                 value={editingProgram?.name || newProgram.name}
@@ -192,11 +196,11 @@ export default function ProgramsPage() {
                   ? setEditingProgram({...editingProgram, name: e.target.value})
                   : setNewProgram({...newProgram, name: e.target.value})
                 }
-                className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900"
+                className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 text-primary"
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="type" className="text-slate-700">Program Type</Label>
+              <Label htmlFor="type" className="text-primary-light">Program Type</Label>
               <Select 
                 value={editingProgram?.type || newProgram.type}
                 onValueChange={(val) => editingProgram
@@ -204,20 +208,20 @@ export default function ProgramsPage() {
                   : setNewProgram({...newProgram, type: val})
                 }
               >
-                <SelectTrigger className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900">
+                <SelectTrigger className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 text-primary">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] text-slate-900">
-                  <SelectItem value="UG" className="focus:bg-white/80 focus:text-slate-900">Undergraduate (UG)</SelectItem>
-                  <SelectItem value="PG" className="focus:bg-white/80 focus:text-slate-900">Postgraduate (PG)</SelectItem>
-                  <SelectItem value="Doctoral" className="focus:bg-white/80 focus:text-slate-900">Doctoral</SelectItem>
-                  <SelectItem value="Certificate" className="focus:bg-white/80 focus:text-slate-900">Certificate</SelectItem>
+                <SelectContent className="bg-white border-border shadow-sm text-primary">
+                  <SelectItem value="UG" className="focus:bg-surface focus:text-primary">Undergraduate (UG)</SelectItem>
+                  <SelectItem value="PG" className="focus:bg-surface focus:text-primary">Postgraduate (PG)</SelectItem>
+                  <SelectItem value="Doctoral" className="focus:bg-surface focus:text-primary">Doctoral</SelectItem>
+                  <SelectItem value="Certificate" className="focus:bg-surface focus:text-primary">Certificate</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="status" className="text-slate-700">Status</Label>
+              <Label htmlFor="status" className="text-primary-light">Status</Label>
               <Select 
                 value={editingProgram?.status || newProgram.status}
                 onValueChange={(val: any) => editingProgram
@@ -225,22 +229,22 @@ export default function ProgramsPage() {
                   : setNewProgram({...newProgram, status: val})
                 }
               >
-                <SelectTrigger className="rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md focus-visible:bg-white/80 focus-visible:ring-2 focus-visible:ring-slate-300 text-slate-900">
+                <SelectTrigger className="rounded-xl border border-border shadow-sm bg-surface focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-slate-300 text-primary">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] text-slate-900">
-                  <SelectItem value="active" className="focus:bg-white/80 focus:text-slate-900">Active</SelectItem>
-                  <SelectItem value="new" className="focus:bg-white/80 focus:text-slate-900">New</SelectItem>
-                  <SelectItem value="archived" className="focus:bg-white/80 focus:text-slate-900">Archived</SelectItem>
+                <SelectContent className="bg-white border-border shadow-sm text-primary">
+                  <SelectItem value="active" className="focus:bg-surface focus:text-primary">Active</SelectItem>
+                  <SelectItem value="new" className="focus:bg-surface focus:text-primary">New</SelectItem>
+                  <SelectItem value="archived" className="focus:bg-surface focus:text-primary">Archived</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="description" className="text-slate-700">Program Details / Description</Label>
+              <Label htmlFor="description" className="text-primary-light">Program Details / Description</Label>
               <textarea
                 id="description"
                 rows={4}
-                className="flex w-full rounded-xl border border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] bg-white/80 backdrop-blur-md px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex w-full rounded-xl border border-border shadow-sm bg-surface px-3 py-2 text-sm text-primary placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 disabled:cursor-not-allowed disabled:opacity-50"
                 value={editingProgram?.description || newProgram.description}
                 onChange={(e) => editingProgram
                   ? setEditingProgram({...editingProgram, description: e.target.value})
@@ -251,7 +255,7 @@ export default function ProgramsPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="text-slate-900 hover:bg-white/80 hover:text-slate-900 border-white bg-transparent">Cancel</Button>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="text-primary hover:bg-surface hover:text-primary border-border bg-transparent">Cancel</Button>
             <Button onClick={handleSave} className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all hover:bg-accent/90 rounded-xl px-8 shadow-lg">Save Program</Button>
           </DialogFooter>
         </DialogContent>

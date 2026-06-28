@@ -39,6 +39,33 @@ const courses = [
     category: 'Computer Science',
     link: '/academics/bca',
   },
+  {
+    title: 'BBA-BA',
+    description: 'Data-driven decision making and business analytics for modern enterprises.',
+    duration: '4 Years',
+    seats: 'Merit Basis',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop',
+    category: 'Management',
+    link: '/academics/bba-ba',
+  },
+  {
+    title: 'BBA-DM & AI',
+    description: 'Bridging creativity, technology, and marketing with digital strategies and AI.',
+    duration: '4 Years',
+    seats: 'Merit Basis',
+    image: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=2074&auto=format&fit=crop',
+    category: 'Management',
+    link: '/academics/bba-dm',
+  },
+  {
+    title: 'MBA',
+    description: 'Two-Year Full-Time Dual Specialization Program designed to mold future corporate leaders.',
+    duration: '2 Years',
+    seats: 'Merit Basis',
+    image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop',
+    category: 'Management',
+    link: '/academics/mba',
+  },
 ];
 
 export default function Courses() {

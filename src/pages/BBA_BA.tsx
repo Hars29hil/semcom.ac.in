@@ -1,57 +1,63 @@
 import { motion } from 'motion/react';
 import { 
   BookOpen, 
-  Target, 
   Trophy, 
   Briefcase, 
   ArrowRight,
   GraduationCap,
   Users,
-  Search,
-  Globe,
-  Presentation,
-  Compass,
-  Layout
+  Layout,
+  Star
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const programOutcomes = [
   {
     id: 'PO-1',
-    title: 'Visionary Leadership',
-    description: 'Sound theoretical foundation helps in identification of business problems and provides innovative solutions, molding students into future visionaries and management leaders.'
+    title: 'Analytical Thinking',
+    description: 'Transform raw data into actionable insights for strategic decision-making in real-world business scenarios.'
   },
   {
     id: 'PO-2',
-    title: 'Research Orientation',
-    description: 'Developing a research mindset for analyzing problems and formulating strategies to cope with emerging business opportunities.'
+    title: 'Technical Proficiency',
+    description: 'Gain hands-on mastery in the latest data visualization, predictive modeling, and business intelligence tools.'
   },
   {
     id: 'PO-3',
-    title: 'Global Competency',
-    description: 'Equipping students with the necessary competencies to be employable in the global market with a competitive edge.'
+    title: 'Strategic Management',
+    description: 'Bridge the gap between complex data analysis and overarching business goals to drive organizational growth.'
   },
   {
     id: 'PO-4',
-    title: 'Effective Decision Making',
-    description: 'Building conceptual and analytical abilities required for effective and ethical decision making in complex business scenarios.'
+    title: 'Data Leadership',
+    description: 'Lead cross-functional teams with a robust understanding of both data science capabilities and business administration.'
   }
 ];
 
-const learningAvenues = [
-  { name: 'Case Studies', icon: Search },
-  { name: 'Management Games', icon: Layout },
-  { name: 'Seminar Presentations', icon: Presentation },
-  { name: 'Industry Interaction', icon: Users },
-  { name: 'E-commerce Training', icon: Globe }
+const keyFeatures = [
+  'Four-Year Full-Time Program',
+  'Focus on Data Analytics & Business Strategy',
+  'State-of-the-art Computer Labs',
+  'Industry-Oriented and Updated Curriculum',
+  'Project-Based and Experiential Learning',
+  'Placement Support in Top Analytics Firms',
+  'Soft Skills and Leadership Development',
+  'No Entrance Exam - Admission on Merit Basis',
+  'Scholarships for Meritorious Students'
 ];
 
-export default function MCom() {
+const specializations = [
+  'Data Visualization and Storytelling',
+  'Predictive Modeling and Machine Learning',
+  'Big Data Analytics',
+  'Business Intelligence and Strategy'
+];
+
+export default function BBA_BA() {
   return (
     <div className="bg-background min-h-screen">
-      {/* Hero Banner — Clean Dark Primary Theme matching Hero */}
+      {/* Hero Banner */}
       <div className="relative bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white py-16 sm:py-24 overflow-hidden">
-        {/* Subtle grid pattern overlay */}
         <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
         
         <div className="section-container relative z-10">
@@ -60,14 +66,14 @@ export default function MCom() {
             <span>/</span>
             <Link to="/courses" className="hover:text-white transition-colors">Courses</Link>
             <span>/</span>
-            <span className="text-white/60">M.Com</span>
+            <span className="text-white/60">BBA-BA</span>
           </div>
 
-          <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4">
-            M.Com <span className="text-accent">(Master of Commerce)</span>
+          <h1 className="text-white !text-3xl sm:!text-4xl md:!text-5xl !font-bold tracking-tight mb-4 uppercase">
+            BBA-BA <span className="text-accent">(Bachelor of Business Administration in Business Analytics)</span>
           </h1>
-          <p className="text-white/70 max-w-2xl text-sm sm:text-base leading-relaxed">
-            A pragmatic two-year postgraduate journey affiliated with CVM University, designed to mold future corporate leaders through research and innovation.
+          <p className="text-white/70 max-w-2xl text-sm sm:text-base leading-relaxed uppercase tracking-widest font-bold text-emerald-400">
+            Data-Driven Decision Making for Future Leaders
           </p>
         </div>
       </div>
@@ -85,22 +91,24 @@ export default function MCom() {
               <span>Our Approach</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">
-              Pragmatic Learning for Practicing Managers
+              Pragmatic Learning for Future Analysts
             </h2>
-            <p className="text-sm text-muted leading-relaxed font-medium">
-              Classroom learning is enriched by high-engagement activities including case studies, management games, and intensive group discussions. 
-            </p>
-            <p className="text-sm text-muted leading-relaxed font-medium">
-              We bridge the gap between academia and industry through regular interactions with practicing managers and e-commerce professionals, ensuring our graduates are market-ready from day one.
-            </p>
+            <div className="space-y-3">
+              {keyFeatures.slice(0, 5).map((feature, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="mt-1 w-2 h-2 rounded-full bg-accent shrink-0" />
+                  <p className="text-sm text-muted font-medium">{feature}</p>
+                </div>
+              ))}
+            </div>
             <div className="flex flex-wrap gap-4 pt-2">
               <div className="flex items-center gap-3 bg-surface px-5 py-3 rounded-xl border border-border">
                 <Users className="text-secondary" size={18} />
-                <span className="font-bold text-xs text-primary">40 Seats Intake</span>
+                <span className="font-bold text-xs text-primary">Admission on Merit Basis</span>
               </div>
               <div className="flex items-center gap-3 bg-primary px-5 py-3 rounded-xl border border-transparent text-white">
                 <Trophy className="text-accent" size={18} />
-                <span className="font-bold text-xs">Affiliated with CVM University</span>
+                <span className="font-bold text-xs">CVM University</span>
               </div>
             </div>
           </motion.div>
@@ -113,20 +121,20 @@ export default function MCom() {
           >
             <div className="space-y-4 pt-8">
               <div className="rounded-xl overflow-hidden shadow-soft h-48 border border-border">
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover" alt="Team discussion" />
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover" alt="Data Analytics" />
               </div>
               <div className="card !p-6 bg-secondary/15 text-primary">
-                <Presentation size={24} className="mb-2 text-secondary animate-pulse" />
-                <h4 className="font-bold text-xs leading-tight">Seminar Presentations</h4>
+                <Briefcase size={24} className="mb-2 text-secondary animate-pulse" />
+                <h4 className="font-bold text-xs leading-tight">Analytics Placements</h4>
               </div>
             </div>
             <div className="space-y-4">
               <div className="card !p-6 bg-surface border border-border text-primary">
-                <Search size={24} className="mb-2 text-secondary" />
-                <h4 className="font-bold text-xs leading-tight">Case Study Focused</h4>
+                <Layout size={24} className="mb-2 text-secondary" />
+                <h4 className="font-bold text-xs leading-tight">Advanced Labs</h4>
               </div>
               <div className="rounded-xl overflow-hidden shadow-soft h-48 border border-border">
-                <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2070&auto=format&fit=crop" className="w-full h-full object-cover" alt="Business analysis" />
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" className="w-full h-full object-cover" alt="Business Intelligence" />
               </div>
             </div>
           </motion.div>
@@ -138,7 +146,7 @@ export default function MCom() {
         <div className="section-container">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3">Program Outcomes</h2>
-            <p className="text-muted text-sm font-medium">Core proficiencies our graduates achieve throughout the program.</p>
+            <p className="text-muted text-sm font-medium">Core advantages of joining the BBA-BA program at SEMCOM.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -166,33 +174,39 @@ export default function MCom() {
       <div className="section-container py-12 sm:py-16">
         <div className="grid lg:grid-cols-2 gap-10 items-stretch">
           
-          {/* Learning Avenues */}
           <div className="space-y-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">Classroom Enrichment</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-primary pb-3 border-b border-border">Core Focus Areas</h2>
             <div className="space-y-3.5">
-              {learningAvenues.map((ave, i) => (
+              {specializations.map((spec, i) => (
                 <div key={i} className="flex items-center gap-4 p-4 bg-surface rounded-xl border border-border shadow-sm">
-                  <div className="w-10 h-10 bg-background border border-border rounded-xl flex items-center justify-center text-secondary shrink-0">
-                    <ave.icon size={18} />
+                  <div className="w-10 h-10 bg-background border border-border rounded-xl flex items-center justify-center text-accent shrink-0">
+                    <Star size={18} className="fill-accent" />
                   </div>
-                  <span className="font-bold text-xs sm:text-sm text-primary">{ave.name}</span>
+                  <span className="font-bold text-xs sm:text-sm text-primary">{spec}</span>
+                </div>
+              ))}
+            </div>
+            
+            <h3 className="text-lg font-bold text-primary mt-8 pt-6 pb-3 border-b border-border">More Key Features</h3>
+            <div className="space-y-3">
+              {keyFeatures.slice(5).map((feature, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="mt-1 w-2 h-2 rounded-full bg-secondary shrink-0" />
+                  <p className="text-sm text-muted font-medium">{feature}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Eligibility & Curriculum */}
           <div className="flex flex-col gap-6">
-            
-            {/* Eligibility Box */}
             <div className="card !p-8 bg-gradient-to-br from-primary via-[#1E3A8A] to-primary text-white space-y-6 relative overflow-hidden flex-1 flex flex-col justify-between">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
               
               <div className="relative z-10 space-y-4">
                 <GraduationCap size={32} className="text-accent mb-4" />
-                <h3 className="text-lg font-bold text-white">Eligibility Criteria</h3>
+                <h3 className="text-lg font-bold text-white">Admissions Open 2026-27</h3>
                 <p className="text-white/70 text-xs sm:text-sm leading-relaxed font-semibold">
-                  Bachelor's degree in Commerce / Management / Equivalent under 10+2+3 from a recognized university.
+                  No Entrance Exam - Admission on Merit Basis. Scholarships for Meritorious Students are available.
                 </p>
               </div>
 
@@ -209,16 +223,14 @@ export default function MCom() {
               </div>
             </div>
 
-            {/* Curriculum Box */}
             <div className="card !p-6 flex flex-col items-center justify-center text-center border border-border shadow-sm bg-surface">
               <h3 className="text-muted font-bold uppercase tracking-wider text-[9px] mb-2">Program Structure</h3>
-              <h4 className="text-sm font-bold text-primary mb-5">M.Com Curriculum</h4>
+              <h4 className="text-sm font-bold text-primary mb-5">BBA-BA Curriculum</h4>
               <button className="btn-primary !py-2.5 !px-6 !text-xs">
                 <BookOpen size={14} />
                 <span>Programme Structure</span>
               </button>
             </div>
-
           </div>
 
         </div>

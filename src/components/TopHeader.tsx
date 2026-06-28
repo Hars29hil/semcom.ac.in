@@ -52,52 +52,7 @@ export default function TopHeader() {
         </div>
       </div>
 
-      {/* Main Branding Header */}
-      <div className="hidden sm:flex bg-surface py-5 px-6 lg:px-8 items-center justify-between gap-6 border-b border-border">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-4 shrink-0">
-          <div className="h-16 md:h-20 flex items-center">
-            <img
-              src="/images/Picsart_26-04-28_09-18-02-251.png"
-              alt="SEMCOM Logo"
-              className="h-full w-auto object-contain"
-            />
-          </div>
-        </Link>
 
-        {/* Right Info */}
-        <div className="flex items-center gap-6 lg:gap-10">
-          {/* Contact */}
-          <div className="hidden xl:flex flex-col items-end gap-1">
-            <a href="mailto:principal.semcom@cvmu.edu.in" className="flex items-center gap-2 text-muted text-xs font-medium hover:text-secondary transition-colors">
-              <Mail size={14} className="text-secondary" />
-              principal.semcom@cvmu.edu.in
-            </a>
-            <a href="tel:+916352135360" className="flex items-center gap-2 text-primary font-semibold text-sm hover:text-secondary transition-colors">
-              <Phone size={13} className="text-secondary" />
-              (+91) 6352135360
-            </a>
-          </div>
-
-          {/* CVM Partner Logo */}
-          <div className="hidden lg:flex items-center gap-4 pl-6 border-l border-border">
-            <a
-              href="https://www.cvmu.edu.in/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 group"
-            >
-              <div className="hidden xl:flex flex-col items-end">
-                <span className="text-xs font-semibold text-primary group-hover:text-secondary transition-colors">CVM University</span>
-                <span className="text-[10px] text-muted">Parent Body</span>
-              </div>
-              <div className="h-12 md:h-14 flex items-center transition-all group-hover:scale-105 overflow-hidden">
-                <img src="/images/cvm-logo.png" alt="CVM University" className="h-full w-auto object-contain" />
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

@@ -27,9 +27,32 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const data = await authApi.login({ email: email.trim(), password });
+      const trimmedEmail = email.trim();
+
+      // Fixed Admin ID bypass
+      if (trimmedEmail === 'admin@semcom.edu.in' && password === 'Admin#123') {
+        setToken('admin_fixed_token_xyz123');
+        setAuthUser({
+          username: trimmedEmail,
+          role: 'admin',
+          name: 'System Admin',
+        });
+        toast.success(`Welcome back, System Admin`);
+        navigate("/admin");
+        setLoading(false);
+        return;
+      }
+
+      const data = await authApi.login({ email: trimmedEmail, password });
 
       if (data.success && data.token) {
+        // Prevent old admin accounts from logging in
+        if (data.user.role === 'admin' && data.user.email !== 'admin@semcom.edu.in') {
+          toast.error("Old admin credentials are no longer allowed.");
+          setLoading(false);
+          return;
+        }
+
         setToken(data.token);
         setAuthUser({
           username: data.user.email,
@@ -78,7 +101,7 @@ export default function LoginPage() {
 
         {/* Content */}
         <div className="relative z-10">
-          <Link to="/" className="inline-flex items-center text-slate-900/70 hover:text-slate-900 transition-colors text-sm font-medium mb-12">
+          <Link to="/" className="inline-flex items-center text-primary/70 hover:text-primary transition-colors text-sm font-medium mb-12">
             <ArrowLeft className="w-4 h-4 mr-2" /> Back to Main Website
           </Link>
           
@@ -87,26 +110,26 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Badge variant="outline" className="px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md border-white text-slate-900 font-medium mb-6">
+            <Badge variant="outline" className="px-4 py-1.5 rounded-full bg-surface border-border text-primary font-medium mb-6">
               <span className="flex items-center gap-2">
                 <ShieldCheck className="h-4 w-4 text-accent" />
                 Secure Institutional Access
               </span>
             </Badge>
 
-            <h1 className="text-slate-900 text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight">
+            <h1 className="text-primary text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight">
               SEMCOM <br/>
               <span className="text-accent italic tracking-tighter">Administrative Hub</span>
             </h1>
             
-            <p className="mt-6 text-slate-900/70 text-lg leading-relaxed max-w-md">
+            <p className="mt-6 text-primary/70 text-lg leading-relaxed max-w-md">
               Access the central administrative portal to manage faculty profiles, student data, campus announcements, and academic resources securely.
             </p>
           </motion.div>
         </div>
 
         {/* Footer info in Left Column */}
-        <div className="relative z-10 flex items-center justify-between text-slate-500 text-xs font-medium border-t border-white shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] pt-8 mt-12">
+        <div className="relative z-10 flex items-center justify-between text-muted text-xs font-medium border-t border-border shadow-sm pt-8 mt-12">
           <p>&copy; {new Date().getFullYear()} CVM University</p>
           <p>Strictly for authorized personnel</p>
         </div>
@@ -124,7 +147,7 @@ export default function LoginPage() {
         </div>
 
         {/* Mobile Back Link */}
-        <Link to="/" className="absolute top-6 left-6 lg:hidden z-20 inline-flex items-center text-slate-900/70 hover:text-slate-900 transition-colors text-sm font-medium">
+        <Link to="/" className="absolute top-6 left-6 lg:hidden z-20 inline-flex items-center text-primary/70 hover:text-primary transition-colors text-sm font-medium">
           <ArrowLeft className="w-4 h-4 mr-2" /> Home
         </Link>
 
@@ -135,7 +158,7 @@ export default function LoginPage() {
           transition={{ duration: 0.5 }}
           className="w-full max-w-[420px] relative z-10"
         >
-          <div className="bg-white/95 lg:bg-white backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] lg:shadow-none lg:border-none border border-white p-8 sm:p-10">
+          <div className="bg-white/95 lg:bg-white backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] lg:shadow-none lg:border-none border border-border p-8 sm:p-10">
             <div className="text-center mb-10">
                 <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-white/5 text-primary mb-6">
                     <GraduationCap className="h-8 w-8" />
@@ -152,7 +175,7 @@ export default function LoginPage() {
                   <Input
                     type="email"
                     placeholder="name@cvmu.edu.in"
-                    className="pl-11 h-12 rounded-xl border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 transition-all font-medium"
+                    className="pl-11 h-12 rounded-xl border-border bg-background focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 transition-all font-medium"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -168,7 +191,7 @@ export default function LoginPage() {
                   <Input
                     type="password"
                     placeholder="••••••••"
-                    className="pl-11 h-12 rounded-xl border-border bg-slate-50 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 transition-all font-medium"
+                    className="pl-11 h-12 rounded-xl border-border bg-background focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/20 transition-all font-medium"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required

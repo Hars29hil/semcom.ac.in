@@ -53,6 +53,8 @@ const communityItems = [
 
 const contentItems = [
   { title: "Gallery", url: "/admin/gallery", icon: Image },
+  { title: "Fixed Images", url: "/admin/fixed-images", icon: Image },
+  { title: "Inquiries & Forms", url: "/admin/inquiries", icon: FileText },
   { title: "Accreditations", url: "/admin/accreditations", icon: Award },
   { title: "Contact Info", url: "/admin/contact", icon: Phone },
   { title: "Settings", url: "/admin/settings", icon: Settings },
@@ -82,8 +84,8 @@ export function AdminSidebar() {
                       collapsed ? "justify-center" : ""
                     } ${
                       active
-                        ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30"
-                        : "hover:bg-slate-100 text-slate-500 hover:text-slate-900"
+                        ? "bg-secondary text-white shadow-md shadow-secondary/30"
+                        : "hover:bg-background text-muted hover:text-primary"
                     }`}
                     activeClassName=""
                   >
@@ -106,16 +108,16 @@ export function AdminSidebar() {
   );
 
   return (
-    <Sidebar collapsible="icon" className="border-none">
-      <SidebarHeader className={`border-b border-sidebar-border/50 ${collapsed ? "p-2 py-4" : "p-5"}`}>
+    <Sidebar collapsible="icon" className="border-none bg-surface">
+      <SidebarHeader className={`border-b border-border ${collapsed ? "p-2 py-4" : "p-5"}`}>
         <div className={`flex items-center ${collapsed ? "justify-center" : "gap-3"}`}>
-          <div className={`rounded-2xl bg-gradient-to-br from-sidebar-primary to-sidebar-primary/80 flex items-center justify-center shrink-0 shadow-lg shadow-sidebar-primary/20 animate-float ${collapsed ? "w-8 h-8" : "w-9 h-9"}`}>
-            <GraduationCap className={`text-sidebar-primary-foreground ${collapsed ? "h-4 w-4" : "h-5 w-5"}`} />
+          <div className={`rounded-2xl bg-gradient-to-br from-primary to-primary-light flex items-center justify-center shrink-0 shadow-sm ${collapsed ? "w-8 h-8" : "w-9 h-9"}`}>
+            <GraduationCap className={`text-white ${collapsed ? "h-4 w-4" : "h-5 w-5"}`} />
           </div>
           {!collapsed && (
             <div>
-              <h2 className="font-extrabold text-sm text-sidebar-foreground tracking-wide">SEMCOM</h2>
-              <p className="text-[10px] text-sidebar-foreground/50 font-medium">Admin Panel</p>
+              <h2 className="font-extrabold text-sm text-primary tracking-wide">SEMCOM</h2>
+              <p className="text-[10px] text-muted font-medium">Admin Panel</p>
             </div>
           )}
         </div>
@@ -153,14 +155,23 @@ export function AdminSidebar() {
               </>
             );
           }
-          return renderGroup("Profile Management", [
-            { title: "Personal Synopsis", url: "/admin/counsellor#synopsis", icon: UserCheck },
-            { title: "Achievement Records", url: "/admin/counsellor#achievements", icon: Trophy },
-            { title: "Career Path", url: "/admin/counsellor#trajectory", icon: Briefcase },
-          ]);
+          return (
+            <>
+              {renderGroup("Profile Management", [
+                { title: "Personal Synopsis", url: "/admin/counsellor#synopsis", icon: UserCheck },
+                { title: "Achievement Records", url: "/admin/counsellor#achievements", icon: Trophy },
+                { title: "Career Path", url: "/admin/counsellor#trajectory", icon: Briefcase },
+              ])}
+              {renderGroup("Operations", [
+                { title: "Events", url: "/admin/faculty/event", icon: Calendar },
+                { title: "Press Notes", url: "/admin/faculty-press-notes", icon: FileText },
+                { title: "Announcements", url: "/admin/faculty-announcements", icon: Bell },
+              ])}
+            </>
+          );
         })()}
       </SidebarContent>
-      <SidebarFooter className="p-4 border-t border-sidebar-border/50">
+      <SidebarFooter className="p-4 border-t border-border">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton 

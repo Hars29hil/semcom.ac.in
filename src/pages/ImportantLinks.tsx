@@ -116,7 +116,7 @@ export default function ImportantLinks() {
             <p className="text-white/70 text-xs sm:text-sm leading-relaxed font-semibold max-w-xl mx-auto uppercase tracking-wider">Access the student portal for result verification and internal standings.</p>
             
             <div className="pt-2">
-              <button className="btn-primary inline-flex items-center gap-2 !py-2.5 !px-6 !text-xs mx-auto">
+              <button className="bg-[#FACC15] hover:bg-[#EAB308] text-slate-900 font-bold rounded-xl inline-flex items-center gap-2 !py-2.5 !px-6 !text-xs mx-auto transition-colors">
                 <span>Student Information System</span>
                 <ArrowRight size={14} />
               </button>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE } from '@/lib/api';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 
@@ -9,7 +10,7 @@ export default function AboutSemcom() {
   });
 
   useEffect(() => {
-    fetch('/api/config')
+    fetch(`${API_BASE}/config`)
       .then(res => res.json())
       .then(data => {
         setImages(prev => ({
@@ -98,7 +99,7 @@ export default function AboutSemcom() {
                 <div className="space-y-4">
                   <h3 className="text-primary font-bold uppercase tracking-wider text-[11px] pb-1 border-b border-border">PG PROGRAM</h3>
                   <ul className="list-disc pl-5 space-y-1.5 text-xs text-muted">
-                    <li>MCom</li>
+                    <li>MBA</li>
                   </ul>
 
                   <div className="pt-2">

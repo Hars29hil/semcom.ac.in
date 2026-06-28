@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { inquiriesApi } from '@/lib/api';
 
 export default function AlumniRegistration() {
   const [formData, setFormData] = useState({
@@ -26,14 +27,57 @@ export default function AlumniRegistration() {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Thank you for registering! We will review your details.');
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    if (formData.phone.length !== 10) {
+      alert("Mobile number must be exactly 10 digits.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await inquiriesApi.submit({
+        type: "Alumni_Registration",
+        name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        program: formData.program,
+        city: formData.currentStatus, // reusing city for current status
+        message: `Passout Year: ${formData.passoutYear} | Org: ${formData.organization} | Msg: ${formData.message}`
+      });
+      if (response.success) {
+        alert('Thank you for registering! We will review your details.');
+        setFormData({
+          fullName: '', email: '', phone: '', passoutYear: '',
+          program: '', currentStatus: '', organization: '', linkedin: '', message: ''
+        });
+      }
+    } catch(err) {
+      console.error(err);
+      alert('Failed to register. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "phone") {
+      const numbersOnly = value.replace(/\D/g, '');
+      if (numbersOnly.length <= 10) {
+        setFormData({ ...formData, [name]: numbersOnly });
+      }
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   return (
@@ -108,7 +152,7 @@ export default function AlumniRegistration() {
                       required
                       type="tel"
                       name="phone"
-                      placeholder="Mobile Number"
+                      placeholder="10-digit Mobile Number"
                       className="w-full bg-background border border-border rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-sm font-semibold text-primary shadow-sm"
                       onChange={handleChange}
                     />
@@ -131,11 +175,12 @@ export default function AlumniRegistration() {
                       <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-muted group-focus-within:text-secondary transition-colors" size={16} />
                       <input
                         required
-                        type="text"
+                        type="date"
                         name="passoutYear"
-                        placeholder="Passout Year"
                         className="w-full bg-background border border-border rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-sm font-semibold text-primary shadow-sm"
                         onChange={handleChange}
+                        value={formData.passoutYear}
+                        title="Passout Date"
                       />
                     </div>
                     <div className="relative group">
@@ -151,7 +196,7 @@ export default function AlumniRegistration() {
                         <option value="BBA-ITM">BBA-ITM (Hons)</option>
                         <option value="BCom">B.Com (Hons)</option>
                         <option value="BCA">BCA (Hons)</option>
-                        <option value="MCom">M.Com</option>
+                        <option value="MBA">MBA</option>
                         <option value="PHD">Ph.D</option>
                       </select>
                     </div>
@@ -209,10 +254,11 @@ export default function AlumniRegistration() {
 
                 <button
                   type="submit"
-                  className="btn-primary flex items-center gap-2 group w-full md:w-auto justify-center"
+                  disabled={isSubmitting}
+                  className="w-full md:w-auto bg-[#FACC15] hover:bg-[#EAB308] text-slate-900 font-bold rounded-xl flex items-center justify-center gap-2 py-3 px-6 text-sm shadow-xl transition-colors group"
                 >
-                  <span>Submit Registration</span>
-                  <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  <span>{isSubmitting ? 'Submitting...' : 'Submit Registration'}</span>
+                  {!isSubmitting && <Send size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
                 </button>
               </div>
             </form>

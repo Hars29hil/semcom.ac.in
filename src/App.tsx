@@ -9,6 +9,8 @@ import Home from './pages/Home';
 import About from './pages/About';
 import CoursesPage from './pages/CoursesPage';
 import Admissions from './pages/Admissions';
+import AdmissionInquiry from './pages/AdmissionInquiry';
+import ForeignAdmission from './pages/ForeignAdmission';
 import Faculty from './pages/Faculty';
 import Activities from './pages/Activities';
 import Contact from './pages/Contact';
@@ -27,13 +29,14 @@ import GrievanceCell from './pages/GrievanceCell';
 
 import BBA_ITM_Hons from './pages/BBA_ITM_Hons';
 import BBA_Hons from './pages/BBA_Hons';
+import BBA_BA from './pages/BBA_BA';
+import BBA_DM from './pages/BBA_DM';
 import BCom_Hons from './pages/BCom_Hons';
 import BCA_Hons from './pages/BCA_Hons';
-import MCom from './pages/MCom';
+import MBA from './pages/MBA';
 import PHD from './pages/PHD';
 import FAQsPage from './pages/FAQsPage';
 import SMTRJournal from './pages/SMTRJournal';
-import SEMSpire from './pages/SEMSpire';
 import Facilities from './pages/Facilities';
 import MegaEvents from './pages/MegaEvents';
 import ExtensionActivities from './pages/ExtensionActivities';
@@ -50,6 +53,7 @@ import EducationVerification from './pages/EducationVerification';
 import EventDetail from './pages/EventDetail';
 import PressNoteDetail from './pages/PressNoteDetail';
 import PressNotesList from './pages/PressNotesList';
+import AnnouncementsList from './pages/AnnouncementsList';
 
 import LoginPage from '@/pages/admin/LoginPage';
 import AdminRoutes from './admin/AdminRoutes';
@@ -122,18 +126,19 @@ export default function App() {
             
             <Route path="/academics/bba-itm" element={<PageWrapper><BBA_ITM_Hons /></PageWrapper>} />
             <Route path="/academics/bba" element={<PageWrapper><BBA_Hons /></PageWrapper>} />
+            <Route path="/academics/bba-ba" element={<PageWrapper><BBA_BA /></PageWrapper>} />
+            <Route path="/academics/bba-dm" element={<PageWrapper><BBA_DM /></PageWrapper>} />
             <Route path="/academics/bcom" element={<PageWrapper><BCom_Hons /></PageWrapper>} />
             <Route path="/academics/bca" element={<PageWrapper><BCA_Hons /></PageWrapper>} />
-            <Route path="/academics/mcom" element={<PageWrapper><MCom /></PageWrapper>} />
+            <Route path="/academics/mba" element={<PageWrapper><MBA /></PageWrapper>} />
             <Route path="/academics/phd" element={<PageWrapper><PHD /></PageWrapper>} />
             <Route path="/admission/faqs" element={<PageWrapper><FAQsPage /></PageWrapper>} />
             <Route path="/research/journal" element={<PageWrapper><SMTRJournal /></PageWrapper>} />
-            <Route path="/research/newsletter" element={<PageWrapper><SEMSpire /></PageWrapper>} />
             <Route path="/student/facilities" element={<PageWrapper><Facilities /></PageWrapper>} />
-            <Route path="/student/events" element={<PageWrapper><MegaEvents /></PageWrapper>} />
+            <Route path="/events" element={<PageWrapper><MegaEvents /></PageWrapper>} />
             <Route path="/student/activities" element={<PageWrapper><ExtensionActivities /></PageWrapper>} />
             <Route path="/student/links" element={<PageWrapper><ImportantLinks /></PageWrapper>} />
-            <Route path="/student/downloads" element={<PageWrapper><DownloadForms /></PageWrapper>} />
+            <Route path="/student/forms" element={<PageWrapper><DownloadForms /></PageWrapper>} />
 
             
             <Route path="/placement" element={<PageWrapper><InternshipPlacement /></PageWrapper>} />
@@ -141,6 +146,8 @@ export default function App() {
             <Route path="/placement/contact" element={<PageWrapper><ContactPlacement /></PageWrapper>} />
             
             <Route path="/admission" element={<PageWrapper><Admissions /></PageWrapper>} />
+            <Route path="/admission/inquiry" element={<PageWrapper><AdmissionInquiry /></PageWrapper>} />
+            <Route path="/admission/brochure" element={<PageWrapper><ForeignAdmission /></PageWrapper>} />
             <Route path="/research" element={<PageWrapper><Home /></PageWrapper>} />
             <Route path="/student-corner" element={<PageWrapper><Home /></PageWrapper>} />
             
@@ -153,6 +160,7 @@ export default function App() {
             <Route path="/education-verification" element={<PageWrapper><EducationVerification /></PageWrapper>} />
             <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
             <Route path="/events/:id" element={<PageWrapper><EventDetail /></PageWrapper>} />
+            <Route path="/news/announcements" element={<PageWrapper><AnnouncementsList /></PageWrapper>} />
             <Route path="/news/press-note/:id" element={<PageWrapper><PressNoteDetail /></PageWrapper>} />
             <Route path="/news/press-notes" element={<PageWrapper><PressNotesList /></PageWrapper>} />
           </Route>

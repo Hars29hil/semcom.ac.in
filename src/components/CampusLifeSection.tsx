@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Camera, Music, Trophy, Users, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { API_BASE } from '@/lib/api';
 
 const activities = [
   {
@@ -57,7 +58,7 @@ export default function CampusLifeSection() {
   const [displayActivities, setDisplayActivities] = useState(activities);
 
   useEffect(() => {
-    fetch('/api/config')
+    fetch(`${API_BASE}/config`)
       .then(async (res) => {
         if (!res.ok) throw new Error('API Error: ' + res.status);
         const data = await res.json();

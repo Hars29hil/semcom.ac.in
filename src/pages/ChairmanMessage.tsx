@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { API_BASE } from '@/lib/api';
 import { motion } from 'motion/react';
 import { Quote } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -7,7 +8,7 @@ export default function ChairmanMessage() {
   const [chairmanImage, setChairmanImage] = useState('/images/chairman.png');
 
   useEffect(() => {
-    fetch('/api/config')
+    fetch(`${API_BASE}/config`)
       .then(res => res.json())
       .then(data => {
         if (data.chairman_image) {

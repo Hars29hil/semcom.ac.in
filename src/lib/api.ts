@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import { getToken } from './auth';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -76,7 +77,35 @@ export interface LoginResponse {
 
 // ─── Core Fetcher ────────────────────────────────────────────────────────────
 
-const fetcher = async <T = unknown>(url: string, options: RequestInit = {}): Promise<T> => {
+const getDynamicApiBase = () => {
+  const envApiUrl = import.meta.env.VITE_API_URL;
+  
+  if (envApiUrl && envApiUrl.startsWith('http')) {
+    try {
+      const url = new URL(envApiUrl);
+      // If the built API URL is localhost, but we are accessing it from a network IP,
+      // dynamically update it to point to the current network IP but keep the API port.
+      if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+        url.hostname = window.location.hostname;
+      }
+      return url.toString().replace(/\/$/, '');
+    } catch (e) {
+      // Fallback
+    }
+  }
+  
+  // If no env variable or if it's relative, default to current host:5000/api in production
+  // or just '/api' if we want to rely on proxy/relative routing.
+  if (!envApiUrl && !import.meta.env.DEV) {
+    return `${window.location.protocol}//${window.location.hostname}:5000/api`;
+  }
+
+  return envApiUrl || '/api';
+};
+
+export const API_BASE = getDynamicApiBase();
+
+export const fetcher = async <T = unknown>(url: string, options: RequestInit = {}): Promise<T> => {
   const token = getToken();
   const headers: Record<string, string> = {
     ...((options.headers as Record<string, string>) || {}),
@@ -92,14 +121,17 @@ const fetcher = async <T = unknown>(url: string, options: RequestInit = {}): Pro
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`/api${url}`, {
+  // Remove duplicate slashes if any
+  const endpoint = `${API_BASE}${url}`.replace(/([^:]\/)\/+/g, "$1");
+
+  const response = await fetch(endpoint, {
     ...options,
     headers,
   });
 
-  if (response.status === 401 && !url.includes('/auth/login')) {
-    localStorage.removeItem('semcom_admin_user');
-    localStorage.removeItem('semcom_auth_token');
+  if (response.status === 401 && !url.includes('/login')) {
+    sessionStorage.removeItem('semcom_admin_user');
+    sessionStorage.removeItem('semcom_auth_token');
     window.location.href = '/login';
     throw new Error('Session expired. Please log in again.');
   }
@@ -116,7 +148,7 @@ const fetcher = async <T = unknown>(url: string, options: RequestInit = {}): Pro
 
 export const authApi = {
   login: (credentials: LoginCredentials): Promise<LoginResponse> =>
-    fetcher<LoginResponse>('/auth/login', {
+    fetcher<LoginResponse>('/login', {
       method: 'POST',
       body: JSON.stringify(credentials),
     }),
@@ -127,10 +159,19 @@ export const authApi = {
 export const facultyApi = {
   getAll: (): Promise<ApiResponse<FacultyData[]>> =>
     fetcher(`/faculty?t=${Date.now()}`),
+  add: (data: Partial<FacultyData>): Promise<ApiResponse<{ id: number }>> =>
+    fetcher(`/faculty`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
   update: (id: number, data: Partial<FacultyData>): Promise<ApiResponse<null>> =>
     fetcher(`/faculty/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
+    }),
+  delete: (id: number): Promise<ApiResponse<null>> =>
+    fetcher(`/faculty/${id}`, {
+      method: 'DELETE',
     }),
 };
 
@@ -147,11 +188,11 @@ export const uploadApi = {
   },
 };
 
-export const uploadFile = async (file: File) => {
+export const uploadFile = async (file: File): Promise<{ success: boolean; imageUrl: string }> => {
   const formData = new FormData();
   formData.append('file', file);
-  
-  return fetcher('/upload', {
+
+  return fetcher<{ success: boolean; imageUrl: string }>('/upload', {
     method: 'POST',
     body: formData
   });
@@ -185,6 +226,7 @@ export const statsApi = {
     totalPrograms: number;
     totalFaculty: number;
     totalEvents: number;
+    recentActivities?: any[];
   }>> => fetcher('/stats/summary'),
 };
 
@@ -231,5 +273,15 @@ export const configApi = {
     fetcher('/config', {
       method: 'POST',
       body: JSON.stringify({ key, value }),
+    }),
+};
+
+// ─── Inquiries API ───────────────────────────────────────────────────────────
+
+export const inquiriesApi = {
+  submit: (data: any): Promise<ApiResponse<{ id: number }>> =>
+    fetcher('/inquiries', {
+      method: 'POST',
+      body: JSON.stringify(data),
     }),
 };

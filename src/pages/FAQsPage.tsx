@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     question: "Which Programs Are Offered By SEMCOM?",
-    answer: "SEMCOM offers a diverse range of programs including BBA (ITM) (Hons.), BBA (Hons.), BCA (Hons.), BCom (Hons.) at the undergraduate level, M.Com. at the postgraduate level, and Ph.D. programs in Commerce and Management."
+    answer: "SEMCOM offers a diverse range of programs including BBA (ITM) (Hons.), BBA (Hons.), BCA (Hons.), BCom (Hons.) at the undergraduate level, MBA at the postgraduate level, and Ph.D. programs in Commerce and Management."
   },
   {
     question: "What is a Multi-Faculty College?",
@@ -153,7 +153,7 @@ export default function FAQsPage() {
                 <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-accent">
                   <MessageCircle size={20} />
                 </div>
-                <h4 className="text-base font-bold">Join the SEMCOM Legacy</h4>
+                <h4 className="text-base font-bold text-white">Join the SEMCOM Legacy</h4>
                 <p className="text-white/70 text-xs leading-relaxed font-medium">Admissions for 2026-27 are now open for all undergraduate and postgraduate programs.</p>
                 <div className="pt-2">
                   <a 

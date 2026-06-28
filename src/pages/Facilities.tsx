@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { API_BASE } from '@/lib/api';
 import { 
   Home, 
   Coffee, 
@@ -56,6 +57,21 @@ const hostelDetails = [
 
 export default function Facilities() {
   const [activeTab, setActiveTab] = useState('boys-hostel');
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch(`${API_BASE}/config`)
+      .then(async res => {
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.facility_images) {
+          try {
+            setGalleryImages(JSON.parse(data.facility_images));
+          } catch(e) {}
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="pt-20 bg-background min-h-screen">
@@ -156,6 +172,33 @@ export default function Facilities() {
           )}
         </div>
       </section>
+
+      {/* Dynamic Gallery Section */}
+      {galleryImages.length > 0 && (
+        <section className="section-padding bg-background border-t border-border">
+          <div className="section-container">
+            <div className="text-center mb-12">
+              <span className="section-label">Gallery</span>
+              <h2 className="text-3xl font-bold mt-2">Campus <span className="text-secondary">Facilities</span></h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {galleryImages.map((url, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="rounded-2xl overflow-hidden shadow-card border border-border aspect-square relative group"
+                >
+                  <img src={url} alt={`Facility ${idx + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Safety & Community Callout */}
       <section className="section-padding bg-surface border-t border-border">

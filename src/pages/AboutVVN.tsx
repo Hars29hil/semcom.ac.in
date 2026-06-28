@@ -15,13 +15,13 @@ export default function AboutVVN() {
       title: "Life",
       icon: <Landmark className="text-secondary" size={20} />,
       content: "Life at Vidyanagar is all about discovering one's self. To be a part of the life that has to offer a lot if one is ready to take up the challenges. Academics are at its best, fun and frolics do compete with it. Days are hectic in studies while nights go with fun places with discussions about the day's happenings and eating out at almost all places glittering with neon lights. Roaming till late night is usual with the citizens — even for girls it is extremely safe.",
-      image: "https://images.unsplash.com/photo-1529070538774-1843cbad2ad6?auto=format&fit=crop&q=80&w=1000"
+      image: "/life.png"
     },
     {
       title: "Environment",
       icon: <Trees className="text-secondary" size={20} />,
       content: "Once entered in Vidyanagar, the lush greenery catches the eyes of the naturalist, which is a sure means of breathing fresh air in all seasons. Its lush green trees of different types and kinds have not only made the town environment-friendly, but also have created a serene and ever-enjoyable tranquil atmosphere generating synergistic ecstasy on campus. Vallabh Vidyanagar is blessed with the splendor of nature, attracting many to make the town their permanent home, adding value to the academic life on campus.",
-      image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&q=80&w=1000"
+      image: "/Environment.png"
     },
     {
       title: "Amenities",

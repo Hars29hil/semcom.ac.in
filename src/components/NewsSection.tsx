@@ -21,7 +21,8 @@ export default function NewsSection() {
         try {
           const pressData = await newsApi.getPressNotes();
           if (pressData.success && pressData.data && pressData.data.length > 0) {
-            setPressNotes(pressData.data.slice(0, 3));
+            const sortedPress = [...pressData.data].sort((a, b) => (b.id || 0) - (a.id || 0));
+            setPressNotes(sortedPress.slice(0, 3));
             pressLoaded = true;
           }
         } catch (e) { console.warn("Press notes API failed, using mock data."); }
@@ -29,7 +30,8 @@ export default function NewsSection() {
         try {
           const eventData = await eventApi.getAll();
           if (eventData.success && eventData.data && eventData.data.length > 0) {
-            const formattedEvents = eventData.data.slice(0, 3).map((e: any) => {
+            const sortedEvents = [...eventData.data].sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
+            const formattedEvents = sortedEvents.slice(0, 3).map((e: any) => {
               const d = new Date(e.date);
               return {
                 id: e.id,
@@ -46,7 +48,8 @@ export default function NewsSection() {
         try {
           const announceData = await newsApi.getAnnouncements();
           if (announceData.success && announceData.data && announceData.data.length > 0) {
-            setAnnouncements(announceData.data.slice(0, 4));
+            const sortedAnnounce = [...announceData.data].sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime());
+            setAnnouncements(sortedAnnounce.slice(0, 4));
             announcementsLoaded = true;
           }
         } catch (e) { console.warn("Announcements API failed, using mock data."); }
@@ -145,7 +148,7 @@ export default function NewsSection() {
               )}
             </div>
 
-            <button className="btn-outline w-full !text-xs">
+            <button onClick={() => navigate('/events')} className="btn-outline w-full !text-xs">
               View All Events
               <Calendar size={14} />
             </button>
@@ -182,7 +185,7 @@ export default function NewsSection() {
               )}
             </div>
 
-            <button className="btn-outline w-full !text-xs">
+            <button onClick={() => navigate('/news/announcements')} className="btn-outline w-full !text-xs">
               View All Announcements
               <ArrowRight size={14} />
             </button>

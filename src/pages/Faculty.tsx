@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, GraduationCap, Award, BookOpen, Briefcase, MapPin, Loader2, X, History, Users, Search, ArrowRight, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { API_BASE } from '@/lib/api';
 
 interface Achievement {
   id: number;
@@ -22,7 +23,7 @@ export default function Faculty() {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
-    fetch('/api/faculty')
+    fetch(`${API_BASE}/faculty`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -41,11 +42,11 @@ export default function Faculty() {
     setSelectedFaculty(member);
     setLoadingExp(true);
     try {
-      const expRes = await fetch(`/api/faculty/${member.email}/experience`);
+      const expRes = await fetch(`${API_BASE}/faculty/${member.email}/experience`);
       const expData = await expRes.json();
       setExperience(expData || []);
 
-      const achRes = await fetch(`/api/faculty/${member.email}/achievements`);
+      const achRes = await fetch(`${API_BASE}/faculty/${member.email}/achievements`);
       const achData = await achRes.json();
       setAchievements(achData || []);
     } catch (e) {
@@ -151,56 +152,42 @@ export default function Faculty() {
                 viewport={{ once: true }}
                 transition={{ delay: (index % 3) * 0.05, duration: 0.4 }}
                 onClick={() => handleOpenDetails(member)}
-                className="card group cursor-pointer !p-6 flex flex-col justify-between"
+                className="card group cursor-pointer flex flex-col overflow-hidden !p-0"
               >
-                <div className="space-y-5">
-                  <div className="flex items-start justify-between gap-4">
-                    {/* Portrait Avatar */}
-                    <div className="w-14 h-14 rounded-xl overflow-hidden border border-border bg-background shrink-0 group-hover:border-secondary/30 transition-colors">
-                      <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
-                    </div>
-                    {/* Badge */}
-                    <div className="text-right">
-                      <span className="text-[10px] font-semibold text-secondary uppercase tracking-wider block mb-1">
-                        {member.type}
-                      </span>
-                      {member.designation && member.designation.toLowerCase() !== 'admin' && (
-                        <span className="inline-block px-2.5 py-1 bg-background rounded-lg text-primary text-[10px] font-bold border border-border uppercase">
-                          {member.designation}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="!text-lg font-semibold text-primary group-hover:text-secondary transition-colors">
-                      {member.name}
-                    </h3>
-                  </div>
-
-                  <div className="space-y-2.5 pt-4 border-t border-border/60">
-                    {member.qualification && (
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-6 h-6 rounded-lg bg-background flex items-center justify-center text-muted group-hover:text-secondary transition-colors">
-                          <GraduationCap size={13} />
-                        </div>
-                        <p className="text-xs text-muted truncate font-medium">{member.qualification}</p>
-                      </div>
-                    )}
-                    {member.area && (
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-6 h-6 rounded-lg bg-background flex items-center justify-center text-muted group-hover:text-secondary transition-colors">
-                          <MapPin size={13} />
-                        </div>
-                        <p className="text-xs text-muted truncate font-medium">{member.area}</p>
-                      </div>
-                    )}
+                <div className="relative w-full aspect-[4/5] bg-surface overflow-hidden">
+                  <img src={member.image} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  
+                  {/* Category Badge on Image */}
+                  <div className="absolute top-4 right-4">
+                    <span className="inline-block px-3 py-1.5 bg-secondary text-white rounded-lg text-[10px] font-bold uppercase tracking-wider shadow-md">
+                      {member.type}
+                    </span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-secondary mt-5 pt-4 border-t border-border/40 group-hover:text-secondary-hover transition-colors">
-                  <span>View Academic Profile</span>
-                  <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+                <div className="p-6 flex-1 flex flex-col items-center text-center bg-surface">
+                  <h3 className="text-xl font-bold text-primary group-hover:text-secondary transition-colors mb-4">
+                    {member.name}
+                  </h3>
+
+                  <div className="space-y-1.5 mt-auto w-full">
+                    {member.qualification && (
+                      <p className="text-sm text-muted font-medium"><span className="text-primary font-semibold">Qualification:</span> {member.qualification}</p>
+                    )}
+                    {member.designation && member.designation.toLowerCase() !== 'admin' && (
+                      <p className="text-sm text-muted font-medium"><span className="text-primary font-semibold">Designation:</span> {member.designation}</p>
+                    )}
+                    {member.area && (
+                      <p className="text-sm text-muted font-medium"><span className="text-primary font-semibold">Area:</span> {member.area}</p>
+                    )}
+                  </div>
+
+                  <div className="mt-6 pt-5 w-full border-t border-border/60 flex justify-center">
+                    <div className="flex items-center gap-2 text-xs font-bold text-secondary group-hover:text-secondary-hover transition-colors">
+                      <span>View Academic Profile</span>
+                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}

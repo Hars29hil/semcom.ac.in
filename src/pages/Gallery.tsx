@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ImageIcon, Calendar, ArrowRight, X, Loader2 } from 'lucide-react';
+import { ImageIcon, Calendar, ArrowRight, X, Loader2, Search } from 'lucide-react';
 
 interface Album {
   id: number;
@@ -15,7 +15,9 @@ interface Photo {
   url: string;
 }
 
-const API_BASE = "/api/gallery";
+import { API_BASE as GLOBAL_API_BASE } from "@/lib/api";
+
+const API_BASE = `${GLOBAL_API_BASE}/gallery`;
 
 export default function Gallery() {
   const [albums, setAlbums] = useState<Album[]>([]);
@@ -23,6 +25,38 @@ export default function Gallery() {
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [loadingPhotos, setLoadingPhotos] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedYear, setSelectedYear] = useState("All");
+  const [selectedMonth, setSelectedMonth] = useState("All");
+
+  const filteredAlbums = albums.filter((album) => {
+    const matchesSearch = album.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const date = new Date(album.album_date);
+    const year = date.getFullYear().toString();
+    const month = date.getMonth().toString();
+    
+    const matchesYear = selectedYear === "All" || year === selectedYear;
+    const matchesMonth = selectedMonth === "All" || month === selectedMonth;
+    
+    return matchesSearch && matchesYear && matchesMonth;
+  });
+
+  const uniqueYears = ["All", ...Array.from(new Set(albums.map(a => new Date(a.album_date).getFullYear().toString())))].sort((a: any, b: any) => b.localeCompare(a));
+  const months = [
+    { value: "All", label: "All Months" },
+    { value: "0", label: "January" },
+    { value: "1", label: "February" },
+    { value: "2", label: "March" },
+    { value: "3", label: "April" },
+    { value: "4", label: "May" },
+    { value: "5", label: "June" },
+    { value: "6", label: "July" },
+    { value: "7", label: "August" },
+    { value: "8", label: "September" },
+    { value: "9", label: "October" },
+    { value: "10", label: "November" },
+    { value: "11", label: "December" },
+  ];
 
   useEffect(() => {
     fetchAlbums();
@@ -31,6 +65,9 @@ export default function Gallery() {
   const fetchAlbums = async () => {
     try {
       const res = await fetch(`${API_BASE}/albums`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch albums");
+      }
       const data = await res.json();
       setAlbums(data);
     } catch (error) {
@@ -45,6 +82,9 @@ export default function Gallery() {
     setLoadingPhotos(true);
     try {
       const res = await fetch(`${API_BASE}/albums/${album.id}/photos`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch photos");
+      }
       const data = await res.json();
       setPhotos(data);
     } catch (error) {
@@ -80,15 +120,51 @@ export default function Gallery() {
             <div className="flex items-center justify-center py-20">
               <Loader2 className="h-10 w-10 animate-spin text-secondary" />
             </div>
-          ) : albums.length === 0 ? (
-            <div className="text-center py-20 bg-surface rounded-2xl border border-border">
-              <ImageIcon size={48} className="mx-auto text-muted mb-4 opacity-50" />
-              <h3 className="text-xl font-bold text-text mb-2">No Albums Available</h3>
-              <p className="text-muted max-w-md mx-auto">Our gallery is currently being updated. Check back soon for new photos.</p>
-            </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {albums.map((album, idx) => (
+            <>
+              {albums.length > 0 && (
+                <div className="flex flex-col md:flex-row gap-4 mb-8">
+                  <div className="relative flex-grow">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted" />
+                    <input 
+                      type="text"
+                      placeholder="Search events..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2 rounded-xl border border-border bg-surface focus:outline-none focus:ring-2 focus:ring-secondary/50 text-sm"
+                    />
+                  </div>
+                  <div className="flex gap-4">
+                    <select
+                      value={selectedYear}
+                      onChange={(e) => setSelectedYear(e.target.value)}
+                      className="px-4 py-2 rounded-xl border border-border bg-surface text-sm focus:outline-none focus:ring-2 focus:ring-secondary/50"
+                    >
+                      {uniqueYears.map((year) => (
+                        <option key={year} value={year}>{year === "All" ? "All Years" : year}</option>
+                      ))}
+                    </select>
+                    <select
+                      value={selectedMonth}
+                      onChange={(e) => setSelectedMonth(e.target.value)}
+                      className="px-4 py-2 rounded-xl border border-border bg-surface text-sm focus:outline-none focus:ring-2 focus:ring-secondary/50"
+                    >
+                      {months.map((m) => (
+                        <option key={m.value} value={m.value}>{m.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              )}
+              {filteredAlbums.length === 0 ? (
+                <div className="text-center py-20 bg-surface rounded-2xl border border-border">
+                  <ImageIcon size={48} className="mx-auto text-muted mb-4 opacity-50" />
+                  <h3 className="text-xl font-bold text-text mb-2">No Albums Found</h3>
+                  <p className="text-muted max-w-md mx-auto">We couldn't find any albums matching your criteria.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredAlbums.map((album, idx) => (
                 <motion.div
                   key={album.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -127,7 +203,9 @@ export default function Gallery() {
                   </div>
                 </motion.div>
               ))}
-            </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

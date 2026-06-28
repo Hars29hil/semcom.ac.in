@@ -17,50 +17,53 @@ const rankings = [
 
 export default function AccreditationsPage() {
   return (
-    <div className="space-y-6 text-slate-900 pb-20">
+    <div className="space-y-6 text-primary pb-20">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-extrabold text-slate-900">Accreditations & Rankings</h2>
-          <p className="text-slate-500 text-sm mt-1">Manage accreditations, certifications and rankings</p>
+          <h2 className="text-3xl font-extrabold text-primary">Accreditations & Rankings</h2>
+          <p className="text-muted text-sm mt-1">Manage accreditations, certifications and rankings</p>
         </div>
         <Button className="rounded-xl shadow-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all hover:bg-accent/90"><Plus className="h-4 w-4 mr-2" />Add</Button>
       </div>
 
-      <h3 className="font-bold text-slate-900 text-lg">Accreditations</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <h3 className="font-bold text-primary text-lg">Accreditations</h3>
+      <div className="flex flex-col gap-3">
         {accreditations.map((a) => (
-          <div key={a.id} className="admin-glass-card hover:-translate-y-1 transition-all p-5 group">
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-center gap-2.5">
-                <div className="h-9 w-9 rounded-xl bg-accent flex items-center justify-center">
-                  <Award className="h-4 w-4 text-primary" />
-                </div>
-                <h4 className="font-bold text-slate-900 text-sm group-hover:text-accent transition-colors">{a.name}</h4>
+          <div key={a.id} className="admin-glass-card hover:bg-surface/50 transition-all p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-2xl border border-border group">
+            <div className="flex items-center gap-4 flex-1 min-w-0">
+              <div className="h-10 w-10 rounded-xl bg-accent flex items-center justify-center shrink-0">
+                <Award className="h-5 w-5 text-primary" />
               </div>
-              <Badge className={a.status === "active" ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all hover:bg-accent/90" : "bg-red-400/20 text-red-400 hover:bg-red-400/30"}>{a.status}</Badge>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <h4 className="font-bold text-primary text-sm group-hover:text-accent transition-colors truncate">{a.name}</h4>
+                  <Badge className={a.status === "active" ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all hover:bg-accent/90" : "bg-red-400/20 text-red-400 hover:bg-red-400/30"}>{a.status}</Badge>
+                </div>
+                <p className="text-xs text-muted truncate">{a.description}</p>
+                <p className="text-[11px] text-muted-foreground mt-0.5 font-medium truncate">{a.body} • {a.period}</p>
+              </div>
             </div>
-            <p className="text-xs text-slate-500">{a.description}</p>
-            <p className="text-[11px] text-slate-400 mt-1 font-medium">{a.body} • {a.period}</p>
-            <div className="flex gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button variant="outline" size="sm" className="border-white text-slate-900 hover:bg-white/80 hover:text-slate-900 bg-transparent"><Edit className="h-3 w-3 mr-1" />Edit</Button>
-              <Button variant="ghost" size="icon" className="h-9 w-9 text-red-400 hover:text-red-300 hover:bg-red-400/20"><Trash2 className="h-3.5 w-3.5" /></Button>
+            
+            <div className="flex gap-2 shrink-0 justify-end mt-2 md:mt-0">
+              <Button variant="outline" size="sm" className="rounded-xl h-9 border-border text-primary hover:bg-surface hover:text-primary bg-transparent"><Edit className="h-3 w-3 mr-1.5" />Edit</Button>
+              <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-400/20"><Trash2 className="h-3.5 w-3.5" /></Button>
             </div>
           </div>
         ))}
       </div>
 
-      <h3 className="font-bold text-slate-900 text-lg pt-2">Rankings</h3>
+      <h3 className="font-bold text-primary text-lg pt-2">Rankings</h3>
       <div className="admin-glass-panel overflow-hidden">
         <div className="divide-y divide-white/10">
           {rankings.map((r) => (
-            <div key={r.id} className="flex items-center justify-between p-5 hover:bg-white/80 backdrop-blur-md transition-all group">
+            <div key={r.id} className="flex items-center justify-between p-5 hover:bg-surface transition-all group">
               <div>
-                <p className="text-sm font-semibold text-slate-900 group-hover:text-accent transition-colors">{r.title}</p>
-                <p className="text-[11px] text-slate-500 mt-0.5">{r.source} • {r.year}</p>
+                <p className="text-sm font-semibold text-primary group-hover:text-accent transition-colors">{r.title}</p>
+                <p className="text-[11px] text-muted mt-0.5">{r.source} • {r.year}</p>
               </div>
-              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Button variant="ghost" size="icon" className="text-slate-900 hover:bg-white/80 hover:text-slate-900"><Edit className="h-4 w-4" /></Button>
-                <Button variant="ghost" size="icon" className="text-red-400 hover:text-red-300 hover:bg-red-400/20"><Trash2 className="h-4 w-4" /></Button>
+              <div className="flex items-center gap-2 shrink-0">
+                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl text-primary hover:bg-surface hover:text-primary"><Edit className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-400/20"><Trash2 className="h-4 w-4" /></Button>
               </div>
             </div>
           ))}

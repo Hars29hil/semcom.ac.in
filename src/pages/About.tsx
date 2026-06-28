@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_BASE } from '@/lib/api';
 import { motion } from 'motion/react';
 import { Target, Eye, Award, Sparkles } from 'lucide-react';
 
@@ -6,7 +7,7 @@ export default function About() {
   const [legacyImage, setLegacyImage] = useState("https://images.unsplash.com/photo-1541339906194-e1620a96f5b9?q=80&w=2072&auto=format&fit=crop");
 
   useEffect(() => {
-    fetch('/api/config')
+    fetch(`${API_BASE}/config`)
       .then(res => res.json())
       .then(data => {
         if (data.institutional_excellence_image) {

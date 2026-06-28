@@ -38,17 +38,8 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-
-  // Auto-play
-  useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [isPaused]);
+  // Removing old unused state
+  const duplicatedTestimonials = [...testimonials, ...testimonials];
 
   return (
     <section className="section-padding bg-background">
@@ -57,58 +48,64 @@ export default function Testimonials() {
         <div className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
           <span className="section-label justify-center">Student Voices</span>
           <h2>
-            Alumni <span className="text-secondary">Success Stories 🚀</span>
+            Alumni <span className="text-secondary">Success Stories ⭐</span>
           </h2>
           <p className="mt-4 text-sm text-muted leading-relaxed">
             Hear from graduates who are now leading across various industries worldwide.
           </p>
         </div>
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={`${testimonial.name}-${index}`}
-              className="card group !p-7 relative"
-            >
-              {/* Quote Mark */}
-              <div className="absolute top-5 right-5 text-border">
-                <Quote size={32} className="rotate-180" />
-              </div>
+        {/* Testimonials Marquee Container */}
+        <div className="flex overflow-hidden relative max-w-[100vw] mx-auto pb-8 group py-4">
+          <div className="flex w-max animate-marquee gap-6 pl-6">
+            {duplicatedTestimonials.map((testimonial, index) => (
+              <div
+                key={`${testimonial.name}-${index}`}
+                className="card group !p-7 relative w-[300px] sm:w-[400px] shrink-0"
+              >
+                {/* Quote Mark */}
+                <div className="absolute top-5 right-5 text-border">
+                  <Quote size={32} className="rotate-180" />
+                </div>
 
-              {/* Rating */}
-              <div className="flex gap-1 mb-5">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} size={14} className="fill-accent text-accent" />
-                ))}
-              </div>
+                {/* Rating */}
+                <div className="flex gap-1 mb-5">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} size={14} className="fill-accent text-accent" />
+                  ))}
+                </div>
 
-              {/* Text */}
-              <p className="text-[15px] text-text leading-relaxed mb-6 line-clamp-4">
-                "{testimonial.text}"
-              </p>
+                {/* Text */}
+                <p className="text-[15px] text-text leading-relaxed mb-6 line-clamp-4">
+                  "{testimonial.text}"
+                </p>
 
-              {/* Company Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-background rounded-lg border border-border mb-6">
-                <TrendingUp size={12} className="text-secondary" />
-                <span className="text-[11px] font-semibold text-primary">{testimonial.company}</span>
-              </div>
+                {/* Company Badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-background rounded-lg border border-border mb-6">
+                  <TrendingUp size={12} className="text-secondary" />
+                  <span className="text-[11px] font-semibold text-primary">{testimonial.company}</span>
+                </div>
 
-              {/* Author */}
-              <div className="flex items-center gap-4 pt-5 border-t border-border mt-auto">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-border"
-                  referrerPolicy="no-referrer"
-                />
-                <div>
-                  <h4 className="text-sm font-semibold text-primary">{testimonial.name}</h4>
-                  <p className="text-[11px] text-muted font-medium">{testimonial.role}</p>
+                {/* Author */}
+                <div className="flex items-center gap-4 pt-5 border-t border-border mt-auto">
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full object-cover border-2 border-border"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div>
+                    <h4 className="text-sm font-semibold text-primary">{testimonial.name}</h4>
+                    <p className="text-[11px] text-muted font-medium">{testimonial.role}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          
+          {/* Gradient Fades for Marquee */}
+          <div className="absolute top-0 left-0 h-full w-12 sm:w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 right-0 h-full w-12 sm:w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
         </div>
 
         {/* Stats Bar */}
